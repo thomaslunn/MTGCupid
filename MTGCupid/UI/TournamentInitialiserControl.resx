@@ -152,7 +152,7 @@
     <value>825, 525</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>TournamentInitialiserTab</value>
+    <value>TournamentInitialiserControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

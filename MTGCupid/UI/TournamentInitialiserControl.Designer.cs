@@ -52,14 +52,15 @@
             resources.ApplyResources(beginNextRoundButton, "beginNextRoundButton");
             beginNextRoundButton.Name = "beginNextRoundButton";
             beginNextRoundButton.UseVisualStyleBackColor = true;
+            beginNextRoundButton.Click += beginNextRoundButton_Click;
             // 
-            // TournamentInitialiserTab
+            // TournamentInitialiserControl
             // 
             AutoScaleMode = AutoScaleMode.None;
             Controls.Add(beginNextRoundButton);
             Controls.Add(playerCountLabel);
             Controls.Add(nameList);
-            Name = "TournamentInitialiserTab";
+            Name = "TournamentInitialiserControl";
             resources.ApplyResources(this, "$this");
             ResumeLayout(false);
             PerformLayout();

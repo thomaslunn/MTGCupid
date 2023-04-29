@@ -30,60 +30,84 @@ namespace MTGCupid.UI
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             tabControl = new TabControl();
-            tabPage1 = new TabPage();
-            tournamentInitialiserControl1 = new TournamentInitialiserControl();
+            setupPage = new TabPage();
+            tournamentInitialiserControl = new TournamentInitialiserControl();
+            standingsPage = new TabPage();
+            standingsViewControl = new StandingsViewControl();
             tabControl.SuspendLayout();
-            tabPage1.SuspendLayout();
+            setupPage.SuspendLayout();
+            standingsPage.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl
             // 
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl.Controls.Add(tabPage1);
+            tabControl.Controls.Add(setupPage);
+            tabControl.Controls.Add(standingsPage);
             tabControl.Location = new Point(12, 12);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(776, 492);
             tabControl.TabIndex = 0;
             // 
-            // tabPage1
+            // setupPage
             // 
-            tabPage1.Controls.Add(tournamentInitialiserControl1);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(768, 464);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
+            setupPage.Controls.Add(tournamentInitialiserControl);
+            setupPage.Location = new Point(4, 24);
+            setupPage.Name = "setupPage";
+            setupPage.Padding = new Padding(3);
+            setupPage.Size = new Size(768, 464);
+            setupPage.TabIndex = 0;
+            setupPage.Text = "Tournament Setup";
+            setupPage.UseVisualStyleBackColor = true;
             // 
-            // tournamentInitialiserControl1
+            // tournamentInitialiserControl
             // 
-            tournamentInitialiserControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tournamentInitialiserControl1.Location = new Point(3, 3);
-            tournamentInitialiserControl1.Name = "tournamentInitialiserControl1";
-            tournamentInitialiserControl1.Size = new Size(762, 458);
-            tournamentInitialiserControl1.TabIndex = 0;
+            tournamentInitialiserControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tournamentInitialiserControl.Location = new Point(3, 3);
+            tournamentInitialiserControl.Name = "tournamentInitialiserControl";
+            tournamentInitialiserControl.Size = new Size(762, 458);
+            tournamentInitialiserControl.TabIndex = 0;
+            tournamentInitialiserControl.BeginNextRoundButtonClicked += tournamentInitialiserControl_BeginNextRoundButtonClicked;
             // 
-            // MainForm
+            // standingsPage
             // 
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 516);
+            standingsPage.Controls.Add(standingsViewControl);
+            standingsPage.Location = new Point(4, 24);
+            standingsPage.Name = "standingsPage";
+            standingsPage.Padding = new Padding(3);
+            standingsPage.Size = new Size(768, 464);
+            standingsPage.TabIndex = 1;
+            standingsPage.Text = "Standings";
+            standingsPage.UseVisualStyleBackColor = true;
+            // 
+            // standingsViewControl
+            // 
+            standingsViewControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            standingsViewControl.Location = new Point(0, 0);
+            standingsViewControl.Name = "standingsViewControl";
+            standingsViewControl.Size = new Size(768, 464);
+            standingsViewControl.TabIndex = 0;
+            // 
+            // TournamentHandlerControl
+            // 
+            AutoScaleMode = AutoScaleMode.None;
             Controls.Add(tabControl);
-            Name = "MainForm";
-            Text = "MTG Cupid";
+            Name = "TournamentHandlerControl";
+            Size = new Size(800, 516);
             tabControl.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
+            setupPage.ResumeLayout(false);
+            standingsPage.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private TabControl tabControl;
-        private TabPage tabPage1;
-        private TournamentInitialiserControl tournamentInitialiserControl1;
-
+        private TabPage setupPage;
+        private TournamentInitialiserControl tournamentInitialiserControl;
+        private TabPage standingsPage;
+        private StandingsViewControl standingsViewControl;
     }
 }

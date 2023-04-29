@@ -12,18 +12,15 @@ namespace MTGCupid
     internal class Tournament
     {
         private readonly Random rand = new Random();
-
-        private List<Player> players { get; } = new List<Player>();
+        public List<Player> Players { get; private set; }
         private List<Match> matchesInProgress { get; } = new List<Match>();
 
         public bool AwaitingMatchResults { get; private set; } = false;
 
         public Tournament(List<string> players)
         {
-            this.players.AddRange(players.Select(str => new Player(str)));
-
             // Initially shuffle the players list to ensure first round pairings are random
-            this.players.OrderBy(_ => rand.Next()).ToList();
+            Players = players.Select(name => new Player(name)).OrderBy(_ => rand.Next()).ToList();
         }
 
         public List<Match> CreateNextRound()
@@ -33,20 +30,20 @@ namespace MTGCupid
 
             // Recieved all match results, so all tiebreakers in players are already updated and sorted correctly
             HashSet<int> pairedPlayers = new HashSet<int>();
-            List<int> unpairedPlayers = new List<int>(Enumerable.Range(0, players.Count));
+            List<int> unpairedPlayers = new List<int>(Enumerable.Range(0, Players.Count));
             matchesInProgress.Clear();
 
-            if (players.Count % 2 != 0)
+            if (Players.Count % 2 != 0)
             {
                 // Decide byes first
                 for (int i = unpairedPlayers.Count - 1; i >= 0; i--)
                 {
-                    if (players[i].ByesReceived == 0)
+                    if (Players[i].ByesReceived == 0)
                     {
-                        players[i].ByesReceived++;
+                        Players[i].ByesReceived++;
                         unpairedPlayers.RemoveAt(i);
                         pairedPlayers.Add(i);
-                        matchesInProgress.Add(new Bye(players[i]));
+                        matchesInProgress.Add(new Bye(Players[i]));
                         break;
                     }
                 }
@@ -58,7 +55,7 @@ namespace MTGCupid
 
             foreach (var (p1, p2) in matches)
             {
-                matchesInProgress.Add(new Match(players[p1], players[p2]));
+                matchesInProgress.Add(new Match(Players[p1], Players[p2]));
             }
 
             return matchesInProgress;
@@ -75,7 +72,7 @@ namespace MTGCupid
             {
                 int p2 = unpairedPlayers[i];
 
-                if (players[p1].HasPlayed(players[p2]))
+                if (Players[p1].HasPlayed(Players[p2]))
                     continue; // Player already played this opponent
 
                 pairedPlayers.Add(p2);
@@ -105,7 +102,7 @@ namespace MTGCupid
         private void UpdateStandings()
         {
             // Update match win percentage
-            foreach (var player in players)
+            foreach (var player in Players)
             {
                 player.MatchWinPercentage = player.Matches.Sum(m => m.MatchPointsOf(player)) / (3.0 * player.Matches.Count);
                 if (player.MatchWinPercentage < 0.33) // Enforced lower bound of 33% match win percentage
@@ -113,7 +110,7 @@ namespace MTGCupid
             }
 
             // Update opponent match win percentage
-            foreach (var player in players)
+            foreach (var player in Players)
             {
                 var matches = player.Matches.Where(m => m is not Bye); // Byes are discounted in OMW%
                 if (matches.Count() == 0)
@@ -123,7 +120,7 @@ namespace MTGCupid
             }
 
             // Update game win percentage
-            foreach (var player in players)
+            foreach (var player in Players)
             {
                 player.GameWinPercentage = player.Matches.Sum(m => m.GamePointsOf(player)) / (3.0 * player.Matches.Sum(m => m.GamesPlayed));
                 if (player.GameWinPercentage < 0.33) // Enforced lower bound of 33% game win percentage
@@ -131,7 +128,7 @@ namespace MTGCupid
             }
 
             // Update opponent game win percentage
-            foreach (var player in players)
+            foreach (var player in Players)
             {
                 var matches = player.Matches.Where(m => m is not Bye); // Bytes are discounted in OGW%
                 if (matches.Count() == 0)
@@ -141,31 +138,7 @@ namespace MTGCupid
             }
 
             // Sort players by tiebreakers
-            players.Sort((p1, p2) =>
-            {
-                if (p1.Points > p2.Points)
-                    return -1;
-                else if (p1.Points < p2.Points)
-                    return 1;
-                else if (p1.MatchWinPercentage > p2.MatchWinPercentage)
-                    return -1;
-                else if (p1.MatchWinPercentage < p2.MatchWinPercentage)
-                    return 1;
-                else if (p1.OpponentMatchWinPercentage > p2.OpponentMatchWinPercentage)
-                    return -1;
-                else if (p1.OpponentMatchWinPercentage < p2.OpponentMatchWinPercentage)
-                    return 1;
-                else if (p1.GameWinPercentage > p2.GameWinPercentage)
-                    return -1;
-                else if (p1.GameWinPercentage < p2.GameWinPercentage)
-                    return 1;
-                else if (p1.OpponentGameWinPercentage > p2.OpponentGameWinPercentage)
-                    return -1;
-                else if (p1.OpponentGameWinPercentage < p2.OpponentGameWinPercentage)
-                    return 1;
-                else
-                    return 0;
-            });
+            Players.Sort();
         }
 
         /// <summary>
@@ -183,7 +156,7 @@ namespace MTGCupid
         }
     }
 
-    public class Player
+    public class Player : IComparable<Player>
     {
         public Player(string name)
         {
@@ -202,6 +175,24 @@ namespace MTGCupid
         public bool HasPlayed(Player player)
         {
             return Matches.Any(m => m.OpponentOf(this) == player);
+        }
+
+        public int CompareTo(Player? other)
+        {
+            if (other == null)
+                return 0; // Degenerate case
+
+            if (Points.CompareTo(other.Points) != 0)
+                return -Points.CompareTo(other.Points); // Negative so that higher points appear first
+            if (MatchWinPercentage.CompareTo(other.MatchWinPercentage) != 0)
+                return -MatchWinPercentage.CompareTo(other.MatchWinPercentage);
+            if (OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage) != 0)
+                return -OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage);
+            if (GameWinPercentage.CompareTo(other.GameWinPercentage) != 0)
+                return -GameWinPercentage.CompareTo(other.GameWinPercentage);
+            if (OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage) != 0)
+                return -OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage);
+            return 0;
         }
     }
 

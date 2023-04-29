@@ -23,6 +23,11 @@ namespace MTGCupid.UI
 
         public int RegisteredPlayersCount { get; private set; } = 0;
 
+        public List<string> GetPlayerNames()
+        {
+            return nameEntries.Select(x => x.PlayerName).Where(x => x != "").ToList();
+        }
+
         public NameEntryListControl()
         {
             InitializeComponent();
