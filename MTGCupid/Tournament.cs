@@ -17,6 +17,9 @@ namespace MTGCupid
 
         public bool AwaitingMatchResults { get; private set; } = false;
 
+        public int CurrentRound { get; private set; } = 1;
+
+
         public Tournament(List<string> players)
         {
             // Initially shuffle the players list to ensure first round pairings are random
@@ -139,6 +142,9 @@ namespace MTGCupid
 
             // Sort players by tiebreakers
             Players.Sort();
+
+            // Increment round number
+            CurrentRound++;
         }
 
         /// <summary>
@@ -164,7 +170,7 @@ namespace MTGCupid
         }
 
         public string Name { get; private set; }
-        public int Points { get => Matches.Sum(m => m.MatchPointsOf(this)); }
+        public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
         public HashSet<Match> Matches { get; } = new HashSet<Match>();
 
         public double MatchWinPercentage { get; internal set; } = 1;
@@ -184,14 +190,13 @@ namespace MTGCupid
 
             if (Points.CompareTo(other.Points) != 0)
                 return -Points.CompareTo(other.Points); // Negative so that higher points appear first
-            if (MatchWinPercentage.CompareTo(other.MatchWinPercentage) != 0)
-                return -MatchWinPercentage.CompareTo(other.MatchWinPercentage);
             if (OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage) != 0)
                 return -OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage);
             if (GameWinPercentage.CompareTo(other.GameWinPercentage) != 0)
                 return -GameWinPercentage.CompareTo(other.GameWinPercentage);
             if (OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage) != 0)
                 return -OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage);
+
             return 0;
         }
     }
@@ -220,6 +225,11 @@ namespace MTGCupid
             Player2GameWins = p2Wins;
 
             Completed = true;
+        }
+
+        public void UndoResult()
+        {
+            Completed = false;
         }
 
         public virtual bool WasWonBy(Player player)

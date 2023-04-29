@@ -33,10 +33,13 @@ namespace MTGCupid.UI
             tabControl = new TabControl();
             setupPage = new TabPage();
             tournamentInitialiserControl = new TournamentInitialiserControl();
+            pairingsPage = new TabPage();
+            pairingsListControl = new PairingsListControl();
             standingsPage = new TabPage();
             standingsViewControl = new StandingsViewControl();
             tabControl.SuspendLayout();
             setupPage.SuspendLayout();
+            pairingsPage.SuspendLayout();
             standingsPage.SuspendLayout();
             SuspendLayout();
             // 
@@ -44,9 +47,11 @@ namespace MTGCupid.UI
             // 
             tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl.Controls.Add(setupPage);
+            tabControl.Controls.Add(pairingsPage);
             tabControl.Controls.Add(standingsPage);
             tabControl.Location = new Point(12, 12);
             tabControl.Name = "tabControl";
+            tabControl.RightToLeft = RightToLeft.No;
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(776, 492);
             tabControl.TabIndex = 0;
@@ -70,6 +75,26 @@ namespace MTGCupid.UI
             tournamentInitialiserControl.Size = new Size(762, 458);
             tournamentInitialiserControl.TabIndex = 0;
             tournamentInitialiserControl.BeginNextRoundButtonClicked += tournamentInitialiserControl_BeginNextRoundButtonClicked;
+            // 
+            // pairingsPage
+            // 
+            pairingsPage.Controls.Add(pairingsListControl);
+            pairingsPage.Location = new Point(4, 24);
+            pairingsPage.Name = "pairingsPage";
+            pairingsPage.Padding = new Padding(3);
+            pairingsPage.Size = new Size(768, 464);
+            pairingsPage.TabIndex = 2;
+            pairingsPage.Text = "Pairings";
+            pairingsPage.UseVisualStyleBackColor = true;
+            // 
+            // pairingsListControl
+            // 
+            pairingsListControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pairingsListControl.Location = new Point(0, 0);
+            pairingsListControl.Name = "pairingsListControl";
+            pairingsListControl.Size = new Size(768, 464);
+            pairingsListControl.TabIndex = 0;
+            pairingsListControl.MatchesConfirmed += pairingsListControl_MatchesConfirmed;
             // 
             // standingsPage
             // 
@@ -98,6 +123,7 @@ namespace MTGCupid.UI
             Size = new Size(800, 516);
             tabControl.ResumeLayout(false);
             setupPage.ResumeLayout(false);
+            pairingsPage.ResumeLayout(false);
             standingsPage.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -109,5 +135,7 @@ namespace MTGCupid.UI
         private TournamentInitialiserControl tournamentInitialiserControl;
         private TabPage standingsPage;
         private StandingsViewControl standingsViewControl;
+        private TabPage pairingsPage;
+        private PairingsListControl pairingsListControl;
     }
 }

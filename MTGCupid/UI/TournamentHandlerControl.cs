@@ -27,6 +27,21 @@ namespace MTGCupid.UI
                 tournament = new Tournament(e.PlayerNames);
                 standingsViewControl.RegisterStandingsList(tournament.Players);
             }
+
+            // Generate the next round
+            var round = tournament.CreateNextRound();
+            pairingsListControl.InitialiseWithMatches(round);
+        }
+
+        private void pairingsListControl_MatchesConfirmed(object sender, EventArgs e)
+        {
+            if (tournament == null)
+                throw new InvalidOperationException("Tournament has not been started.");
+            
+            if (!tournament.SubmitMatchResults())
+                throw new InvalidOperationException("Not all matches have been submitted.");
+
+            tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound);
         }
     }
 }
