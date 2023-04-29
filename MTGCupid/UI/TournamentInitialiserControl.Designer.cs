@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TournamentInitialiserControl));
             nameList = new NameEntryListControl();
+            playerCountLabel = new Label();
+            beginNextRoundButton = new Button();
             SuspendLayout();
             // 
             // nameList
@@ -38,18 +40,35 @@
             nameList.BackColor = SystemColors.ControlLight;
             nameList.BorderStyle = BorderStyle.FixedSingle;
             nameList.Name = "nameList";
+            nameList.RegisteredPlayersCountChanged += nameList_RegisteredPlayersCountChanged;
             // 
-            // TournamentInitialiserControl
+            // playerCountLabel
+            // 
+            resources.ApplyResources(playerCountLabel, "playerCountLabel");
+            playerCountLabel.Name = "playerCountLabel";
+            // 
+            // beginNextRoundButton
+            // 
+            resources.ApplyResources(beginNextRoundButton, "beginNextRoundButton");
+            beginNextRoundButton.Name = "beginNextRoundButton";
+            beginNextRoundButton.UseVisualStyleBackColor = true;
+            // 
+            // TournamentInitialiserTab
             // 
             AutoScaleMode = AutoScaleMode.None;
+            Controls.Add(beginNextRoundButton);
+            Controls.Add(playerCountLabel);
             Controls.Add(nameList);
-            Name = "TournamentInitialiserControl";
+            Name = "TournamentInitialiserTab";
             resources.ApplyResources(this, "$this");
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private NameEntryListControl nameList;
+        private Label playerCountLabel;
+        private Button beginNextRoundButton;
     }
 }

@@ -57,6 +57,7 @@
             addNameButton.TabIndex = 1;
             addNameButton.Text = "+";
             addNameButton.UseVisualStyleBackColor = false;
+            addNameButton.Click += addNameButton_Click;
             // 
             // NameEntryListControl
             // 

@@ -16,5 +16,10 @@ namespace MTGCupid.UI
         {
             InitializeComponent();
         }
+
+        private void nameList_RegisteredPlayersCountChanged(object sender, RegisteredPlayersCountChangedEventArgs e)
+        {
+            playerCountLabel.Text = string.Format("Players: {0}", e.PlayerCount);
+        }
     }
 }

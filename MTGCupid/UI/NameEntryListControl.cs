@@ -17,7 +17,7 @@ namespace MTGCupid.UI
         private List<PlayerNameEntryContol> nameEntries = new List<PlayerNameEntryContol>();
 
         [Browsable(true)]
-        [Category("Action")]
+        [Category("Data")]
         [Description("Invoked when the number of registered names changes")]
         public event EventHandler<RegisteredPlayersCountChangedEventArgs>? RegisteredPlayersCountChanged;
 
@@ -160,14 +160,18 @@ namespace MTGCupid.UI
             else
                 RegisteredPlayersCount++;
 
-            Debug.WriteLine(RegisteredPlayersCount);
-
             var args = new RegisteredPlayersCountChangedEventArgs()
             {
                 PlayerCount = RegisteredPlayersCount
             };
             RegisteredPlayersCountChanged?.Invoke(this, args);
-    }
+        }
+
+        private void addNameButton_Click(object sender, EventArgs e)
+        {
+            // Add a new name entry at the bottom
+            AddNewNameEntryAtBottom().SelectForEditing();
+        }
     }
 
     internal class RegisteredPlayersCountChangedEventArgs : EventArgs

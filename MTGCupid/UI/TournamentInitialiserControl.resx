@@ -86,6 +86,63 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameList.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="playerCountLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="playerCountLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 12pt</value>
+  </data>
+  <data name="playerCountLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>394, 3</value>
+  </data>
+  <data name="playerCountLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 21</value>
+  </data>
+  <data name="playerCountLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="playerCountLabel.Text" xml:space="preserve">
+    <value>Players: 0</value>
+  </data>
+  <data name="&gt;&gt;playerCountLabel.Name" xml:space="preserve">
+    <value>playerCountLabel</value>
+  </data>
+  <data name="&gt;&gt;playerCountLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;playerCountLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;playerCountLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="beginNextRoundButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="beginNextRoundButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>394, 426</value>
+  </data>
+  <data name="beginNextRoundButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>428, 95</value>
+  </data>
+  <data name="beginNextRoundButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="beginNextRoundButton.Text" xml:space="preserve">
+    <value>Begin Tournament</value>
+  </data>
+  <data name="&gt;&gt;beginNextRoundButton.Name" xml:space="preserve">
+    <value>beginNextRoundButton</value>
+  </data>
+  <data name="&gt;&gt;beginNextRoundButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;beginNextRoundButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;beginNextRoundButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -95,7 +152,7 @@
     <value>825, 525</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>TournamentInitialiserControl</value>
+    <value>TournamentInitialiserTab</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.UserControl, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

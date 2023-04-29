@@ -28,58 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tabControl = new TabControl();
-            tabPage1 = new TabPage();
-            tournamentInitialiserControl1 = new TournamentInitialiserControl();
-            tabControl.SuspendLayout();
-            tabPage1.SuspendLayout();
+            tournamentHandlerControl = new TournamentHandlerControl();
             SuspendLayout();
             // 
-            // tabControl
+            // tournamentHandlerControl
             // 
-            tabControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabControl.Controls.Add(tabPage1);
-            tabControl.Location = new Point(12, 12);
-            tabControl.Name = "tabControl";
-            tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(776, 492);
-            tabControl.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Controls.Add(tournamentInitialiserControl1);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(768, 464);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tournamentInitialiserControl1
-            // 
-            tournamentInitialiserControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tournamentInitialiserControl1.Location = new Point(3, 3);
-            tournamentInitialiserControl1.Name = "tournamentInitialiserControl1";
-            tournamentInitialiserControl1.Size = new Size(762, 458);
-            tournamentInitialiserControl1.TabIndex = 0;
+            tournamentHandlerControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tournamentHandlerControl.Location = new Point(-1, -1);
+            tournamentHandlerControl.Name = "tournamentHandlerControl";
+            tournamentHandlerControl.Size = new Size(799, 521);
+            tournamentHandlerControl.TabIndex = 0;
             // 
             // MainForm
             // 
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(800, 516);
-            Controls.Add(tabControl);
+            Controls.Add(tournamentHandlerControl);
             Name = "MainForm";
             Text = "MTG Cupid";
-            tabControl.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TabControl tabControl;
-        private TabPage tabPage1;
-        private TournamentInitialiserControl tournamentInitialiserControl1;
+        private TournamentHandlerControl tournamentHandlerControl;
     }
 }
