@@ -227,7 +227,7 @@ namespace MTGCupid
             Completed = true;
         }
 
-        public void UndoResult()
+        public virtual void UndoResult()
         {
             Completed = false;
         }
@@ -306,8 +306,13 @@ namespace MTGCupid
         public override int GamePointsOf(Player player)
         {
             if (player == Player1)
-                return 3;
+                return 6;
             throw new ArgumentException("Player is not in this match.");
+        }
+
+        public override void UndoResult()
+        {
+            throw new InvalidOperationException("Cannot undo results for a bye.");
         }
     }
 }

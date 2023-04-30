@@ -54,7 +54,7 @@ namespace MTGCupid.UI
 
             flowLayoutPanel.HorizontalScroll.Visible = false;
 
-            // Resize all the name entries to fit the width of the flow layout panel
+            // Resize all the pairings controls to fit the width of the flow layout panel
             foreach (var entry in pairings)
             {
                 entry.Width = flowLayoutPanel.Width - SystemInformation.VerticalScrollBarWidth;
@@ -80,7 +80,7 @@ namespace MTGCupid.UI
                 return; // Only allow confirmation if all matches are completed
 
             confirmButton.Enabled = false;
-            flowLayoutPanel.Enabled = false;
+            flowLayoutPanel.Enabled = false; // Disable all pairing controls so they can't be edited
 
             MatchesConfirmed?.Invoke(this, e);
         }

@@ -54,7 +54,7 @@
             player1ScoreButton.BackColor = Color.FromArgb(255, 255, 128);
             player1ScoreButton.FlatStyle = FlatStyle.Flat;
             player1ScoreButton.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            player1ScoreButton.Location = new Point(175, 5);
+            player1ScoreButton.Location = new Point(174, 5);
             player1ScoreButton.Name = "player1ScoreButton";
             player1ScoreButton.Size = new Size(50, 50);
             player1ScoreButton.TabIndex = 1;
@@ -67,7 +67,7 @@
             scoreDividerLabel.Anchor = AnchorStyles.Top;
             scoreDividerLabel.AutoSize = true;
             scoreDividerLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            scoreDividerLabel.Location = new Point(233, 15);
+            scoreDividerLabel.Location = new Point(232, 15);
             scoreDividerLabel.Name = "scoreDividerLabel";
             scoreDividerLabel.Size = new Size(34, 30);
             scoreDividerLabel.TabIndex = 2;
@@ -80,7 +80,7 @@
             player2ScoreButton.BackColor = Color.FromArgb(255, 255, 128);
             player2ScoreButton.FlatStyle = FlatStyle.Flat;
             player2ScoreButton.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            player2ScoreButton.Location = new Point(275, 5);
+            player2ScoreButton.Location = new Point(274, 5);
             player2ScoreButton.Name = "player2ScoreButton";
             player2ScoreButton.Size = new Size(50, 50);
             player2ScoreButton.TabIndex = 3;
@@ -92,7 +92,7 @@
             // 
             player2Label.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             player2Label.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            player2Label.Location = new Point(331, 5);
+            player2Label.Location = new Point(329, 5);
             player2Label.Name = "player2Label";
             player2Label.Size = new Size(149, 50);
             player2Label.TabIndex = 4;
@@ -113,7 +113,7 @@
             // 
             dropPlayer2Box.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             dropPlayer2Box.AutoSize = true;
-            dropPlayer2Box.Location = new Point(423, 58);
+            dropPlayer2Box.Location = new Point(421, 58);
             dropPlayer2Box.Name = "dropPlayer2Box";
             dropPlayer2Box.Size = new Size(57, 19);
             dropPlayer2Box.TabIndex = 6;
@@ -123,7 +123,7 @@
             // submitButton
             // 
             submitButton.Anchor = AnchorStyles.Top;
-            submitButton.Location = new Point(175, 58);
+            submitButton.Location = new Point(174, 58);
             submitButton.Name = "submitButton";
             submitButton.Size = new Size(150, 29);
             submitButton.TabIndex = 7;
@@ -135,6 +135,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(submitButton);
             Controls.Add(dropPlayer2Box);
             Controls.Add(dropPlayer1Box);
@@ -146,7 +147,7 @@
             MaximumSize = new Size(2000, 90);
             MinimumSize = new Size(500, 90);
             Name = "PairingControl";
-            Size = new Size(500, 90);
+            Size = new Size(498, 88);
             ResumeLayout(false);
             PerformLayout();
         }

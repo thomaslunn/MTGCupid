@@ -17,6 +17,9 @@ namespace MTGCupid.UI
         private readonly Color GREEN = Color.FromArgb(0x80, 0xff, 0x80);
         private readonly Color YELLOW_GREEN = Color.FromArgb(0xc0, 0xc0, 0x00);
 
+        private readonly Color CONTROL_BACKGROUND = SystemColors.Control;
+        private readonly Color LIGHT_GREEN_BACKGROUND = Color.FromArgb(0xc0, 0xff, 0xc0);
+
         private int player1Score = 0;
         private int player2Score = 0;
 
@@ -34,8 +37,24 @@ namespace MTGCupid.UI
 
             player1ScoreButton.BackColor = YELLOW;
             player2ScoreButton.BackColor = YELLOW;
+            this.BackColor = CONTROL_BACKGROUND;
 
             this.match = match;
+            if (match is Bye)
+            {
+                // Simulate as an already-completed match
+                player1Label.Text = match.Player1.Name;
+                player2Label.Text = "--- BYE ---";
+
+                player1Score = 2;
+                player1ScoreButton.Text = 2.ToString();
+                OnScoreUpdate();
+
+                submitButton.PerformClick();
+                submitButton.Enabled = false;
+
+                return;
+            }
             player1Label.Text = match.Player1.Name;
             player2Label.Text = match.Player2.Name;
         }
@@ -94,10 +113,10 @@ namespace MTGCupid.UI
 
                 player1ScoreButton.Enabled = false;
                 player2ScoreButton.Enabled = false;
-                dropPlayer1Box.Enabled = false;
-                dropPlayer2Box.Enabled = false;
+                this.BackColor = LIGHT_GREEN_BACKGROUND;
 
-                match.RecordResult(player1Score, player2Score);
+                if (match is not Bye)
+                    match.RecordResult(player1Score, player2Score);
                 submitted = true;
             }
             else
@@ -106,10 +125,10 @@ namespace MTGCupid.UI
 
                 player1ScoreButton.Enabled = true;
                 player2ScoreButton.Enabled = true;
-                dropPlayer1Box.Enabled = true;
-                dropPlayer2Box.Enabled = true;
+                this.BackColor = CONTROL_BACKGROUND;
 
-                match.UndoResult();
+                if (match is not Bye)
+                    match.UndoResult();
                 submitted = false;
             }
 
