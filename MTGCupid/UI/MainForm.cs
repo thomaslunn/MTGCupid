@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic.ApplicationServices;
+
 namespace MTGCupid.UI
 {
     internal partial class MainForm : Form
@@ -5,6 +7,9 @@ namespace MTGCupid.UI
         public MainForm()
         {
             InitializeComponent();
+
+            // Setup custom icon
+            Icon = Properties.Resources.MTGCupidIcon;
         }
     }
 }
