@@ -25,7 +25,6 @@ namespace MTGCupid.UI
             {
                 // Create a new tournament
                 tournament = new Tournament(e.PlayerNames);
-                standingsViewControl.RegisterStandingsList(tournament.Players);
             }
 
             // Generate the next round
@@ -42,6 +41,9 @@ namespace MTGCupid.UI
                 throw new InvalidOperationException("Not all matches have been submitted.");
 
             tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound);
+
+            // Update standings
+            standingsViewControl.UpdateStandings(tournament.GetStandings());
         }
     }
 }

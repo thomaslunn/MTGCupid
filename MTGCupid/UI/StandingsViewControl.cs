@@ -17,9 +17,9 @@ namespace MTGCupid.UI
             InitializeComponent();
         }
 
-        public void RegisterStandingsList(List<Player> standings)
+        public void UpdateStandings(List<PlayerStandings> standings)
         {
-            playerBindingSource.DataSource = standings;
+            playerStandingsBindingSource.DataSource = standings;
         }
     }
 }

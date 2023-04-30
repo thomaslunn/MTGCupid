@@ -12,7 +12,7 @@ namespace MTGCupid
     internal class Tournament
     {
         private readonly Random rand = new Random();
-        public List<Player> Players { get; private set; }
+        private List<Player> Players { get; set; }
         private List<Match> matchesInProgress { get; } = new List<Match>();
 
         public bool AwaitingMatchResults { get; private set; } = false;
@@ -160,6 +160,11 @@ namespace MTGCupid
             UpdateStandings();
             return true;
         }
+
+        public List<PlayerStandings> GetStandings()
+        {
+            return Players.Select((p, index) => new PlayerStandings(p, index+1)).ToList();
+        }
     }
 
     public class Player : IComparable<Player>
@@ -201,13 +206,32 @@ namespace MTGCupid
         }
     }
 
+    public class PlayerStandings
+    {
+        public string Position { get; private set; }
+        public string Name { get; private set; }
+        public string Points { get; private set; }
+        public string OpponentMatchWinPercentage { get; private set; }
+        public string GameWinPercentage { get; private set; }
+        public string OpponentGameWinPercentage { get; private set; }
+        public PlayerStandings(Player player, int position)
+        {
+            Position = position.ToString();
+            Name = player.Name;
+            Points = player.Points.ToString();
+            OpponentMatchWinPercentage = string.Format("{0:P1}", player.OpponentMatchWinPercentage);
+            GameWinPercentage = string.Format("{0:P1}", player.GameWinPercentage);
+            OpponentGameWinPercentage = string.Format("{0:P1}", player.OpponentGameWinPercentage);
+        }
+    }
+
     public class Match
     {
         public Player Player1 { get; protected set; }
         public Player Player2 { get; protected set; }
         public int Player1GameWins { get; protected set; } = 0;
         public int Player2GameWins { get; protected set; } = 0;
-        public int GamesPlayed { get => Player1GameWins + Player2GameWins; }
+        public int GamesPlayed => Player1GameWins + Player2GameWins; 
         public bool Completed { get; protected set; } = false;
 
         public Match(Player p1, Player p2)
@@ -284,6 +308,7 @@ namespace MTGCupid
         public Bye(Player player) : base(player, player)
         {
             Completed = true;
+            Player1GameWins = 2;
         }
 
         public override void RecordResult(int p1Wins, int p2Wins)

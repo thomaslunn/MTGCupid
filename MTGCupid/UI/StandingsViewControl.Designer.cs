@@ -30,15 +30,15 @@
         {
             components = new System.ComponentModel.Container();
             dataGridView = new DataGridView();
+            Position = new DataGridViewTextBoxColumn();
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             pointsDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            matchWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentMatchWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             gameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentGameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            playerBindingSource = new BindingSource(components);
+            playerStandingsBindingSource = new BindingSource(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)playerBindingSource).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)playerStandingsBindingSource).BeginInit();
             SuspendLayout();
             // 
             // dataGridView
@@ -49,14 +49,22 @@
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoGenerateColumns = false;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, matchWinPercentageDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn });
-            dataGridView.DataSource = playerBindingSource;
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Position, nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn });
+            dataGridView.DataSource = playerStandingsBindingSource;
             dataGridView.Location = new Point(3, 3);
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
+            dataGridView.RowHeadersVisible = false;
             dataGridView.RowTemplate.Height = 25;
             dataGridView.Size = new Size(810, 445);
             dataGridView.TabIndex = 0;
+            // 
+            // Position
+            // 
+            Position.DataPropertyName = "Position";
+            Position.HeaderText = "Position";
+            Position.Name = "Position";
+            Position.ReadOnly = true;
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -71,13 +79,6 @@
             pointsDataGridViewTextBoxColumn.HeaderText = "Points";
             pointsDataGridViewTextBoxColumn.Name = "pointsDataGridViewTextBoxColumn";
             pointsDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // matchWinPercentageDataGridViewTextBoxColumn
-            // 
-            matchWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "MatchWinPercentage";
-            matchWinPercentageDataGridViewTextBoxColumn.HeaderText = "MW%";
-            matchWinPercentageDataGridViewTextBoxColumn.Name = "matchWinPercentageDataGridViewTextBoxColumn";
-            matchWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // opponentMatchWinPercentageDataGridViewTextBoxColumn
             // 
@@ -100,10 +101,9 @@
             opponentGameWinPercentageDataGridViewTextBoxColumn.Name = "opponentGameWinPercentageDataGridViewTextBoxColumn";
             opponentGameWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // playerBindingSource
+            // playerStandingsBindingSource
             // 
-            playerBindingSource.AllowNew = false;
-            playerBindingSource.DataSource = typeof(Player);
+            playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
             // 
             // StandingsViewControl
             // 
@@ -112,19 +112,19 @@
             Name = "StandingsViewControl";
             Size = new Size(816, 451);
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
-            ((System.ComponentModel.ISupportInitialize)playerBindingSource).EndInit();
+            ((System.ComponentModel.ISupportInitialize)playerStandingsBindingSource).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
         private DataGridView dataGridView;
+        private DataGridViewTextBoxColumn Position;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn pointsDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn matchWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentMatchWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn gameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentGameWinPercentageDataGridViewTextBoxColumn;
-        private BindingSource playerBindingSource;
+        private BindingSource playerStandingsBindingSource;
     }
 }
