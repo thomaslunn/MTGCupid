@@ -224,6 +224,7 @@ namespace MTGCupid
         public string OpponentMatchWinPercentage { get; private set; }
         public string GameWinPercentage { get; private set; }
         public string OpponentGameWinPercentage { get; private set; }
+        public Player Player { get; private set; }
         public PlayerStandings(Player player, int position)
         {
             Position = position.ToString();
@@ -232,6 +233,8 @@ namespace MTGCupid
             OpponentMatchWinPercentage = string.Format("{0:P1}", player.OpponentMatchWinPercentage);
             GameWinPercentage = string.Format("{0:P1}", player.GameWinPercentage);
             OpponentGameWinPercentage = string.Format("{0:P1}", player.OpponentGameWinPercentage);
+
+            Player = player;
         }
     }
 
@@ -309,6 +312,15 @@ namespace MTGCupid
                 return Player2;
             if (player == Player2)
                 return Player1;
+            throw new ArgumentException("Player is not in this match.");
+        }
+
+        public int WinsOf(Player player)
+        {
+            if (player == Player1)
+                return Player1GameWins;
+            if (player == Player2)
+                return Player2GameWins;
             throw new ArgumentException("Player is not in this match.");
         }
     }
