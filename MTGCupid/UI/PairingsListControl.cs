@@ -79,6 +79,11 @@ namespace MTGCupid.UI
             if (matches.Any(match => !match.Completed))
                 return; // Only allow confirmation if all matches are completed
 
+            foreach (var pairing in pairings)
+            {
+                pairing.DropPlayers();
+            }
+
             confirmButton.Enabled = false;
             flowLayoutPanel.Enabled = false; // Disable all pairing controls so they can't be edited
 

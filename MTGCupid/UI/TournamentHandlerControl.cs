@@ -27,9 +27,18 @@ namespace MTGCupid.UI
                 tournament = new Tournament(e.PlayerNames);
             }
 
-            // Generate the next round
-            var round = tournament.CreateNextRound();
-            pairingsListControl.InitialiseWithMatches(round);
+            try
+            {
+                // Generate the next round
+                var round = tournament.CreateNextRound();
+                pairingsListControl.InitialiseWithMatches(round);
+                tabControl.SelectedTab = pairingsPage;
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("A new round could not be created. There are no possible new pairings for the remaining players. Please refer to the standings tab for the final standings.", "Failed to create round", MessageBoxButtons.OK, MessageBoxIcon.Error);   
+                tabControl.SelectedTab = standingsPage;
+            }
         }
 
         private void pairingsListControl_MatchesConfirmed(object sender, EventArgs e)

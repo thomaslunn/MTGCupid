@@ -24,7 +24,7 @@ namespace MTGCupid.UI
         private int player2Score = 0;
 
         private bool submitted = false;
-        private Match match;
+        private readonly Match match;
 
         [Browsable(true)]
         [Category("Action")]
@@ -45,6 +45,7 @@ namespace MTGCupid.UI
                 // Simulate as an already-completed match
                 player1Label.Text = match.Player1.Name;
                 player2Label.Text = "--- BYE ---";
+                dropPlayer2Box.Enabled = false;
 
                 player1Score = 2;
                 player1ScoreButton.Text = 2.ToString();
@@ -139,6 +140,17 @@ namespace MTGCupid.UI
             };
 
             MatchSubmittedToggled?.Invoke(this, args);
+        }
+
+        /// <summary>
+        /// Drop all players that have selected to be dropped
+        /// </summary>
+        public void DropPlayers()
+        {
+            if (dropPlayer1Box.Checked)
+                match.Player1.Drop();
+            if (dropPlayer2Box.Checked)
+                match.Player2.Drop();
         }
     }
 

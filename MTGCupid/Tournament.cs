@@ -33,10 +33,15 @@ namespace MTGCupid
 
             // Recieved all match results, so all tiebreakers in players are already updated and sorted correctly
             HashSet<int> pairedPlayers = new HashSet<int>();
-            List<int> unpairedPlayers = new List<int>(Enumerable.Range(0, Players.Count));
+            // Filter out players that have dropped
+            List<int> unpairedPlayers = Players
+                .Select((p, index) => (p, index))
+                .Where(p => !p.p.HasDropped)
+                .Select(p => p.index).ToList();
+
             matchesInProgress.Clear();
 
-            if (Players.Count % 2 != 0)
+            if (unpairedPlayers.Count % 2 != 0)
             {
                 // Decide byes first
                 for (int i = unpairedPlayers.Count - 1; i >= 0; i--)
@@ -53,7 +58,7 @@ namespace MTGCupid
             }
 
             // Recursively create pairings
-            if (!CreatePairings(pairedPlayers, unpairedPlayers, out var matches))
+            if (unpairedPlayers.Count == 0 || !CreatePairings(pairedPlayers, unpairedPlayers, out var matches))
                 throw new InvalidOperationException("Unable to create pairings.");
 
             foreach (var (p1, p2) in matches)
@@ -183,6 +188,11 @@ namespace MTGCupid
         public double GameWinPercentage { get; internal set; } = 1;
         public double OpponentGameWinPercentage { get; internal set; } = 0;
         public int ByesReceived { get; internal set; } = 0;
+        public bool HasDropped { get; private set; } = false;
+        public void Drop()
+        {
+            HasDropped = true;
+        }
         public bool HasPlayed(Player player)
         {
             return Matches.Any(m => m.OpponentOf(this) == player);
@@ -240,7 +250,7 @@ namespace MTGCupid
             Player2 = p2;
 
             p1.Matches.Add(this);
-            p2.Matches.Add(this);
+            p2.Matches.Add(this); // In a bye, p1 == p2, but the match collection is a set so this is fine
         }
 
         public virtual void RecordResult(int p1Wins, int p2Wins)
