@@ -38,7 +38,7 @@ namespace MTGCupid.UI
                 if (match is Bye)
                 {
                     score = "-";
-                    opponentName = "--- BYE ---";
+                    opponentName = "BYE";
                 }
                 else
                 {

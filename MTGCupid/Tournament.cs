@@ -32,7 +32,6 @@ namespace MTGCupid
                 throw new InvalidOperationException("Cannot create next round while matches are in progress.");
 
             // Recieved all match results, so all tiebreakers in players are already updated and sorted correctly
-            HashSet<int> pairedPlayers = new HashSet<int>();
             // Filter out players that have dropped
             List<int> unpairedPlayers = Players
                 .Select((p, index) => (p, index))
@@ -41,39 +40,45 @@ namespace MTGCupid
 
             matchesInProgress.Clear();
 
+            Player? byePlayer = null;
             if (unpairedPlayers.Count % 2 != 0)
             {
                 // Decide byes first
                 for (int i = unpairedPlayers.Count - 1; i >= 0; i--)
                 {
-                    if (Players[i].ByesReceived == 0)
+                    int playerIndex = unpairedPlayers[i];
+
+                    if (Players[playerIndex].ByesReceived == 0)
                     {
-                        Players[i].ByesReceived++;
+                        Players[playerIndex].ByesReceived++;
                         unpairedPlayers.RemoveAt(i);
-                        pairedPlayers.Add(i);
-                        matchesInProgress.Add(new Bye(Players[i]));
+                        byePlayer = Players[playerIndex];
                         break;
                     }
                 }
+                if (byePlayer == null)
+                    throw new InvalidOperationException("Unable to create pairings.");
             }
 
             // Recursively create pairings
-            if (unpairedPlayers.Count == 0 || !CreatePairings(pairedPlayers, unpairedPlayers, out var matches))
+            if (unpairedPlayers.Count == 0 || !CreatePairings(unpairedPlayers, out var matches))
                 throw new InvalidOperationException("Unable to create pairings.");
 
             foreach (var (p1, p2) in matches)
             {
-                matchesInProgress.Add(new Match(Players[p1], Players[p2]));
+                // Insert at beginning so that higher ranked players are at the top of the list
+                matchesInProgress.Insert(0, new Match(Players[p1], Players[p2]));
             }
+            if (byePlayer != null)
+                matchesInProgress.Add(new Bye(byePlayer));
 
             return matchesInProgress;
         }
 
-        private bool CreatePairings(HashSet<int> pairedPlayers, List<int> unpairedPlayers, [MaybeNullWhen(false)] out HashSet<(int p1, int p2)> matches)
+        private bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out HashSet<(int p1, int p2)> matches)
         {
             // Try to match the first unpaired player with the closest new opponent
             int p1 = unpairedPlayers[0];
-            pairedPlayers.Add(p1);
             unpairedPlayers.RemoveAt(0);
 
             for (int i = 0; i < unpairedPlayers.Count; i++)
@@ -83,7 +88,6 @@ namespace MTGCupid
                 if (Players[p1].HasPlayed(Players[p2]))
                     continue; // Player already played this opponent
 
-                pairedPlayers.Add(p2);
                 unpairedPlayers.RemoveAt(i);
 
                 if (unpairedPlayers.Count == 0) // Pairing is complete
@@ -91,17 +95,15 @@ namespace MTGCupid
                     matches = new HashSet<(int p1, int p2)>() { (p1, p2) };
                     return true;
                 }
-                if (CreatePairings(pairedPlayers, unpairedPlayers, out matches))
+                if (CreatePairings(unpairedPlayers, out matches))
                 {
                     matches.Add((p1, p2));
                     return true;
                 }
-                pairedPlayers.Remove(p2);
                 unpairedPlayers.Insert(i, p2);
             }
 
             // Pairing unsuccessful
-            pairedPlayers.Remove(p1);
             unpairedPlayers.Insert(0, p1);
             matches = null;
             return false;
@@ -214,6 +216,11 @@ namespace MTGCupid
 
             return 0;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1} points", Name, Points);
+        }
     }
 
     public class PlayerStandings
@@ -224,6 +231,7 @@ namespace MTGCupid
         public string OpponentMatchWinPercentage { get; private set; }
         public string GameWinPercentage { get; private set; }
         public string OpponentGameWinPercentage { get; private set; }
+        public bool HasDropped { get; private set; }
         public Player Player { get; private set; }
         public PlayerStandings(Player player, int position)
         {
@@ -233,6 +241,7 @@ namespace MTGCupid
             OpponentMatchWinPercentage = string.Format("{0:P1}", player.OpponentMatchWinPercentage);
             GameWinPercentage = string.Format("{0:P1}", player.GameWinPercentage);
             OpponentGameWinPercentage = string.Format("{0:P1}", player.OpponentGameWinPercentage);
+            HasDropped = player.HasDropped;
 
             Player = player;
         }

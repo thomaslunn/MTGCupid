@@ -13,6 +13,7 @@ namespace MTGCupid.UI
     public partial class StandingsViewControl : UserControl
     {
         private List<PlayerStandings> standings = new List<PlayerStandings>();
+        private bool updatingTableContents = false;
 
         public StandingsViewControl()
         {
@@ -21,17 +22,36 @@ namespace MTGCupid.UI
 
         public void UpdateStandings(List<PlayerStandings> standings)
         {
+            updatingTableContents = true; // Ignore selection changes while we update the table
+            dataGridView.SuspendLayout();
+
             playerStandingsBindingSource.DataSource = standings;
             this.standings = standings;
             playerHistoryViewerControl.Clear();
+
+            dataGridView.ResumeLayout();
+            updatingTableContents = false;
         }
 
         private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex == -1) // header row
+            //if (e.RowIndex == -1) // header row
+            //    return;
+
+            //Player selectedPlayer = standings[e.RowIndex].Player;
+            //playerHistoryViewerControl.ViewPlayerHistory(selectedPlayer);
+        }
+
+        private void dataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (updatingTableContents || dataGridView.SelectedRows.Count == 0)
                 return;
 
-            Player selectedPlayer = standings[e.RowIndex].Player;
+            int selctedRowIndex = dataGridView.SelectedRows[0].Index;
+            if (selctedRowIndex == -1) // header row
+                return;
+
+            Player selectedPlayer = standings[selctedRowIndex].Player;
             playerHistoryViewerControl.ViewPlayerHistory(selectedPlayer);
         }
     }

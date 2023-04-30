@@ -44,7 +44,6 @@
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.ColumnHeadersVisible = false;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { ThisPlayerNameColumn, ScoreColumn, ThatPlayerNameColumn });
             dataGridView.Location = new Point(0, 0);
             dataGridView.Name = "dataGridView";

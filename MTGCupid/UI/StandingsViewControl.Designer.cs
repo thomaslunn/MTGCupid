@@ -36,6 +36,7 @@
             opponentMatchWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             gameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentGameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            HasDropped = new DataGridViewCheckBoxColumn();
             playerStandingsBindingSource = new BindingSource(components);
             bottomPanel = new Panel();
             bottomSplitContainer = new SplitContainer();
@@ -56,7 +57,7 @@
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoGenerateColumns = false;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Position, nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Position, nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn, HasDropped });
             dataGridView.DataSource = playerStandingsBindingSource;
             dataGridView.Location = new Point(0, 0);
             dataGridView.MultiSelect = false;
@@ -68,6 +69,7 @@
             dataGridView.Size = new Size(810, 265);
             dataGridView.TabIndex = 0;
             dataGridView.CellClick += dataGridView_CellClick;
+            dataGridView.SelectionChanged += dataGridView_SelectionChanged;
             // 
             // Position
             // 
@@ -111,6 +113,13 @@
             opponentGameWinPercentageDataGridViewTextBoxColumn.Name = "opponentGameWinPercentageDataGridViewTextBoxColumn";
             opponentGameWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // HasDropped
+            // 
+            HasDropped.DataPropertyName = "HasDropped";
+            HasDropped.HeaderText = "Dropped?";
+            HasDropped.Name = "HasDropped";
+            HasDropped.ReadOnly = true;
+            // 
             // playerStandingsBindingSource
             // 
             playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
@@ -133,17 +142,23 @@
             // bottomSplitContainer.Panel1
             // 
             bottomSplitContainer.Panel1.Controls.Add(playerHistoryViewerControl);
+            bottomSplitContainer.Panel1.Padding = new Padding(2);
             bottomSplitContainer.Panel1MinSize = 200;
+            // 
+            // bottomSplitContainer.Panel2
+            // 
+            bottomSplitContainer.Panel2.Padding = new Padding(2);
             bottomSplitContainer.Size = new Size(810, 174);
             bottomSplitContainer.SplitterDistance = 270;
+            bottomSplitContainer.SplitterWidth = 10;
             bottomSplitContainer.TabIndex = 0;
             // 
             // playerHistoryViewerControl
             // 
             playerHistoryViewerControl.Dock = DockStyle.Fill;
-            playerHistoryViewerControl.Location = new Point(0, 0);
+            playerHistoryViewerControl.Location = new Point(2, 2);
             playerHistoryViewerControl.Name = "playerHistoryViewerControl";
-            playerHistoryViewerControl.Size = new Size(270, 174);
+            playerHistoryViewerControl.Size = new Size(266, 170);
             playerHistoryViewerControl.TabIndex = 0;
             // 
             // StandingsViewControl
@@ -175,5 +190,6 @@
         private Panel bottomPanel;
         private SplitContainer bottomSplitContainer;
         private PlayerHistoryViewerControl playerHistoryViewerControl;
+        private DataGridViewCheckBoxColumn HasDropped;
     }
 }
