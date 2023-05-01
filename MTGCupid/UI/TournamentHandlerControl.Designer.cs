@@ -38,7 +38,6 @@ namespace MTGCupid.UI
             standingsPage = new TabPage();
             standingsViewControl = new StandingsViewControl();
             menuStrip = new MenuStrip();
-            fileToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             autoConfirmPairingsToolStripMenuItem = new ToolStripMenuItem();
             tabControl.SuspendLayout();
@@ -122,18 +121,12 @@ namespace MTGCupid.UI
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, settingsToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { settingsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(800, 24);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip";
-            // 
-            // fileToolStripMenuItem
-            // 
-            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(37, 20);
-            fileToolStripMenuItem.Text = "File";
             // 
             // settingsToolStripMenuItem
             // 
@@ -148,6 +141,7 @@ namespace MTGCupid.UI
             autoConfirmPairingsToolStripMenuItem.Name = "autoConfirmPairingsToolStripMenuItem";
             autoConfirmPairingsToolStripMenuItem.Size = new Size(197, 22);
             autoConfirmPairingsToolStripMenuItem.Text = "Auto-confirm pairings?";
+            autoConfirmPairingsToolStripMenuItem.ToolTipText = "Disable to allow pairings to be manually adjusted before a round is created";
             autoConfirmPairingsToolStripMenuItem.CheckedChanged += autoConfirmPairingsToolStripMenuItem_CheckedChanged;
             // 
             // TournamentHandlerControl
@@ -177,7 +171,6 @@ namespace MTGCupid.UI
         private TabPage pairingsPage;
         private PairingsListControl pairingsListControl;
         private MenuStrip menuStrip;
-        private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem autoConfirmPairingsToolStripMenuItem;
     }
