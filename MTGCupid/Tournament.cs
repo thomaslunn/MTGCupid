@@ -144,6 +144,12 @@ namespace MTGCupid
             // Update game win percentage
             foreach (var player in Players)
             {
+                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                if (gamesPlayed == 0)
+                {
+                    player.GameWinPercentage = 1; // Default to 100% game win percentage if no games played
+                    continue;
+                }
                 player.GameWinPercentage = player.Matches.Sum(m => m.GamePointsOf(player)) / (3.0 * player.Matches.Sum(m => m.GamesPlayed));
                 if (player.GameWinPercentage < 0.33) // Enforced lower bound of 33% game win percentage
                     player.GameWinPercentage = 0.33;
@@ -152,6 +158,12 @@ namespace MTGCupid
             // Update opponent game win percentage
             foreach (var player in Players)
             {
+                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                if (gamesPlayed == 0)
+                {
+                    player.OpponentGameWinPercentage = 0; // Default to 0% opponent game win percentage if no games played
+                    continue;
+                }
                 var matches = player.Matches.Where(m => m is not Bye); // Bytes are discounted in OGW%
                 if (matches.Count() == 0)
                     player.OpponentGameWinPercentage = 1;
