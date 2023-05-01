@@ -13,14 +13,13 @@ namespace MTGCupid.UI
     internal partial class TournamentHandlerControl : UserControl
     {
         private Tournament? tournament;
-        private bool autoConfirmPairings = true;
 
         public TournamentHandlerControl()
         {
             InitializeComponent();
 
             // Setup menu items to match the current setting
-            autoConfirmPairingsToolStripMenuItem.Checked = autoConfirmPairings;
+            autoConfirmPairingsToolStripMenuItem.Checked = Properties.Settings.Default.AutoConfirmPairings;
         }
 
         private void tournamentInitialiserControl_BeginNextRoundButtonClicked(object sender, BeginNextRoundButtonClickedEventArgs e)
@@ -35,7 +34,7 @@ namespace MTGCupid.UI
             {
                 // Generate the next round
                 var (pairings, byePlayer) = tournament.SuggestNextRoundPairings();
-                if (!autoConfirmPairings)
+                if (!Properties.Settings.Default.AutoConfirmPairings)
                 {
                     // Update pairings according to user input
                     var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayer);
@@ -74,7 +73,8 @@ namespace MTGCupid.UI
 
         private void autoConfirmPairingsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            autoConfirmPairings = autoConfirmPairingsToolStripMenuItem.Checked;
+            Properties.Settings.Default.AutoConfirmPairings = autoConfirmPairingsToolStripMenuItem.Checked;
+            Properties.Settings.Default.Save();
         }
     }
 }
