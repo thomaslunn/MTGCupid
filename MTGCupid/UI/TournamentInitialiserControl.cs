@@ -37,10 +37,6 @@ namespace MTGCupid.UI
                 return;
             }
 
-            // Disable the begin next round button and player name entry controls
-            beginNextRoundButton.Enabled = false;
-            nameList.Enabled = false;
-
             // Invoke the BeginNextRoundButtonClicked event
             BeginNextRoundButtonClicked?.Invoke(this, new BeginNextRoundButtonClickedEventArgs() { PlayerNames = playerNames });
         }
@@ -49,6 +45,12 @@ namespace MTGCupid.UI
         {
             beginNextRoundButton.Enabled = true;
             beginNextRoundButton.Text = string.Format("Create Pairings for Round {0}", roundNumber);
+        }
+
+        public void DisableNextRoundButton()
+        {
+            beginNextRoundButton.Enabled = false;
+            nameList.Enabled = false;
         }
     }
 

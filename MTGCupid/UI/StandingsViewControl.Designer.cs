@@ -30,6 +30,10 @@
         {
             components = new System.ComponentModel.Container();
             dataGridView = new DataGridView();
+            playerStandingsBindingSource = new BindingSource(components);
+            bottomPanel = new Panel();
+            bottomSplitContainer = new SplitContainer();
+            playerHistoryViewerControl = new PlayerHistoryViewerControl();
             Position = new DataGridViewTextBoxColumn();
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             pointsDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -37,10 +41,6 @@
             gameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentGameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             HasDropped = new DataGridViewCheckBoxColumn();
-            playerStandingsBindingSource = new BindingSource(components);
-            bottomPanel = new Panel();
-            bottomSplitContainer = new SplitContainer();
-            playerHistoryViewerControl = new PlayerHistoryViewerControl();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)playerStandingsBindingSource).BeginInit();
             bottomPanel.SuspendLayout();
@@ -71,9 +71,50 @@
             dataGridView.CellClick += dataGridView_CellClick;
             dataGridView.SelectionChanged += dataGridView_SelectionChanged;
             // 
+            // playerStandingsBindingSource
+            // 
+            playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
+            // 
+            // bottomPanel
+            // 
+            bottomPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            bottomPanel.Controls.Add(bottomSplitContainer);
+            bottomPanel.Location = new Point(3, 274);
+            bottomPanel.Name = "bottomPanel";
+            bottomPanel.Size = new Size(810, 174);
+            bottomPanel.TabIndex = 1;
+            // 
+            // bottomSplitContainer
+            // 
+            bottomSplitContainer.Dock = DockStyle.Fill;
+            bottomSplitContainer.Location = new Point(0, 0);
+            bottomSplitContainer.Name = "bottomSplitContainer";
+            // 
+            // bottomSplitContainer.Panel1
+            // 
+            bottomSplitContainer.Panel1.Controls.Add(playerHistoryViewerControl);
+            bottomSplitContainer.Panel1.Padding = new Padding(2);
+            bottomSplitContainer.Panel1MinSize = 200;
+            // 
+            // bottomSplitContainer.Panel2
+            // 
+            bottomSplitContainer.Panel2.Padding = new Padding(2);
+            bottomSplitContainer.Size = new Size(810, 174);
+            bottomSplitContainer.SplitterDistance = 270;
+            bottomSplitContainer.SplitterWidth = 10;
+            bottomSplitContainer.TabIndex = 0;
+            // 
+            // playerHistoryViewerControl
+            // 
+            playerHistoryViewerControl.Dock = DockStyle.Fill;
+            playerHistoryViewerControl.Location = new Point(2, 2);
+            playerHistoryViewerControl.Name = "playerHistoryViewerControl";
+            playerHistoryViewerControl.Size = new Size(266, 170);
+            playerHistoryViewerControl.TabIndex = 0;
+            // 
             // Position
             // 
-            Position.DataPropertyName = "Position";
+            Position.DataPropertyName = "Seed";
             Position.HeaderText = "Position";
             Position.Name = "Position";
             Position.ReadOnly = true;
@@ -120,47 +161,6 @@
             HasDropped.Name = "HasDropped";
             HasDropped.ReadOnly = true;
             // 
-            // playerStandingsBindingSource
-            // 
-            playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
-            // 
-            // bottomPanel
-            // 
-            bottomPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            bottomPanel.Controls.Add(bottomSplitContainer);
-            bottomPanel.Location = new Point(3, 274);
-            bottomPanel.Name = "bottomPanel";
-            bottomPanel.Size = new Size(810, 174);
-            bottomPanel.TabIndex = 1;
-            // 
-            // bottomSplitContainer
-            // 
-            bottomSplitContainer.Dock = DockStyle.Fill;
-            bottomSplitContainer.Location = new Point(0, 0);
-            bottomSplitContainer.Name = "bottomSplitContainer";
-            // 
-            // bottomSplitContainer.Panel1
-            // 
-            bottomSplitContainer.Panel1.Controls.Add(playerHistoryViewerControl);
-            bottomSplitContainer.Panel1.Padding = new Padding(2);
-            bottomSplitContainer.Panel1MinSize = 200;
-            // 
-            // bottomSplitContainer.Panel2
-            // 
-            bottomSplitContainer.Panel2.Padding = new Padding(2);
-            bottomSplitContainer.Size = new Size(810, 174);
-            bottomSplitContainer.SplitterDistance = 270;
-            bottomSplitContainer.SplitterWidth = 10;
-            bottomSplitContainer.TabIndex = 0;
-            // 
-            // playerHistoryViewerControl
-            // 
-            playerHistoryViewerControl.Dock = DockStyle.Fill;
-            playerHistoryViewerControl.Location = new Point(2, 2);
-            playerHistoryViewerControl.Name = "playerHistoryViewerControl";
-            playerHistoryViewerControl.Size = new Size(266, 170);
-            playerHistoryViewerControl.TabIndex = 0;
-            // 
             // StandingsViewControl
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -180,16 +180,16 @@
         #endregion
 
         private DataGridView dataGridView;
+        private BindingSource playerStandingsBindingSource;
+        private Panel bottomPanel;
+        private SplitContainer bottomSplitContainer;
+        private PlayerHistoryViewerControl playerHistoryViewerControl;
         private DataGridViewTextBoxColumn Position;
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn pointsDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentMatchWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn gameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentGameWinPercentageDataGridViewTextBoxColumn;
-        private BindingSource playerStandingsBindingSource;
-        private Panel bottomPanel;
-        private SplitContainer bottomSplitContainer;
-        private PlayerHistoryViewerControl playerHistoryViewerControl;
         private DataGridViewCheckBoxColumn HasDropped;
     }
 }

@@ -7,9 +7,6 @@ namespace MTGCupid.UI
         public MainForm()
         {
             InitializeComponent();
-
-            // Setup custom icon
-            Icon = Properties.Resources.MTGCupidIcon;
         }
     }
 }

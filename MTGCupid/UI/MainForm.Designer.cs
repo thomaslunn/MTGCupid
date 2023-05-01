@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             tournamentHandlerControl = new TournamentHandlerControl();
             SuspendLayout();
             // 
@@ -44,6 +45,7 @@
             AutoScaleMode = AutoScaleMode.None;
             ClientSize = new Size(800, 516);
             Controls.Add(tournamentHandlerControl);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             Text = "MTG Cupid";
             ResumeLayout(false);

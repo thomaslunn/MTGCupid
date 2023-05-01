@@ -19,17 +19,20 @@ namespace MTGCupid
 
         public int CurrentRound { get; private set; } = 1;
 
-
         public Tournament(List<string> players)
         {
             // Initially shuffle the players list to ensure first round pairings are random
-            Players = players.Select(name => new Player(name)).OrderBy(_ => rand.Next()).ToList();
+            // Also set an initial seed for each player
+            Players = players
+                .OrderBy(_ => rand.Next())
+                .Select((name, index) => new Player(name) { Seed = index + 1 })
+                .ToList();
         }
 
-        public List<Match> CreateNextRound()
+        public (List<(Player p1, Player p2)> pairings, Player? byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
-                throw new InvalidOperationException("Cannot create next round while matches are in progress.");
+                throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
 
             // Recieved all match results, so all tiebreakers in players are already updated and sorted correctly
             // Filter out players that have dropped
@@ -50,7 +53,6 @@ namespace MTGCupid
 
                     if (Players[playerIndex].ByesReceived == 0)
                     {
-                        Players[playerIndex].ByesReceived++;
                         unpairedPlayers.RemoveAt(i);
                         byePlayer = Players[playerIndex];
                         break;
@@ -64,18 +66,27 @@ namespace MTGCupid
             if (unpairedPlayers.Count == 0 || !CreatePairings(unpairedPlayers, out var matches))
                 throw new InvalidOperationException("Unable to create pairings.");
 
-            foreach (var (p1, p2) in matches)
+            List<(Player p1, Player p2)> pairings = matches.Select(m => (Players[m.p1], Players[m.p2])).ToList();
+
+            return (pairings, byePlayer);
+        }
+
+        public List<Match> CreateRoundWithPairings(List<(Player p1, Player p2)> pairings, Player? byePlayer)
+        {
+            matchesInProgress.Clear();
+            foreach (var (p1, p2) in pairings)
             {
-                // Insert at beginning so that higher ranked players are at the top of the list
-                matchesInProgress.Insert(0, new Match(Players[p1], Players[p2]));
+                matchesInProgress.Add(new Match(p1, p2));
             }
             if (byePlayer != null)
+            {
+                byePlayer.ByesReceived++;
                 matchesInProgress.Add(new Bye(byePlayer));
-
+            }
             return matchesInProgress;
         }
 
-        private bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out HashSet<(int p1, int p2)> matches)
+        private bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
         {
             // Try to match the first unpaired player with the closest new opponent
             int p1 = unpairedPlayers[0];
@@ -92,12 +103,13 @@ namespace MTGCupid
 
                 if (unpairedPlayers.Count == 0) // Pairing is complete
                 {
-                    matches = new HashSet<(int p1, int p2)>() { (p1, p2) };
+                    matches = new List<(int p1, int p2)>() { (p1, p2) };
                     return true;
                 }
                 if (CreatePairings(unpairedPlayers, out matches))
                 {
-                    matches.Add((p1, p2));
+                    // Insert at beginning so that higher ranked players are at the top of the list
+                    matches.Insert(0, (p1, p2));
                     return true;
                 }
                 unpairedPlayers.Insert(i, p2);
@@ -150,6 +162,12 @@ namespace MTGCupid
             // Sort players by tiebreakers
             Players.Sort();
 
+            // Update player positions
+            for (int i = 0; i < Players.Count; i++)
+            {
+                Players[i].Seed = i + 1;
+            }
+
             // Increment round number
             CurrentRound++;
         }
@@ -170,27 +188,31 @@ namespace MTGCupid
 
         public List<PlayerStandings> GetStandings()
         {
-            return Players.Select((p, index) => new PlayerStandings(p, index+1)).ToList();
+            return Players.Select(p => new PlayerStandings(p)).ToList();
         }
     }
 
     public class Player : IComparable<Player>
     {
+        public string Name { get; private set; }
+        public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
+        public HashSet<Match> Matches { get; } = new HashSet<Match>();
+        public int ByesReceived { get; internal set; } = 0;
+        public bool HasDropped { get; private set; } = false;
+
+        // The following properties are updated by the tournament manager when calculating standings //
+        public double MatchWinPercentage { get; internal set; } = 1;
+        public double OpponentMatchWinPercentage { get; internal set; } = 0;
+        public double GameWinPercentage { get; internal set; } = 1;
+        public double OpponentGameWinPercentage { get; internal set; } = 0;
+        public int Seed { get; internal set; }
+        ///////////////////
+
         public Player(string name)
         {
             Name = name;
         }
 
-        public string Name { get; private set; }
-        public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
-        public HashSet<Match> Matches { get; } = new HashSet<Match>();
-
-        public double MatchWinPercentage { get; internal set; } = 1;
-        public double OpponentMatchWinPercentage { get; internal set; } = 0;
-        public double GameWinPercentage { get; internal set; } = 1;
-        public double OpponentGameWinPercentage { get; internal set; } = 0;
-        public int ByesReceived { get; internal set; } = 0;
-        public bool HasDropped { get; private set; } = false;
         public void Drop()
         {
             HasDropped = true;
@@ -225,7 +247,7 @@ namespace MTGCupid
 
     public class PlayerStandings
     {
-        public string Position { get; private set; }
+        public string Seed { get; private set; }
         public string Name { get; private set; }
         public string Points { get; private set; }
         public string OpponentMatchWinPercentage { get; private set; }
@@ -233,9 +255,9 @@ namespace MTGCupid
         public string OpponentGameWinPercentage { get; private set; }
         public bool HasDropped { get; private set; }
         public Player Player { get; private set; }
-        public PlayerStandings(Player player, int position)
+        public PlayerStandings(Player player)
         {
-            Position = position.ToString();
+            Seed = player.Seed.ToString();
             Name = player.Name;
             Points = player.Points.ToString();
             OpponentMatchWinPercentage = string.Format("{0:P1}", player.OpponentMatchWinPercentage);

@@ -13,10 +13,14 @@ namespace MTGCupid.UI
     internal partial class TournamentHandlerControl : UserControl
     {
         private Tournament? tournament;
+        private bool autoConfirmPairings = true;
 
         public TournamentHandlerControl()
         {
             InitializeComponent();
+
+            // Setup menu items to match the current setting
+            autoConfirmPairingsToolStripMenuItem.Checked = autoConfirmPairings;
         }
 
         private void tournamentInitialiserControl_BeginNextRoundButtonClicked(object sender, BeginNextRoundButtonClickedEventArgs e)
@@ -30,13 +34,26 @@ namespace MTGCupid.UI
             try
             {
                 // Generate the next round
-                var round = tournament.CreateNextRound();
+                var (pairings, byePlayer) = tournament.SuggestNextRoundPairings();
+                if (!autoConfirmPairings)
+                {
+                    // Update pairings according to user input
+                    var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayer);
+                    if (pairingsPreviewForm.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    pairings = pairingsPreviewForm.Pairings;
+                    byePlayer = pairingsPreviewForm.ByePlayer;
+                }
+                tournamentInitialiserControl.DisableNextRoundButton();
+
+                var round = tournament.CreateRoundWithPairings(pairings, byePlayer);
                 pairingsListControl.InitialiseWithMatches(round);
                 tabControl.SelectedTab = pairingsPage;
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("A new round could not be created. There are no possible new pairings for the remaining players. Please refer to the standings tab for the final standings.", "Failed to create round", MessageBoxButtons.OK, MessageBoxIcon.Error);   
+                MessageBox.Show("A new round could not be created. There are no possible new pairings for the remaining players. Please refer to the standings tab for the final standings.", "Failed to create round", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 tabControl.SelectedTab = standingsPage;
             }
         }
@@ -45,7 +62,7 @@ namespace MTGCupid.UI
         {
             if (tournament == null)
                 throw new InvalidOperationException("Tournament has not been started.");
-            
+
             if (!tournament.SubmitMatchResults())
                 throw new InvalidOperationException("Not all matches have been submitted.");
 
@@ -53,6 +70,11 @@ namespace MTGCupid.UI
 
             // Update standings
             standingsViewControl.UpdateStandings(tournament.GetStandings());
+        }
+
+        private void autoConfirmPairingsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            autoConfirmPairings = autoConfirmPairingsToolStripMenuItem.Checked;
         }
     }
 }
