@@ -25,7 +25,7 @@ namespace MTGCupid
             // Also set an initial seed for each player
             Players = players
                 .OrderBy(_ => rand.Next())
-                .Select((name, index) => new Player(name) { Seed = index + 1 })
+                .Select((name, index) => new Player(name) { Seed = "=1" })
                 .ToList();
         }
 
@@ -174,10 +174,20 @@ namespace MTGCupid
             // Sort players by tiebreakers
             Players.Sort();
 
-            // Update player positions
+            // Update player positions, tracking players on equal seed
+            string lastEqualSeed = "=1";
             for (int i = 0; i < Players.Count; i++)
             {
-                Players[i].Seed = i + 1;
+                if (i != 0 && Players[i].HasEquivalentScoreTo(Players[i - 1]))
+                {
+                    Players[i].Seed = lastEqualSeed;
+                    Players[i-1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
+                }
+                else
+                {
+                    Players[i].Seed = (i + 1).ToString();
+                    lastEqualSeed = string.Format("={0}", i + 1);
+                }
             }
 
             // Increment round number
@@ -206,6 +216,7 @@ namespace MTGCupid
 
     public class Player : IComparable<Player>
     {
+        public const double COMPARISON_DOUBLE_EQUALITY_THRESHOLD = 0.0001;
         public string Name { get; private set; }
         public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
         public HashSet<Match> Matches { get; } = new HashSet<Match>();
@@ -217,7 +228,7 @@ namespace MTGCupid
         public double OpponentMatchWinPercentage { get; internal set; } = 0;
         public double GameWinPercentage { get; internal set; } = 1;
         public double OpponentGameWinPercentage { get; internal set; } = 0;
-        public int Seed { get; internal set; }
+        public string Seed { get; internal set; } = "0"; // Dummy value
         ///////////////////
 
         public Player(string name)
@@ -241,14 +252,22 @@ namespace MTGCupid
 
             if (Points.CompareTo(other.Points) != 0)
                 return -Points.CompareTo(other.Points); // Negative so that higher points appear first
-            if (OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage) != 0)
+
+            if (Math.Abs(OpponentMatchWinPercentage - other.OpponentMatchWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
                 return -OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage);
-            if (GameWinPercentage.CompareTo(other.GameWinPercentage) != 0)
+
+            if (Math.Abs(GameWinPercentage - other.GameWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
                 return -GameWinPercentage.CompareTo(other.GameWinPercentage);
-            if (OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage) != 0)
+
+            if (Math.Abs(OpponentGameWinPercentage - other.OpponentGameWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
                 return -OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage);
 
             return 0;
+        }
+
+        public bool HasEquivalentScoreTo(Player other)
+        {
+            return CompareTo(other) == 0;
         }
 
         public override string ToString()
