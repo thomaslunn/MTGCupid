@@ -89,5 +89,13 @@ namespace MTGCupid.UI
 
             MatchesConfirmed?.Invoke(this, e);
         }
+
+        private void submitAllButton_Click(object sender, EventArgs e)
+        {
+            foreach (var pairing in pairings)
+            {
+                pairing.Submit();
+            }
+        }
     }
 }

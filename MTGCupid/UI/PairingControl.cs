@@ -152,6 +152,14 @@ namespace MTGCupid.UI
             if (dropPlayer2Box.Checked)
                 match.Player2.Drop();
         }
+
+        public void Submit()
+        {
+            if (!submitted)
+            {
+                submitButton.PerformClick();
+            }
+        }
     }
 
     public class MatchSubmittedToggledEventArgs : EventArgs

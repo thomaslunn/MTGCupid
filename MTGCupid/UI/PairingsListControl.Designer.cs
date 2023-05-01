@@ -30,6 +30,7 @@
         {
             flowLayoutPanel = new FlowLayoutPanel();
             confirmButton = new Button();
+            submitAllButton = new Button();
             SuspendLayout();
             // 
             // flowLayoutPanel
@@ -57,10 +58,22 @@
             confirmButton.UseVisualStyleBackColor = true;
             confirmButton.Click += confirmButton_Click;
             // 
+            // submitAllButton
+            // 
+            submitAllButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            submitAllButton.Location = new Point(367, 398);
+            submitAllButton.Name = "submitAllButton";
+            submitAllButton.Size = new Size(155, 34);
+            submitAllButton.TabIndex = 1;
+            submitAllButton.Text = "Submit all matches";
+            submitAllButton.UseVisualStyleBackColor = true;
+            submitAllButton.Click += submitAllButton_Click;
+            // 
             // PairingsListControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(submitAllButton);
             Controls.Add(confirmButton);
             Controls.Add(flowLayoutPanel);
             Name = "PairingsListControl";
@@ -72,5 +85,6 @@
 
         private FlowLayoutPanel flowLayoutPanel;
         private Button confirmButton;
+        private Button submitAllButton;
     }
 }
