@@ -27,7 +27,7 @@ namespace MTGCupid.UI
             if (tournament == null)
             {
                 // Create a new tournament
-                tournament = new Tournament(e.PlayerNames);
+                tournament = new SwissTournament(e.PlayerNames);
             }
 
             try
