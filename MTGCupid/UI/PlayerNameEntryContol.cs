@@ -59,6 +59,10 @@ namespace MTGCupid.UI
             {
                 DownArrowPressed?.Invoke(this, e);
             }
+            else
+                return;
+            
+            e.Handled = e.SuppressKeyPress = true; // Prevent beep
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
