@@ -53,20 +53,20 @@ namespace MTGCupid.UI
             tabControl.Controls.Add(pairingsPage);
             tabControl.Controls.Add(standingsPage);
             tabControl.Dock = DockStyle.Fill;
-            tabControl.Location = new Point(0, 24);
+            tabControl.Location = new Point(0, 28);
             tabControl.Name = "tabControl";
             tabControl.RightToLeft = RightToLeft.No;
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(800, 492);
+            tabControl.Size = new Size(800, 488);
             tabControl.TabIndex = 0;
             // 
             // setupPage
             // 
             setupPage.Controls.Add(tournamentInitialiserControl);
-            setupPage.Location = new Point(4, 24);
+            setupPage.Location = new Point(4, 29);
             setupPage.Name = "setupPage";
             setupPage.Padding = new Padding(3);
-            setupPage.Size = new Size(792, 464);
+            setupPage.Size = new Size(792, 455);
             setupPage.TabIndex = 0;
             setupPage.Text = "Tournament Setup";
             setupPage.UseVisualStyleBackColor = true;
@@ -76,17 +76,17 @@ namespace MTGCupid.UI
             tournamentInitialiserControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tournamentInitialiserControl.Location = new Point(3, 3);
             tournamentInitialiserControl.Name = "tournamentInitialiserControl";
-            tournamentInitialiserControl.Size = new Size(786, 458);
+            tournamentInitialiserControl.Size = new Size(786, 449);
             tournamentInitialiserControl.TabIndex = 0;
             tournamentInitialiserControl.BeginNextRoundButtonClicked += tournamentInitialiserControl_BeginNextRoundButtonClicked;
             // 
             // pairingsPage
             // 
             pairingsPage.Controls.Add(pairingsListControl);
-            pairingsPage.Location = new Point(4, 24);
+            pairingsPage.Location = new Point(4, 29);
             pairingsPage.Name = "pairingsPage";
             pairingsPage.Padding = new Padding(3);
-            pairingsPage.Size = new Size(792, 464);
+            pairingsPage.Size = new Size(792, 455);
             pairingsPage.TabIndex = 2;
             pairingsPage.Text = "Pairings";
             pairingsPage.UseVisualStyleBackColor = true;
@@ -95,18 +95,19 @@ namespace MTGCupid.UI
             // 
             pairingsListControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pairingsListControl.Location = new Point(0, 0);
+            pairingsListControl.Margin = new Padding(3, 4, 3, 4);
             pairingsListControl.Name = "pairingsListControl";
-            pairingsListControl.Size = new Size(792, 464);
+            pairingsListControl.Size = new Size(792, 455);
             pairingsListControl.TabIndex = 0;
             pairingsListControl.MatchesConfirmed += pairingsListControl_MatchesConfirmed;
             // 
             // standingsPage
             // 
             standingsPage.Controls.Add(standingsViewControl);
-            standingsPage.Location = new Point(4, 24);
+            standingsPage.Location = new Point(4, 29);
             standingsPage.Name = "standingsPage";
             standingsPage.Padding = new Padding(3);
-            standingsPage.Size = new Size(792, 464);
+            standingsPage.Size = new Size(792, 455);
             standingsPage.TabIndex = 1;
             standingsPage.Text = "Standings";
             standingsPage.UseVisualStyleBackColor = true;
@@ -116,15 +117,16 @@ namespace MTGCupid.UI
             standingsViewControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             standingsViewControl.Location = new Point(0, 0);
             standingsViewControl.Name = "standingsViewControl";
-            standingsViewControl.Size = new Size(792, 464);
+            standingsViewControl.Size = new Size(792, 455);
             standingsViewControl.TabIndex = 0;
             // 
             // menuStrip
             // 
+            menuStrip.ImageScalingSize = new Size(20, 20);
             menuStrip.Items.AddRange(new ToolStripItem[] { settingsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(800, 24);
+            menuStrip.Size = new Size(800, 28);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip";
             // 
@@ -132,14 +134,14 @@ namespace MTGCupid.UI
             // 
             settingsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { autoConfirmPairingsToolStripMenuItem });
             settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            settingsToolStripMenuItem.Size = new Size(61, 20);
+            settingsToolStripMenuItem.Size = new Size(76, 24);
             settingsToolStripMenuItem.Text = "Settings";
             // 
             // autoConfirmPairingsToolStripMenuItem
             // 
             autoConfirmPairingsToolStripMenuItem.CheckOnClick = true;
             autoConfirmPairingsToolStripMenuItem.Name = "autoConfirmPairingsToolStripMenuItem";
-            autoConfirmPairingsToolStripMenuItem.Size = new Size(197, 22);
+            autoConfirmPairingsToolStripMenuItem.Size = new Size(245, 26);
             autoConfirmPairingsToolStripMenuItem.Text = "Auto-confirm pairings?";
             autoConfirmPairingsToolStripMenuItem.ToolTipText = "Disable to allow pairings to be manually adjusted before a round is created";
             autoConfirmPairingsToolStripMenuItem.CheckedChanged += autoConfirmPairingsToolStripMenuItem_CheckedChanged;

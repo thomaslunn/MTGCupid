@@ -86,7 +86,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameList.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="playerCountLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -98,7 +98,7 @@
     <value>394, 3</value>
   </data>
   <data name="playerCountLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 21</value>
+    <value>93, 28</value>
   </data>
   <data name="playerCountLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -116,7 +116,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;playerCountLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="beginNextRoundButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -143,6 +143,54 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;beginNextRoundButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tournamentTypeLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tournamentTypeLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>394, 44</value>
+  </data>
+  <data name="tournamentTypeLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 20</value>
+  </data>
+  <data name="tournamentTypeLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="tournamentTypeLabel.Text" xml:space="preserve">
+    <value>Tournament Type:</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeLabel.Name" xml:space="preserve">
+    <value>tournamentTypeLabel</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tournamentTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>526, 41</value>
+  </data>
+  <data name="tournamentTypeComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 28</value>
+  </data>
+  <data name="tournamentTypeComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeComboBox.Name" xml:space="preserve">
+    <value>tournamentTypeComboBox</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeComboBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tournamentTypeComboBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

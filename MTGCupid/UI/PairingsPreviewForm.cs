@@ -28,17 +28,17 @@ namespace MTGCupid.UI
             }
         }
 
-        public Player? ByePlayer
+        public List<Player> ByePlayers
         {
             get
             {
                 if (DialogResult != DialogResult.OK)
                     throw new InvalidOperationException("Pairings were not confirmed.");
-                return byePlayers.FirstOrDefault();
+                return byePlayers;
             }
         }
 
-        public PairingsPreviewForm(List<(Player p1, Player p2)> pairings, Player? byePlayer)
+        public PairingsPreviewForm(List<(Player p1, Player p2)> pairings, List<Player> byePlayers)
         {
             InitializeComponent();
 
@@ -47,9 +47,9 @@ namespace MTGCupid.UI
                 AddPairing(p1, p2);
             }
 
-            if (byePlayer != null)
+            foreach (var player in byePlayers)
             {
-                AddBye(byePlayer);
+                AddBye(player);
             }
         }
 
@@ -79,8 +79,8 @@ namespace MTGCupid.UI
         {
             if (byePlayers.Count > 1)
             {
-                MessageBox.Show("More than one player is currently selected to have a bye. Please unpair all but one player to continue.", "Too many players with a bye", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                if (MessageBox.Show("More than one player is currently selected to have a bye. Are you sure you want to continue?", "Too many players with a bye", MessageBoxButtons.YesNo, MessageBoxIcon.Error) != DialogResult.Yes)
+                    return;
             }
 
             DialogResult = DialogResult.OK;

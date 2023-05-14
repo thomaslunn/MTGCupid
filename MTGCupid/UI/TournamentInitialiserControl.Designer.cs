@@ -32,6 +32,8 @@
             nameList = new NameEntryListControl();
             playerCountLabel = new Label();
             beginNextRoundButton = new Button();
+            tournamentTypeLabel = new Label();
+            tournamentTypeComboBox = new ComboBox();
             SuspendLayout();
             // 
             // nameList
@@ -54,9 +56,23 @@
             beginNextRoundButton.UseVisualStyleBackColor = true;
             beginNextRoundButton.Click += beginNextRoundButton_Click;
             // 
+            // tournamentTypeLabel
+            // 
+            resources.ApplyResources(tournamentTypeLabel, "tournamentTypeLabel");
+            tournamentTypeLabel.Name = "tournamentTypeLabel";
+            // 
+            // tournamentTypeComboBox
+            // 
+            tournamentTypeComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            tournamentTypeComboBox.FormattingEnabled = true;
+            resources.ApplyResources(tournamentTypeComboBox, "tournamentTypeComboBox");
+            tournamentTypeComboBox.Name = "tournamentTypeComboBox";
+            // 
             // TournamentInitialiserControl
             // 
             AutoScaleMode = AutoScaleMode.None;
+            Controls.Add(tournamentTypeComboBox);
+            Controls.Add(tournamentTypeLabel);
             Controls.Add(beginNextRoundButton);
             Controls.Add(playerCountLabel);
             Controls.Add(nameList);
@@ -71,5 +87,7 @@
         private NameEntryListControl nameList;
         private Label playerCountLabel;
         private Button beginNextRoundButton;
+        private Label tournamentTypeLabel;
+        private ComboBox tournamentTypeComboBox;
     }
 }

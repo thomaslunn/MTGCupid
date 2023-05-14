@@ -17,9 +17,28 @@ namespace MTGCupid.UI
         [Description("Invoked when the begin next round button is clicked")]
         public event EventHandler<BeginNextRoundButtonClickedEventArgs>? BeginNextRoundButtonClicked;
 
+        public enum TournamentType
+        {
+            // Ensure these values increment by 1 so that they match up with the index of the combo box
+            SwissTournament = 0,
+            SwissDraft = 1
+        }
+
+        private readonly Dictionary<TournamentType, string> TournamentTypeReadableName = new Dictionary<TournamentType, string>() {
+            { TournamentType.SwissTournament, "Swiss Tournament"},
+            { TournamentType.SwissDraft, "Swiss Draft"}
+        };
+
         public TournamentInitialiserControl()
         {
             InitializeComponent();
+
+            // Setup tournament type combo box
+            foreach (TournamentType type in Enum.GetValues(typeof(TournamentType)))
+            {
+                tournamentTypeComboBox.Items.Add(TournamentTypeReadableName[type]);
+            }
+            tournamentTypeComboBox.SelectedIndex = 0;
         }
 
         private void nameList_RegisteredPlayersCountChanged(object sender, RegisteredPlayersCountChangedEventArgs e)
@@ -52,10 +71,15 @@ namespace MTGCupid.UI
             beginNextRoundButton.Enabled = false;
             nameList.Enabled = false;
         }
+
+        public TournamentType GetSelectedTournamentType()
+        {
+            return (TournamentType)tournamentTypeComboBox.SelectedIndex;
+        }
     }
 
     internal class BeginNextRoundButtonClickedEventArgs : EventArgs
     {
         public List<string> PlayerNames { get; set; } = new List<string>();
-    } 
+    }
 }

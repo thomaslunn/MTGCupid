@@ -27,26 +27,45 @@ namespace MTGCupid.UI
             if (tournament == null)
             {
                 // Create a new tournament
-                tournament = new SwissTournament(e.PlayerNames);
+                var tourneyType = tournamentInitialiserControl.GetSelectedTournamentType();
+                switch (tourneyType)
+                {
+                    case TournamentInitialiserControl.TournamentType.SwissTournament:
+                        tournament = new SwissTournament(e.PlayerNames);
+                        break;
+                    case TournamentInitialiserControl.TournamentType.SwissDraft:
+                        tournament = new SwissDraftTournament(e.PlayerNames);
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unknown tournament type");
+                }
+
+                if (tournament is IPoddedTournament poddedTournament)
+                {
+                    // Show draft pods dialog
+                    var draftPodsForm = new PodsForm(poddedTournament.GetDraftSeating());
+                    if (draftPodsForm.ShowDialog() != DialogResult.OK)
+                        return;
+                }
             }
 
             try
             {
                 // Generate the next round
-                var (pairings, byePlayer) = tournament.SuggestNextRoundPairings();
+                var (pairings, byePlayers) = tournament.SuggestNextRoundPairings();
                 if (!Properties.Settings.Default.AutoConfirmPairings)
                 {
                     // Update pairings according to user input
-                    var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayer);
+                    var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayers);
                     if (pairingsPreviewForm.ShowDialog() != DialogResult.OK)
                         return;
 
                     pairings = pairingsPreviewForm.Pairings;
-                    byePlayer = pairingsPreviewForm.ByePlayer;
+                    byePlayers = pairingsPreviewForm.ByePlayers;
                 }
                 tournamentInitialiserControl.DisableNextRoundButton();
 
-                var round = tournament.CreateRoundWithPairings(pairings, byePlayer);
+                var round = tournament.CreateRoundWithPairings(pairings, byePlayers);
                 pairingsListControl.InitialiseWithMatches(round);
                 tabControl.SelectedTab = pairingsPage;
             }

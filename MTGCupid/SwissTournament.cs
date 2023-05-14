@@ -13,7 +13,7 @@ namespace MTGCupid
     {
         public SwissTournament(List<string> players) : base(players) { }
 
-        public override (List<(Player p1, Player p2)> pairings, Player? byePlayer) SuggestNextRoundPairings()
+        public override (List<(Player p1, Player p2)> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
@@ -27,7 +27,7 @@ namespace MTGCupid
 
             matchesInProgress.Clear();
 
-            Player? byePlayer = null;
+            List<Player> byePlayers = new List<Player>();
             if (unpairedPlayers.Count % 2 != 0)
             {
                 // Decide byes first
@@ -38,57 +38,21 @@ namespace MTGCupid
                     if (Players[playerIndex].ByesReceived == 0)
                     {
                         unpairedPlayers.RemoveAt(i);
-                        byePlayer = Players[playerIndex];
+                        byePlayers.Add(Players[playerIndex]);
                         break;
                     }
                 }
-                if (byePlayer == null)
-                    throw new InvalidOperationException("Unable to create pairings.");
+                if (byePlayers.Count == 0)
+                    throw new InvalidOperationException("Unable to create pairings: all players have received a bye.");
             }
 
             // Recursively create pairings
             if (unpairedPlayers.Count == 0 || !CreatePairings(unpairedPlayers, out var matches))
-                throw new InvalidOperationException("Unable to create pairings.");
+                throw new InvalidOperationException("Unable to create pairings: no possible matchup.");
 
             List<(Player p1, Player p2)> pairings = matches.Select(m => (Players[m.p1], Players[m.p2])).ToList();
 
-            return (pairings, byePlayer);
+            return (pairings, byePlayers);
         }
-
-        private bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
-        {
-            // Try to match the first unpaired player with the closest new opponent
-            int p1 = unpairedPlayers[0];
-            unpairedPlayers.RemoveAt(0);
-
-            for (int i = 0; i < unpairedPlayers.Count; i++)
-            {
-                int p2 = unpairedPlayers[i];
-
-                if (Players[p1].HasPlayed(Players[p2]))
-                    continue; // Player already played this opponent
-
-                unpairedPlayers.RemoveAt(i);
-
-                if (unpairedPlayers.Count == 0) // Pairing is complete
-                {
-                    matches = new List<(int p1, int p2)>() { (p1, p2) };
-                    return true;
-                }
-                if (CreatePairings(unpairedPlayers, out matches))
-                {
-                    // Insert at beginning so that higher ranked players are at the top of the list
-                    matches.Insert(0, (p1, p2));
-                    return true;
-                }
-                unpairedPlayers.Insert(i, p2);
-            }
-
-            // Pairing unsuccessful
-            unpairedPlayers.Insert(0, p1);
-            matches = null;
-            return false;
-        }
-
     }
 }
