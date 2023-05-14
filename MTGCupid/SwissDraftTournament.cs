@@ -105,8 +105,8 @@ namespace MTGCupid
                 seating.Add(podSeating);
 
                 // Adjust seating so that first round pairings are across-pod
-                int half = pod.Length / 2;
-                for (int i = 0; i < (pod.Length + 1)/2; i++)
+                int half = (pod.Length + 1) / 2;
+                for (int i = 0; i < half; i++)
                 {
                     podSeating[i] = pod[2*i];
                     if (i*2 + 1 < pod.Length)
