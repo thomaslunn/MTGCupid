@@ -55,6 +55,17 @@ namespace MTGCupid.UI
                 MessageBox.Show("You need at least 4 players to begin a tournament", "Not enough players", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (playerNames.Distinct().Count() < playerNames.Count)
+            {
+                HashSet<string> dupeNames = new HashSet<string>();
+                foreach (var playerName in playerNames)
+                {
+                    if (playerNames.Count(s => s == playerName) > 1)
+                        dupeNames.Add(playerName);
+                }
+                MessageBox.Show("The following player names have been entered more than once: \r\n\r\n" + string.Join("\r\n", dupeNames), "Duplicate player names", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             // Invoke the BeginNextRoundButtonClicked event
             BeginNextRoundButtonClicked?.Invoke(this, new BeginNextRoundButtonClickedEventArgs() { PlayerNames = playerNames });
