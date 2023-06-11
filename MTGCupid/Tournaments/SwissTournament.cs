@@ -6,8 +6,9 @@ using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MTGCupid.Pairings;
 
-namespace MTGCupid
+namespace MTGCupid.Tournaments
 {
     internal class SwissTournament : Tournament
     {

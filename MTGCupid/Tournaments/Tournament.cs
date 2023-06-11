@@ -4,8 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTGCupid.Pairings;
 
-namespace MTGCupid
+namespace MTGCupid.Tournaments
 {
     internal abstract class Tournament
     {
@@ -14,7 +15,7 @@ namespace MTGCupid
         protected List<Match> matchesInProgress { get; } = new List<Match>();
         public bool AwaitingMatchResults { get; protected set; } = false;
         public int CurrentRound { get; protected set; } = 1;
-        
+
         public Tournament(List<string> players)
         {
             // Initially shuffle the players list to ensure first round pairings are random
@@ -137,7 +138,7 @@ namespace MTGCupid
         {
             return Players.Select(p => new PlayerStandings(p)).ToList();
         }
-        
+
         protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
         {
             return CreatePairings(Players, unpairedPlayers, out matches);

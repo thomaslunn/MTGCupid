@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTGCupid
+namespace MTGCupid.Pairings
 {
     internal class FourPlayerPairing : IPairing
     {

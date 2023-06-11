@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTGCupid.Pairings;
 
-namespace MTGCupid
+namespace MTGCupid.Tournaments
 {
     internal class SwissDraftTournament : Tournament, IPoddedTournament
     {
@@ -108,9 +109,9 @@ namespace MTGCupid
                 int half = (pod.Length + 1) / 2;
                 for (int i = 0; i < half; i++)
                 {
-                    podSeating[i] = pod[2*i];
-                    if (i*2 + 1 < pod.Length)
-                        podSeating[i + half] = pod[2*i + 1];
+                    podSeating[i] = pod[2 * i];
+                    if (i * 2 + 1 < pod.Length)
+                        podSeating[i + half] = pod[2 * i + 1];
                 }
             }
 
@@ -157,7 +158,7 @@ namespace MTGCupid
                 // Recursively create pairings
                 if (unpairedPlayers.Count == 0 || !CreatePairings(pod, unpairedPlayers, out var matches))
                     throw new InvalidOperationException("Unable to create pairings: no possible matchup.");
-            
+
                 pairings.AddRange(matches.Select(m => new Pairing(pod[m.p1], pod[m.p2])));
             }
 

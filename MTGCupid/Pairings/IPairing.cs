@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTGCupid
+namespace MTGCupid.Pairings
 {
     public interface IPairing
     {

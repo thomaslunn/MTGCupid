@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTGCupid
+namespace MTGCupid.Pairings
 {
     public class Pairing : IPairing
     {
@@ -23,10 +23,13 @@ namespace MTGCupid
             return new PairingsPreviewPairingControl(this);
         }
 
-        public IEnumerable<Player> Players { get {
+        public IEnumerable<Player> Players
+        {
+            get
+            {
                 yield return player1;
                 yield return player2;
-            } 
+            }
         }
 
         public Match CreateMatch()
