@@ -117,14 +117,14 @@ namespace MTGCupid
             return seating;
         }
 
-        public override (List<Pairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
+        public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
 
             matchesInProgress.Clear();
             List<Player> byePlayers = new List<Player>();
-            List<Pairing> pairings = new List<Pairing>();
+            List<IPairing> pairings = new List<IPairing>();
 
             foreach (var pod in Pods)
             {

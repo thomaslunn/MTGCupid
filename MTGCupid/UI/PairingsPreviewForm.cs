@@ -12,13 +12,13 @@ namespace MTGCupid.UI
 {
     public partial class PairingsPreviewForm : Form
     {
-        private List<Pairing> pairings = new List<Pairing>();
+        private List<IPairing> pairings = new List<IPairing>();
         private List<Player> byePlayers = new List<Player>();
 
         private Player? selectedByePlayer;
         private PairingsPreviewByeControl? selectedByePlayerControl;
 
-        public List<Pairing> Pairings
+        public List<IPairing> Pairings
         {
             get
             {
@@ -38,7 +38,7 @@ namespace MTGCupid.UI
             }
         }
 
-        public PairingsPreviewForm(List<Pairing> pairings, List<Player> byePlayers)
+        public PairingsPreviewForm(List<IPairing> pairings, List<Player> byePlayers)
         {
             InitializeComponent();
 
@@ -61,7 +61,7 @@ namespace MTGCupid.UI
             byesFlowLayout.Controls.Add(byeControl);
         }
 
-        private void AddPairing(Pairing pairing)
+        private void AddPairing(IPairing pairing)
         {
             pairings.Add(pairing);
             var pairingControl = pairing.GetPairingControl();

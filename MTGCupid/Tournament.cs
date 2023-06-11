@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace MTGCupid
 {
@@ -26,14 +25,14 @@ namespace MTGCupid
                 .ToList();
         }
 
-        public abstract (List<Pairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings();
+        public abstract (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings();
 
-        public List<Match> CreateRoundWithPairings(List<Pairing> pairings, List<Player> byePlayers)
+        public List<Match> CreateRoundWithPairings(List<IPairing> pairings, List<Player> byePlayers)
         {
             matchesInProgress.Clear();
             foreach (var pairing in pairings)
             {
-                matchesInProgress.Add(new Match(pairing));
+                matchesInProgress.Add(pairing.CreateMatch());
             }
             foreach (var byePlayer in byePlayers)
             {

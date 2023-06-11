@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MTGCupid
 {
-    public class Pairing
+    public class Pairing : IPairing
     {
         public Player player1;
         public Player player2;
@@ -16,10 +16,6 @@ namespace MTGCupid
         {
             this.player1 = player1;
             this.player2 = player2;
-        }
-
-        public Pairing((Player p1, Player p2) players) : this(players.p1, players.p2)
-        {
         }
 
         public PairingsPreviewPairingControl GetPairingControl()
@@ -31,6 +27,11 @@ namespace MTGCupid
                 yield return player1;
                 yield return player2;
             } 
+        }
+
+        public Match CreateMatch()
+        {
+            return new Match(this);
         }
 
         override public string ToString()

@@ -13,7 +13,7 @@ namespace MTGCupid
     {
         public SwissTournament(List<string> players) : base(players) { }
 
-        public override (List<Pairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
+        public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
@@ -50,7 +50,7 @@ namespace MTGCupid
             if (unpairedPlayers.Count == 0 || !CreatePairings(unpairedPlayers, out var matches))
                 throw new InvalidOperationException("Unable to create pairings: no possible matchup.");
 
-            List<Pairing> pairings = matches.Select(m => new Pairing(Players[m.p1], Players[m.p2])).ToList();
+            List<IPairing> pairings = matches.Select(m => (IPairing)new Pairing(Players[m.p1], Players[m.p2])).ToList();
 
             return (pairings, byePlayers);
         }
