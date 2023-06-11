@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 
 namespace MTGCupid.Pairings
 {
-    internal class FourPlayerPairing : IPairing
+    internal class MultiplayerPairing : IPairing
     {
         private readonly List<Player> players = new List<Player>();
 
-        public FourPlayerPairing(Player player1, Player player2, Player? player3 = null, Player? player4 = null)
+        public MultiplayerPairing(IEnumerable<Player> players)
         {
-            players.Add(player1);
-            players.Add(player2);
-            if (player3 != null)
-                players.Add(player3);
-            if (player4 != null)
-                players.Add(player4);
+            this.players.AddRange(players);
         }
 
         IEnumerable<Player> IPairing.Players => players;

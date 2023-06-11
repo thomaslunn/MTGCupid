@@ -13,7 +13,7 @@ namespace MTGCupid.UI
 {
     internal partial class TournamentHandlerControl : UserControl
     {
-        private Tournament? tournament;
+        private ATournament? tournament;
 
         public TournamentHandlerControl()
         {

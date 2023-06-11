@@ -92,6 +92,11 @@ namespace MTGCupid
                 return Player2GameWins;
             throw new ArgumentException("Player is not in this match.");
         }
+
+        public bool HasParticipant(Player player)
+        {
+            return player == Player1 || player == Player2;
+        }
     }
 
     public class Bye : Match

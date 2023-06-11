@@ -7,7 +7,7 @@ using MTGCupid.Pairings;
 
 namespace MTGCupid.Tournaments
 {
-    internal class SwissDraftTournament : Tournament, IPoddedTournament
+    internal class SwissDraftTournament : ATwoPlayerTournament, IPoddedTournament
     {
         /// <summary>
         /// Acceptable pod sizes for a Swiss Draft tournament:

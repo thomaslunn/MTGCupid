@@ -10,7 +10,7 @@ using MTGCupid.Pairings;
 
 namespace MTGCupid.Tournaments
 {
-    internal class SwissTournament : Tournament
+    internal class SwissTournament : ATwoPlayerTournament
     {
         public SwissTournament(List<string> players) : base(players) { }
 
