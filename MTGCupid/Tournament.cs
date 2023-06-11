@@ -26,14 +26,14 @@ namespace MTGCupid
                 .ToList();
         }
 
-        public abstract (List<(Player p1, Player p2)> pairings, List<Player> byePlayer) SuggestNextRoundPairings();
+        public abstract (List<Pairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings();
 
-        public List<Match> CreateRoundWithPairings(List<(Player p1, Player p2)> pairings, List<Player> byePlayers)
+        public List<Match> CreateRoundWithPairings(List<Pairing> pairings, List<Player> byePlayers)
         {
             matchesInProgress.Clear();
-            foreach (var (p1, p2) in pairings)
+            foreach (var pairing in pairings)
             {
-                matchesInProgress.Add(new Match(p1, p2));
+                matchesInProgress.Add(new Match(pairing));
             }
             foreach (var byePlayer in byePlayers)
             {

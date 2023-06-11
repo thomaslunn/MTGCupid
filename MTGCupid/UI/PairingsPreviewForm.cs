@@ -12,13 +12,13 @@ namespace MTGCupid.UI
 {
     public partial class PairingsPreviewForm : Form
     {
-        private List<(Player p1, Player p2)> pairings = new List<(Player p1, Player p2)>();
+        private List<Pairing> pairings = new List<Pairing>();
         private List<Player> byePlayers = new List<Player>();
 
         private Player? selectedByePlayer;
         private PairingsPreviewByeControl? selectedByePlayerControl;
 
-        public List<(Player p1, Player p2)> Pairings
+        public List<Pairing> Pairings
         {
             get
             {
@@ -38,13 +38,13 @@ namespace MTGCupid.UI
             }
         }
 
-        public PairingsPreviewForm(List<(Player p1, Player p2)> pairings, List<Player> byePlayers)
+        public PairingsPreviewForm(List<Pairing> pairings, List<Player> byePlayers)
         {
             InitializeComponent();
 
-            foreach (var (p1, p2) in pairings)
+            foreach (var pairing in pairings)
             {
-                AddPairing(p1, p2);
+                AddPairing(pairing);
             }
 
             foreach (var player in byePlayers)
@@ -61,10 +61,10 @@ namespace MTGCupid.UI
             byesFlowLayout.Controls.Add(byeControl);
         }
 
-        private void AddPairing(Player p1, Player p2)
+        private void AddPairing(Pairing pairing)
         {
-            pairings.Add((p1, p2));
-            var pairingControl = new PairingsPreviewPairingControl(p1, p2);
+            pairings.Add(pairing);
+            var pairingControl = pairing.GetPairingControl();
             pairingControl.UnpairRequested += OnUnpairRequested;
             pairingsFlowLayout.Controls.Add(pairingControl);
         }
@@ -93,12 +93,18 @@ namespace MTGCupid.UI
                 return;
 
             var pairingControl = (PairingsPreviewPairingControl)sender;
-            var pairing = pairings.First(p => p.p1 == e.Player1 && p.p2 == e.Player2);
+            var pairing = e.Pairing;
+            if (pairing == null)
+            {
+                throw new InvalidOperationException("Attempting to unpair a pairing that does not exist.");
+            }
             pairings.Remove(pairing);
             pairingsFlowLayout.Controls.Remove(pairingControl);
 
-            AddBye(pairing.p1);
-            AddBye(pairing.p2);
+            foreach (var player in pairing.Players)
+            {
+                AddBye(player);
+            }
         }
 
         private void OnByePlayerSelected(object? sender, ByePlayerSelectedEventArgs e)
@@ -136,7 +142,7 @@ namespace MTGCupid.UI
             else
             {
                 // Create pairing
-                AddPairing(selectedByePlayer, player);
+                AddPairing(new Pairing(selectedByePlayer, player));
 
                 byePlayers.Remove(selectedByePlayer);
                 byePlayers.Remove(player);

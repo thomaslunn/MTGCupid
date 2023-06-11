@@ -17,25 +17,22 @@ namespace MTGCupid.UI
         [Description("Invoked when the pairing is requested to be unpaired")]
         public event EventHandler<UnpairRequestedEventArgs>? UnpairRequested;
 
-        private readonly Player p1;
-        private readonly Player p2;
+        private readonly Pairing pairing;
 
-        public PairingsPreviewPairingControl(Player p1, Player p2)
+        public PairingsPreviewPairingControl(Pairing pairing)
         {
             InitializeComponent();
 
-            this.p1 = p1;
-            this.p2 = p2;
+            this.pairing = pairing;
 
-            pairingButton.Text = string.Format("{0}. {1} vs {2}. {3}", p1.Seed, p1.Name, p2.Seed, p2.Name);
+            pairingButton.Text = pairing.ToString();
         }
 
         private void pairingButton_Click(object sender, EventArgs e)
         {
             var args = new UnpairRequestedEventArgs()
             {
-                Player1 = p1,
-                Player2 = p2
+                Pairing = pairing
             };
             UnpairRequested?.Invoke(this, args);
         }
@@ -43,7 +40,6 @@ namespace MTGCupid.UI
 
     public class UnpairRequestedEventArgs : EventArgs
     {
-        public Player? Player1 { get; internal set; }
-        public Player? Player2 { get; internal set; }
+        public Pairing? Pairing { get; internal set; }
     }
 }

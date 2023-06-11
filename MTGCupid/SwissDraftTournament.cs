@@ -117,14 +117,14 @@ namespace MTGCupid
             return seating;
         }
 
-        public override (List<(Player p1, Player p2)> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
+        public override (List<Pairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
 
             matchesInProgress.Clear();
             List<Player> byePlayers = new List<Player>();
-            List<(Player p1, Player p2)> pairings = new List<(Player p1, Player p2)>();
+            List<Pairing> pairings = new List<Pairing>();
 
             foreach (var pod in Pods)
             {
@@ -158,7 +158,7 @@ namespace MTGCupid
                 if (unpairedPlayers.Count == 0 || !CreatePairings(pod, unpairedPlayers, out var matches))
                     throw new InvalidOperationException("Unable to create pairings: no possible matchup.");
             
-                pairings.AddRange(matches.Select(m => (pod[m.p1], pod[m.p2])));
+                pairings.AddRange(matches.Select(m => new Pairing(pod[m.p1], pod[m.p2])));
             }
 
             return (pairings, byePlayers);

@@ -15,13 +15,13 @@ namespace MTGCupid
         public int GamesPlayed => Player1GameWins + Player2GameWins;
         public bool Completed { get; protected set; } = false;
 
-        public Match(Player p1, Player p2)
+        public Match(Pairing pairing)
         {
-            Player1 = p1;
-            Player2 = p2;
+            Player1 = pairing.player1;
+            Player2 = pairing.player2;
 
-            p1.Matches.Add(this);
-            p2.Matches.Add(this); // In a bye, p1 == p2, but the match collection is a set so this is fine
+            pairing.player1.Matches.Add(this);
+            pairing.player2.Matches.Add(this); // In a bye, p1 == p2, but the match collection is a set so this is fine
         }
 
         public virtual void RecordResult(int p1Wins, int p2Wins)
@@ -95,7 +95,7 @@ namespace MTGCupid
 
     public class Bye : Match
     {
-        public Bye(Player player) : base(player, player)
+        public Bye(Player player) : base(new Pairing(player, player))
         {
             Completed = true;
             Player1GameWins = 2;
