@@ -8,13 +8,15 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MTGCupid.Matches;
+using MTGCupid.UI.PairingsView;
 
 namespace MTGCupid.UI
 {
     public partial class PairingsListControl : UserControl
     {
-        private List<PairingControl> pairings = new List<PairingControl>();
-        private List<Match> matches = new List<Match>();
+        private List<UserControl> pairings = new List<UserControl>();
+        private List<IMatch> matches = new List<IMatch>();
 
         [Browsable(true)]
         [Category("Action")]
@@ -26,7 +28,7 @@ namespace MTGCupid.UI
             InitializeComponent();
         }
 
-        public void InitialiseWithMatches(List<Match> matches)
+        public void InitialiseWithMatches(List<IMatch> matches)
         {
             this.matches = matches;
             pairings.Clear();
@@ -36,8 +38,8 @@ namespace MTGCupid.UI
 
             foreach (var match in matches)
             {
-                var pairing = new PairingControl(match);
-                pairing.MatchSubmittedToggled += OnMatchSubmittedToggled;
+                var pairing = IPairingControl.GetPairingControl(match);
+                ((IPairingControl)pairing).MatchSubmittedToggled += OnMatchSubmittedToggled;
                 pairings.Add(pairing);
                 flowLayoutPanel.Controls.Add(pairing);
             }
@@ -81,7 +83,7 @@ namespace MTGCupid.UI
 
             foreach (var pairing in pairings)
             {
-                pairing.DropPlayers();
+                ((IPairingControl)pairing).DropPlayers();
             }
 
             confirmButton.Enabled = false;
@@ -94,7 +96,7 @@ namespace MTGCupid.UI
         {
             foreach (var pairing in pairings)
             {
-                pairing.Submit();
+                ((IPairingControl)pairing).Submit();
             }
         }
     }

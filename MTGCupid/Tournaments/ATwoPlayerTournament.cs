@@ -1,7 +1,10 @@
-﻿using System;
+﻿using MTGCupid.Matches;
+using MTGCupid;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +16,80 @@ namespace MTGCupid.Tournaments
         {
         }
 
-        protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
+        protected override void UpdateStandings()
+        {
+            // Update match win percentage
+            foreach (var player in Players)
+            {
+                player.MatchWinPercentage = player.Matches.Sum(m => m.MatchPointsOf(player)) / (3.0 * player.Matches.Count);
+                if (player.MatchWinPercentage < 0.33) // Enforced lower bound of 33% match win percentage
+                    player.MatchWinPercentage = 0.33;
+            }
+
+            // Update opponent match win percentage
+            foreach (var player in Players)
+            {
+                var matches = player.Matches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OMW%
+                if (matches.Count() == 0)
+                    player.OpponentMatchWinPercentage = 1;
+                else
+                    player.OpponentMatchWinPercentage = matches.Sum(m => m.OpponentOf(player).MatchWinPercentage) / matches.Count();
+            }
+
+            // Update game win percentage
+            foreach (var player in Players)
+            {
+                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                if (gamesPlayed == 0)
+                {
+                    player.GameWinPercentage = 1; // Default to 100% game win percentage if no games played
+                    continue;
+                }
+                player.GameWinPercentage = player.Matches.Sum(m => m.GamePointsOf(player)) / (3.0 * player.Matches.Sum(m => m.GamesPlayed));
+                if (player.GameWinPercentage < 0.33) // Enforced lower bound of 33% game win percentage
+                    player.GameWinPercentage = 0.33;
+            }
+
+            // Update opponent game win percentage
+            foreach (var player in Players)
+            {
+                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                if (gamesPlayed == 0)
+                {
+                    player.OpponentGameWinPercentage = 0; // Default to 0% opponent game win percentage if no games played
+                    continue;
+                }
+                var matches = player.Matches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OGW%
+                if (matches.Count() == 0)
+                    player.OpponentGameWinPercentage = 1;
+                else
+                    player.OpponentGameWinPercentage = matches.Sum(m => m.OpponentOf(player).GameWinPercentage) / matches.Count();
+            }
+
+            // Sort players by tiebreakers
+            Players.Sort();
+
+            // Update player positions, tracking players on equal seed
+            string lastEqualSeed = "=1";
+            for (int i = 0; i < Players.Count; i++)
+            {
+                if (i != 0 && Players[i].HasEquivalentScoreTo(Players[i - 1]))
+                {
+                    Players[i].Seed = lastEqualSeed;
+                    Players[i - 1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
+                }
+                else
+                {
+                    Players[i].Seed = (i + 1).ToString();
+                    lastEqualSeed = string.Format("={0}", i + 1);
+                }
+            }
+
+            // Increment round number
+            CurrentRound++;
+        }
+
+protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
         {
             return CreatePairings(Players, unpairedPlayers, out matches);
         }

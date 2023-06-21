@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MTGCupid.Matches;
 
 namespace MTGCupid
 {
@@ -11,7 +12,7 @@ namespace MTGCupid
         public const double COMPARISON_DOUBLE_EQUALITY_THRESHOLD = 0.0001;
         public string Name { get; private set; }
         public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
-        public HashSet<Match> Matches { get; } = new HashSet<Match>();
+        public HashSet<IMatch> Matches { get; } = new HashSet<IMatch>();
         public int ByesReceived { get; internal set; } = 0;
         public bool HasDropped { get; private set; } = false;
 
@@ -34,7 +35,7 @@ namespace MTGCupid
         }
         public bool HasPlayed(Player player)
         {
-            return Matches.Any(m => m.OpponentOf(this) == player);
+            return this != player && Matches.Any(m => m.HasParticipant(player));
         }
 
         public int CompareTo(Player? other)

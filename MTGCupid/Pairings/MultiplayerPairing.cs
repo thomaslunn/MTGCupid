@@ -1,4 +1,5 @@
-﻿using MTGCupid.UI;
+﻿using MTGCupid.Matches;
+using MTGCupid.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,14 @@ namespace MTGCupid.Pairings
             this.players.AddRange(players);
         }
 
-        IEnumerable<Player> IPairing.Players => players;
+        public IEnumerable<Player> Players => players;
 
-        Match IPairing.CreateMatch()
+        public IMatch CreateMatch()
         {
             throw new NotImplementedException();
         }
 
-        PairingsPreviewPairingControl IPairing.GetPairingControl()
+        public PairingsPreviewPairingControl GetPairingControl()
         {
             throw new NotImplementedException();
         }

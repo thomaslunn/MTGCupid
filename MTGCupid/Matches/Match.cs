@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MTGCupid.Pairings;
 
-namespace MTGCupid
+namespace MTGCupid.Matches
 {
-    public class Match
+    public class Match : IMatch
     {
         public Player Player1 { get; protected set; }
         public Player Player2 { get; protected set; }
@@ -22,7 +22,7 @@ namespace MTGCupid
             Player2 = pairing.player2;
 
             pairing.player1.Matches.Add(this);
-            pairing.player2.Matches.Add(this); // In a bye, p1 == p2, but the match collection is a set so this is fine
+            pairing.player2.Matches.Add(this);
         }
 
         public virtual void RecordResult(int p1Wins, int p2Wins)
@@ -40,7 +40,7 @@ namespace MTGCupid
 
         public virtual bool WasWonBy(Player player)
         {
-            return (player == Player1 && Player1GameWins > Player2GameWins) || (player == Player2 && Player2GameWins > Player1GameWins);
+            return player == Player1 && Player1GameWins > Player2GameWins || player == Player2 && Player2GameWins > Player1GameWins;
         }
 
         public virtual int MatchPointsOf(Player player)
@@ -96,44 +96,6 @@ namespace MTGCupid
         public bool HasParticipant(Player player)
         {
             return player == Player1 || player == Player2;
-        }
-    }
-
-    public class Bye : Match
-    {
-        public Bye(Player player) : base(new Pairing(player, player))
-        {
-            Completed = true;
-            Player1GameWins = 2;
-        }
-
-        public override void RecordResult(int p1Wins, int p2Wins)
-        {
-            throw new InvalidOperationException("Cannot record results for a bye.");
-        }
-
-        public override bool WasWonBy(Player player)
-        {
-            return player == Player1;
-        }
-
-        public override int MatchPointsOf(Player player)
-        {
-            if (player == Player1)
-                return 3;
-            throw new ArgumentException("Player is not in this match.");
-        }
-
-        public override int GamePointsOf(Player player)
-        {
-            if (player == Player1)
-                return 6;
-            throw new ArgumentException("Player is not in this match.");
-        }
-
-        public override void UndoResult()
-        {
-            throw new InvalidOperationException("Cannot undo results for a bye.");
         }
     }
 }

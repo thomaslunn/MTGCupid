@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MTGCupid.Matches;
 
 namespace MTGCupid.UI
 {
@@ -40,11 +41,13 @@ namespace MTGCupid.UI
                     score = "-";
                     opponentName = "BYE";
                 }
-                else
+                else if (match is Match twoPlayerMatch)
                 {
-                    score = string.Format("{0} - {1}", match.WinsOf(player), match.WinsOf(match.OpponentOf(player)));
-                    opponentName = match.OpponentOf(player).Name;
+                    score = string.Format("{0} - {1}", twoPlayerMatch.WinsOf(player), twoPlayerMatch.WinsOf(twoPlayerMatch.OpponentOf(player)));
+                    opponentName = twoPlayerMatch.OpponentOf(player).Name;
                 }
+                else 
+                    throw new InvalidOperationException("Unknown match type");
 
                 dataGridView.Rows.Add(player.Name, score, opponentName);
             }

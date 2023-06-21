@@ -1,4 +1,5 @@
-﻿using MTGCupid.UI;
+﻿using MTGCupid.Matches;
+using MTGCupid.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace MTGCupid.Pairings
             }
         }
 
-        public Match CreateMatch()
+        public IMatch CreateMatch()
         {
             return new Match(this);
         }

@@ -36,6 +36,11 @@ namespace MTGCupid.Tournaments
         {
         }
 
+        protected override void UpdateStandings()
+        {
+            throw new NotImplementedException();
+        }
+
         protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<List<int>> matches)
         {
             return CreatePairings(Players, unpairedPlayers, out matches);

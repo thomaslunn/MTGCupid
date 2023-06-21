@@ -1,4 +1,5 @@
-﻿using MTGCupid.UI;
+﻿using MTGCupid.Matches;
+using MTGCupid.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,6 @@ namespace MTGCupid.Pairings
 
         public IEnumerable<Player> Players { get; }
 
-        public Match CreateMatch();
+        public IMatch CreateMatch();
     }
 }

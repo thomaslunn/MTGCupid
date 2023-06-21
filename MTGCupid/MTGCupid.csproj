@@ -19,6 +19,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="UI\PairingsView\ByePairingControl.cs" />
+    <Compile Update="UI\PairingsView\MutliplayerGamePairingControl.cs" />
   </ItemGroup>
 
   <ItemGroup>

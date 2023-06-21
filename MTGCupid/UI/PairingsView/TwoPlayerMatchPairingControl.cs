@@ -7,31 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MTGCupid.Matches;
+using MTGCupid.UI.PairingsView;
+using static MTGCupid.UI.PairingsView.IPairingControl;
 
 namespace MTGCupid.UI
 {
-    public partial class PairingControl : UserControl
+    public partial class TwoPlayerMatchPairingControl : UserControl, IPairingControl
     {
-        private readonly Color RED = Color.FromArgb(0xff, 0x80, 0x80);
-        private readonly Color YELLOW = Color.FromArgb(0xff, 0xff, 0x80);
-        private readonly Color GREEN = Color.FromArgb(0x80, 0xff, 0x80);
-        private readonly Color YELLOW_GREEN = Color.FromArgb(0xc0, 0xc0, 0x00);
-
-        private readonly Color CONTROL_BACKGROUND = SystemColors.Control;
-        private readonly Color LIGHT_GREEN_BACKGROUND = Color.FromArgb(0xc0, 0xff, 0xc0);
-
         private int player1Score = 0;
         private int player2Score = 0;
 
         private bool submitted = false;
         private readonly Match match;
 
-        [Browsable(true)]
-        [Category("Action")]
-        [Description("Invoked when the score of the match is submitted or unsubmitted")]
         public event EventHandler<MatchSubmittedToggledEventArgs>? MatchSubmittedToggled;
 
-        public PairingControl(Match match)
+        public TwoPlayerMatchPairingControl(Match match)
         {
             InitializeComponent();
 
@@ -40,22 +32,6 @@ namespace MTGCupid.UI
             this.BackColor = CONTROL_BACKGROUND;
 
             this.match = match;
-            if (match is Bye)
-            {
-                // Simulate as an already-completed match
-                player1Label.Text = match.Player1.Name;
-                player2Label.Text = "--- BYE ---";
-                dropPlayer2Box.Enabled = false;
-
-                player1Score = 2;
-                player1ScoreButton.Text = 2.ToString();
-                OnScoreUpdate();
-
-                submitButton.PerformClick();
-                submitButton.Enabled = false;
-
-                return;
-            }
             player1Label.Text = match.Player1.Name;
             player2Label.Text = match.Player2.Name;
         }
@@ -116,8 +92,7 @@ namespace MTGCupid.UI
                 player2ScoreButton.Enabled = false;
                 this.BackColor = LIGHT_GREEN_BACKGROUND;
 
-                if (match is not Bye)
-                    match.RecordResult(player1Score, player2Score);
+                match.RecordResult(player1Score, player2Score);
                 submitted = true;
             }
             else
@@ -128,8 +103,7 @@ namespace MTGCupid.UI
                 player2ScoreButton.Enabled = true;
                 this.BackColor = CONTROL_BACKGROUND;
 
-                if (match is not Bye)
-                    match.UndoResult();
+                match.UndoResult();
                 submitted = false;
             }
 
@@ -160,11 +134,5 @@ namespace MTGCupid.UI
                 submitButton.PerformClick();
             }
         }
-    }
-
-    public class MatchSubmittedToggledEventArgs : EventArgs
-    {
-        public Match? Match { get; set; }
-        public bool Submitted { get; set; }
     }
 }

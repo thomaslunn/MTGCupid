@@ -1,6 +1,6 @@
 ﻿namespace MTGCupid.UI
 {
-    partial class PairingControl
+    partial class TwoPlayerMatchPairingControl
     {
         /// <summary> 
         /// Required designer variable.
