@@ -49,7 +49,10 @@ namespace MTGCupid.UI
                     // Show draft pods dialog
                     var draftPodsForm = new PodsForm(poddedTournament.GetDraftSeating());
                     if (draftPodsForm.ShowDialog() != DialogResult.OK)
+                    {
+                        tournament = null;
                         return;
+                    }
                 }
             }
 

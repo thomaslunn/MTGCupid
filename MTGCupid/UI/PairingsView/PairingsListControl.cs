@@ -47,7 +47,7 @@ namespace MTGCupid.UI
             flowLayoutPanel.ResumeLayout();
 
             confirmButton.Enabled = false;
-            flowLayoutPanel.Enabled = true;
+            submitAllButton.Enabled = true;
         }
 
         private void flowLayoutPanel_Layout(object sender, LayoutEventArgs e)
@@ -69,10 +69,12 @@ namespace MTGCupid.UI
             if (matches.All(match => match.Completed))
             {
                 confirmButton.Enabled = true;
+                submitAllButton.Enabled = false;
             }
             else
             {
                 confirmButton.Enabled = false;
+                submitAllButton.Enabled = true;
             }
         }
 
@@ -87,7 +89,11 @@ namespace MTGCupid.UI
             }
 
             confirmButton.Enabled = false;
-            flowLayoutPanel.Enabled = false; // Disable all pairing controls so they can't be edited
+            submitAllButton.Enabled = false;
+
+            // Disable all pairing controls so they can't be edited
+            foreach (var control in pairings)
+                control.Enabled = false;
 
             MatchesConfirmed?.Invoke(this, e);
         }

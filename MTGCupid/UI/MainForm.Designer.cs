@@ -48,6 +48,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
             Text = "MTG Cupid";
+            FormClosing += MainForm_FormClosing;
             ResumeLayout(false);
         }
 
