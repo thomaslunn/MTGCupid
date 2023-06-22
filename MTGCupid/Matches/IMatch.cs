@@ -20,5 +20,6 @@ namespace MTGCupid.Matches
         public int GamePointsOf(Player player);
 
         public bool HasParticipant(Player player);
+        internal MatchExport GetMatchExport(bool includeScores = true);
     }
 }

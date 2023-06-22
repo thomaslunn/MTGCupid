@@ -15,6 +15,7 @@ namespace MTGCupid.Matches
         public int Player2GameWins { get; protected set; } = 0;
         public int GamesPlayed => Player1GameWins + Player2GameWins;
         public bool Completed { get; protected set; } = false;
+        public const string MatchType = "1v1";
 
         public Match(Pairing pairing)
         {
@@ -96,6 +97,18 @@ namespace MTGCupid.Matches
         public bool HasParticipant(Player player)
         {
             return player == Player1 || player == Player2;
+        }
+
+        public MatchExport GetMatchExport(bool includeScores = true)
+        {
+            var me = new MatchExport()
+            {
+                MatchType = MatchType,
+                Players = new List<string>() { Player1.Name, Player2.Name }
+            };
+            if (includeScores)
+                me.Scores = new List<int>() { Player1GameWins, Player2GameWins };
+            return me;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace MTGCupid.Matches
         public IEnumerable<Player> Players { get; private set; }
         private Dictionary<Player, int> matchPoints = new Dictionary<Player, int>();
         private int _numPlayers;
+        public const string MatchType = "Multiplayer";
 
         public MultiplayerGame(MultiplayerPairing pairing)
         {
@@ -60,6 +61,18 @@ namespace MTGCupid.Matches
         public bool WasWonBy(Player player)
         {
             throw new InvalidOperationException("Winner is irrelevent for multiplayer games");
+        }
+
+        public MatchExport GetMatchExport(bool includeScores = true)
+        {
+            var me = new MatchExport()
+            {
+                MatchType = MatchType,
+                Players = Players.Select(p => p.Name).ToList()
+            };
+            if (includeScores)
+                me.Scores = matchPoints.Values.ToList();
+            return me;
         }
     }
 }

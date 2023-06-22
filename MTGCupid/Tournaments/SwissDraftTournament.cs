@@ -48,7 +48,8 @@ namespace MTGCupid.Tournaments
         /// </summary>
 
         private List<Player[]> Pods { get; } = new List<Player[]>();
-
+        public override string TournamentType => TournamentTypeString;
+        public const string TournamentTypeString = "Swiss Draft";
         public SwissDraftTournament(List<string> players) : base(players)
         {
             // Initialise pods
@@ -95,7 +96,10 @@ namespace MTGCupid.Tournaments
                 }
             }
         }
-
+        public SwissDraftTournament(List<Player> players, List<Player[]> pods) : base(players)
+        {
+            Pods = pods;
+        }
         public List<Player[]> GetDraftSeating()
         {
             List<Player[]> seating = new List<Player[]>();
@@ -117,13 +121,17 @@ namespace MTGCupid.Tournaments
 
             return seating;
         }
+        public List<Player[]> GetPods()
+        {
+            return Pods;
+        }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
 
-            matchesInProgress.Clear();
+            MatchesInProgress.Clear();
             List<Player> byePlayers = new List<Player>();
             List<IPairing> pairings = new List<IPairing>();
 

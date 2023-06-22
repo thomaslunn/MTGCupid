@@ -34,5 +34,17 @@ namespace MTGCupid.Properties {
                 this["AutoConfirmPairings"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TournamentSaveLocation {
+            get {
+                return ((string)(this["TournamentSaveLocation"]));
+            }
+            set {
+                this["TournamentSaveLocation"] = value;
+            }
+        }
     }
 }

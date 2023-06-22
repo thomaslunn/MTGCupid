@@ -29,16 +29,13 @@ namespace MTGCupid.UI
 
             dataGridView.Rows.Clear();
 
-            foreach (var match in player.Matches)
+            foreach (var match in player.CompletedMatches)
             {
-                if (!match.Completed)
-                    continue;
-
                 string score;
                 string opponentName;
                 if (match is Bye)
                 {
-                    score = "-";
+                    score = "2 - 0";
                     opponentName = "BYE";
                 }
                 else if (match is Match twoPlayerMatch)
@@ -49,7 +46,7 @@ namespace MTGCupid.UI
                 else if (match is MultiplayerGame multiplayerMatch)
                 {
                     var otherPlayers = multiplayerMatch.Players.Where(p => p != player);
-                    score = string.Format("{0} ({1})", multiplayerMatch.MatchPointsOf(player), string.Join(", ", otherPlayers.Select(p => match.MatchPointsOf(p))));
+                    score = string.Format("{0} - {1}", multiplayerMatch.MatchPointsOf(player), string.Join(", ", otherPlayers.Select(p => match.MatchPointsOf(p))));
                     opponentName = string.Join(", ", otherPlayers.Select(p => p.Name));
                 }
                 else 

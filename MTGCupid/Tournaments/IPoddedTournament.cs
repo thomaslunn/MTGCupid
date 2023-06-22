@@ -8,6 +8,7 @@ namespace MTGCupid.Tournaments
 {
     internal interface IPoddedTournament
     {
+        public List<Player[]> GetPods();
         public List<Player[]> GetDraftSeating();
     }
 }

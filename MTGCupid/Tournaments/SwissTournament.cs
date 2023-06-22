@@ -12,7 +12,10 @@ namespace MTGCupid.Tournaments
 {
     internal class SwissTournament : ATwoPlayerTournament
     {
+        public override string TournamentType => TournamentTypeString;
+        public const string TournamentTypeString = "Swiss Tournament";
         public SwissTournament(List<string> players) : base(players) { }
+        public SwissTournament(List<Player> players) : base(players) { }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
@@ -26,7 +29,7 @@ namespace MTGCupid.Tournaments
                 .Where(p => !p.p.HasDropped)
                 .Select(p => p.index).ToList();
 
-            matchesInProgress.Clear();
+            MatchesInProgress.Clear();
 
             List<Player> byePlayers = new List<Player>();
             if (unpairedPlayers.Count % 2 != 0)

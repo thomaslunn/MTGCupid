@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MTGCupid.Tournaments
 {
     internal abstract class AMultiplayerTournament : ATournament
-    {        
+    {
         /// <summary>
         /// Acceptable game sizes for a four-player tournament:
         /// Num players | Pod sizes
@@ -33,9 +33,8 @@ namespace MTGCupid.Tournaments
         /// 
         /// Each game cannot contain three players who have all played together already
         /// </summary>
-        protected AMultiplayerTournament(List<string> players) : base(players)
-        {
-        }
+        protected AMultiplayerTournament(List<string> players) : base(players) { }
+        protected AMultiplayerTournament(List<Player> players) : base(players) { }
 
         protected override void UpdateWinPercentages()
         {
@@ -43,14 +42,14 @@ namespace MTGCupid.Tournaments
             // Match win percentage is interpreted as the average number of points per game
             foreach (var player in Players)
             {
-                player.MatchWinPercentage = player.Matches.Average(m => m.MatchPointsOf(player));
+                player.MatchWinPercentage = player.CompletedMatches.Average(m => m.MatchPointsOf(player));
                 player.GameWinPercentage = player.MatchWinPercentage;
             }
 
             // Update opponent match win percentage + opponent game win percentage
             foreach (var player in Players)
             {
-                var matches = player.Matches.Where(m => m is not Bye).Cast<MultiplayerGame>(); // Byes are discounted in OMW%
+                var matches = player.CompletedMatches.Where(m => m is not Bye).Cast<MultiplayerGame>(); // Byes are discounted in OMW%
                 if (matches.Count() == 0)
                     player.OpponentMatchWinPercentage = 100; // Max value
                 else

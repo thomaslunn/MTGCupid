@@ -10,16 +10,15 @@ namespace MTGCupid.Tournaments
 {
     internal abstract class ATwoPlayerTournament : ATournament
     {
-        protected ATwoPlayerTournament(List<string> players) : base(players)
-        {
-        }
+        protected ATwoPlayerTournament(List<string> players) : base(players) { }
+        protected ATwoPlayerTournament(List<Player> players) : base(players) { }
 
         protected override void UpdateWinPercentages()
         {
             // Update match win percentage
             foreach (var player in Players)
             {
-                player.MatchWinPercentage = player.Matches.Sum(m => m.MatchPointsOf(player)) / (3.0 * player.Matches.Count);
+                player.MatchWinPercentage = player.CompletedMatches.Sum(m => m.MatchPointsOf(player)) / (3.0 * player.CompletedMatches.Count());
                 if (player.MatchWinPercentage < 0.33) // Enforced lower bound of 33% match win percentage
                     player.MatchWinPercentage = 0.33;
             }
@@ -27,7 +26,7 @@ namespace MTGCupid.Tournaments
             // Update opponent match win percentage
             foreach (var player in Players)
             {
-                var matches = player.Matches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OMW%
+                var matches = player.CompletedMatches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OMW%
                 if (matches.Count() == 0)
                     player.OpponentMatchWinPercentage = 1;
                 else
@@ -37,13 +36,13 @@ namespace MTGCupid.Tournaments
             // Update game win percentage
             foreach (var player in Players)
             {
-                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                var gamesPlayed = player.CompletedMatches.Sum(m => m.GamesPlayed);
                 if (gamesPlayed == 0)
                 {
                     player.GameWinPercentage = 1; // Default to 100% game win percentage if no games played
                     continue;
                 }
-                player.GameWinPercentage = player.Matches.Sum(m => m.GamePointsOf(player)) / (3.0 * player.Matches.Sum(m => m.GamesPlayed));
+                player.GameWinPercentage = player.CompletedMatches.Sum(m => m.GamePointsOf(player)) / (3.0 * player.CompletedMatches.Sum(m => m.GamesPlayed));
                 if (player.GameWinPercentage < 0.33) // Enforced lower bound of 33% game win percentage
                     player.GameWinPercentage = 0.33;
             }
@@ -51,13 +50,13 @@ namespace MTGCupid.Tournaments
             // Update opponent game win percentage
             foreach (var player in Players)
             {
-                var gamesPlayed = player.Matches.Sum(m => m.GamesPlayed);
+                var gamesPlayed = player.CompletedMatches.Sum(m => m.GamesPlayed);
                 if (gamesPlayed == 0)
                 {
                     player.OpponentGameWinPercentage = 0; // Default to 0% opponent game win percentage if no games played
                     continue;
                 }
-                var matches = player.Matches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OGW%
+                var matches = player.CompletedMatches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OGW%
                 if (matches.Count() == 0)
                     player.OpponentGameWinPercentage = 1;
                 else

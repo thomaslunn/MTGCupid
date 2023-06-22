@@ -38,8 +38,14 @@ namespace MTGCupid.UI
             standingsPage = new TabPage();
             standingsViewControl = new StandingsViewControl();
             menuStrip = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            loadMostRecentToolStripMenuItem = new ToolStripMenuItem();
+            loadToolStripMenuItem = new ToolStripMenuItem();
+            saveToolStripMenuItem = new ToolStripMenuItem();
             settingsToolStripMenuItem = new ToolStripMenuItem();
             autoConfirmPairingsToolStripMenuItem = new ToolStripMenuItem();
+            loadTournamentDialog = new OpenFileDialog();
+            saveTournamentDialog = new SaveFileDialog();
             tabControl.SuspendLayout();
             setupPage.SuspendLayout();
             pairingsPage.SuspendLayout();
@@ -123,12 +129,40 @@ namespace MTGCupid.UI
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { settingsToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem, settingsToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Size = new Size(800, 28);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { loadMostRecentToolStripMenuItem, loadToolStripMenuItem, saveToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(46, 24);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // loadMostRecentToolStripMenuItem
+            // 
+            loadMostRecentToolStripMenuItem.Name = "loadMostRecentToolStripMenuItem";
+            loadMostRecentToolStripMenuItem.Size = new Size(224, 26);
+            loadMostRecentToolStripMenuItem.Text = "Load most recent";
+            loadMostRecentToolStripMenuItem.Click += loadMostRecentToolStripMenuItem_Click;
+            // 
+            // loadToolStripMenuItem
+            // 
+            loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            loadToolStripMenuItem.Size = new Size(224, 26);
+            loadToolStripMenuItem.Text = "Load";
+            loadToolStripMenuItem.Click += loadToolStripMenuItem_Click;
+            // 
+            // saveToolStripMenuItem
+            // 
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new Size(224, 26);
+            saveToolStripMenuItem.Text = "Save";
+            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
             // settingsToolStripMenuItem
             // 
@@ -145,6 +179,15 @@ namespace MTGCupid.UI
             autoConfirmPairingsToolStripMenuItem.Text = "Auto-confirm pairings?";
             autoConfirmPairingsToolStripMenuItem.ToolTipText = "Disable to allow pairings to be manually adjusted before a round is created";
             autoConfirmPairingsToolStripMenuItem.CheckedChanged += autoConfirmPairingsToolStripMenuItem_CheckedChanged;
+            // 
+            // loadTournamentDialog
+            // 
+            loadTournamentDialog.Filter = "JSON files|*.json|All files|*.*";
+            // 
+            // saveTournamentDialog
+            // 
+            saveTournamentDialog.DefaultExt = "json";
+            saveTournamentDialog.Filter = "JSON files|*.json|All files|*.*";
             // 
             // TournamentHandlerControl
             // 
@@ -175,5 +218,11 @@ namespace MTGCupid.UI
         private MenuStrip menuStrip;
         private ToolStripMenuItem settingsToolStripMenuItem;
         private ToolStripMenuItem autoConfirmPairingsToolStripMenuItem;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem loadMostRecentToolStripMenuItem;
+        private ToolStripMenuItem loadToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private OpenFileDialog loadTournamentDialog;
+        private SaveFileDialog saveTournamentDialog;
     }
 }

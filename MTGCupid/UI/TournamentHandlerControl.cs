@@ -21,6 +21,15 @@ namespace MTGCupid.UI
 
             // Setup menu items to match the current setting
             autoConfirmPairingsToolStripMenuItem.Checked = Properties.Settings.Default.AutoConfirmPairings;
+
+            if (string.IsNullOrEmpty(Properties.Settings.Default.TournamentSaveLocation))
+            {
+                Properties.Settings.Default.TournamentSaveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MTGCupid", "tournaments");
+                Directory.CreateDirectory(Properties.Settings.Default.TournamentSaveLocation);
+            }
+
+            loadTournamentDialog.InitialDirectory = Properties.Settings.Default.TournamentSaveLocation;
+            saveTournamentDialog.InitialDirectory = Properties.Settings.Default.TournamentSaveLocation;
         }
 
         private void tournamentInitialiserControl_BeginNextRoundButtonClicked(object sender, BeginNextRoundButtonClickedEventArgs e)
@@ -109,6 +118,83 @@ namespace MTGCupid.UI
         {
             Properties.Settings.Default.AutoConfirmPairings = autoConfirmPairingsToolStripMenuItem.Checked;
             Properties.Settings.Default.Save();
+        }
+
+        private void loadMostRecentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tournament != null)
+            {
+                if (MessageBox.Show("The current in-progress tournament will be lost. Are you sure you want to continue?", "Load most recent tournament", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    return;
+            }
+
+            string directory = Properties.Settings.Default.TournamentSaveLocation;
+            var sortedFiles = new DirectoryInfo(directory).GetFiles("*.json").OrderByDescending(f => f.LastWriteTime);
+            var mostRecentFile = sortedFiles.FirstOrDefault();
+            if (mostRecentFile == default)
+            {
+                MessageBox.Show("No tournaments have been saved.", "No tournaments saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            LoadTournamentFromPath(mostRecentFile.FullName);
+        }
+
+        private void LoadTournamentFromPath(string path)
+        {
+            try
+            {
+                tournament = ATournament.LoadTournament(path);
+            }
+            catch (FileFormatException ex)
+            {
+                MessageBox.Show("Exception occurred whilst reading file: \r\n" + ex.ToString(), "Error loading file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            tournamentInitialiserControl.HasTournamentBegun = true;
+            standingsViewControl.UpdateStandings(tournament.GetStandings());
+            pairingsListControl.InitialiseWithMatches(tournament.MatchesInProgress);
+            if (tournament.AwaitingMatchResults)
+            {
+                tournamentInitialiserControl.DisableNextRoundButton();
+            }
+            else
+            {
+                tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound);
+            }
+
+            MessageBox.Show("Tournament load successful.", "Tournament loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tournament != null)
+            {
+                if (MessageBox.Show("The current in-progress tournament will be lost. Are you sure you want to continue?", "Load most recent tournament", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                    return;
+            }
+
+            if (loadTournamentDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            LoadTournamentFromPath(loadTournamentDialog.FileName);
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tournament == null)
+            {
+                MessageBox.Show("No tournament has been started.", "No tournament started", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (saveTournamentDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            tournament.SaveTournamentProgress(saveTournamentDialog.FileName);
+
+            MessageBox.Show("Tournament saved successfully.", "Tournament saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

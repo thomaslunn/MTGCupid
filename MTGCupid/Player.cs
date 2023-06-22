@@ -11,8 +11,9 @@ namespace MTGCupid
     {
         public const double COMPARISON_DOUBLE_EQUALITY_THRESHOLD = 0.0001;
         public string Name { get; private set; }
-        public int Points { get => Matches.Sum(m => m.Completed ? m.MatchPointsOf(this) : 0); }
+        public int Points => CompletedMatches.Sum(m => m.MatchPointsOf(this));
         public HashSet<IMatch> Matches { get; } = new HashSet<IMatch>();
+        public IEnumerable<IMatch> CompletedMatches => Matches.Where(m => m.Completed);
         public int ByesReceived { get; internal set; } = 0;
         public bool HasDropped { get; private set; } = false;
 

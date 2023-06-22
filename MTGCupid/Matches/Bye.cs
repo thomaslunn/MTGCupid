@@ -12,6 +12,7 @@ namespace MTGCupid.Matches
         public bool Completed => true;
         public int GamesPlayed => 2;
         public Player player { get; private set; }
+        public const string MatchType = "Bye";
 
         public Bye(Player player)
         {
@@ -46,6 +47,15 @@ namespace MTGCupid.Matches
         public bool HasParticipant(Player player)
         {
             return player == this.player;
+        }
+
+        public MatchExport GetMatchExport(bool _ = true)
+        {
+            return new MatchExport()
+            {
+                MatchType = MatchType,
+                Players = new List<string>() { player.Name }
+            };
         }
     }
 }

@@ -9,7 +9,11 @@ namespace MTGCupid.Tournaments
 {
     internal class SwissMultiplayerTournament : AMultiplayerTournament
     {
+        public override string TournamentType => TournamentTypeString;
+        public const string TournamentTypeString = "Multiplayer Tournament";
+
         public SwissMultiplayerTournament(List<string> players) : base(players) { }
+        internal SwissMultiplayerTournament(List<Player> players) : base(players) { }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
@@ -23,7 +27,7 @@ namespace MTGCupid.Tournaments
                 .Where(p => !p.p.HasDropped)
                 .Select(p => p.index).ToList();
 
-            matchesInProgress.Clear();
+            MatchesInProgress.Clear();
 
             if (unpairedPlayers.Count < 3 || !CreatePairings(unpairedPlayers, out var matches))
                 throw new InvalidOperationException("Unable to create pairings: no possible matchup.");
