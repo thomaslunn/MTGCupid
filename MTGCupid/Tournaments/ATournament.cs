@@ -49,7 +49,7 @@ namespace MTGCupid.Tournaments
             return matchesInProgress;
         }
 
-        protected abstract void UpdateStandings();
+        protected abstract void UpdateWinPercentages();
 
         /// <summary>
         /// Confirms that all matches have been completed and updates standings
@@ -62,11 +62,35 @@ namespace MTGCupid.Tournaments
 
             matchesInProgress.Clear();
             AwaitingMatchResults = false;
-            UpdateStandings();
+            UpdateWinPercentages();
+            UpdatePlayerSeeds();
+            CurrentRound++;
             return true;
         }
 
-        public List<PlayerStandings> GetStandings()
+        private void UpdatePlayerSeeds()
+        {
+            // Sort players by tiebreakers
+            Players.Sort();
+
+            // Update player positions, tracking players on equal seed
+            string lastEqualSeed = "=1";
+            for (int i = 0; i < Players.Count; i++)
+            {
+                if (i != 0 && Players[i].HasEquivalentScoreTo(Players[i - 1]))
+                {
+                    Players[i].Seed = lastEqualSeed;
+                    Players[i - 1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
+                }
+                else
+                {
+                    Players[i].Seed = (i + 1).ToString();
+                    lastEqualSeed = string.Format("={0}", i + 1);
+                }
+            }
+        }
+
+        public virtual List<PlayerStandings> GetStandings()
         {
             return Players.Select(p => new PlayerStandings(p)).ToList();
         }

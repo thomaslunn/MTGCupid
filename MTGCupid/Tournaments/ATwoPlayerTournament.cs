@@ -1,10 +1,8 @@
 ﻿using MTGCupid.Matches;
-using MTGCupid;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +14,7 @@ namespace MTGCupid.Tournaments
         {
         }
 
-        protected override void UpdateStandings()
+        protected override void UpdateWinPercentages()
         {
             // Update match win percentage
             foreach (var player in Players)
@@ -65,31 +63,9 @@ namespace MTGCupid.Tournaments
                 else
                     player.OpponentGameWinPercentage = matches.Sum(m => m.OpponentOf(player).GameWinPercentage) / matches.Count();
             }
-
-            // Sort players by tiebreakers
-            Players.Sort();
-
-            // Update player positions, tracking players on equal seed
-            string lastEqualSeed = "=1";
-            for (int i = 0; i < Players.Count; i++)
-            {
-                if (i != 0 && Players[i].HasEquivalentScoreTo(Players[i - 1]))
-                {
-                    Players[i].Seed = lastEqualSeed;
-                    Players[i - 1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
-                }
-                else
-                {
-                    Players[i].Seed = (i + 1).ToString();
-                    lastEqualSeed = string.Format("={0}", i + 1);
-                }
-            }
-
-            // Increment round number
-            CurrentRound++;
         }
 
-protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
+        protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<(int p1, int p2)> matches)
         {
             return CreatePairings(Players, unpairedPlayers, out matches);
         }

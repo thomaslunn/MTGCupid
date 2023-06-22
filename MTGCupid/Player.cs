@@ -68,28 +68,4 @@ namespace MTGCupid
             return string.Format("{0}: {1} points", Name, Points);
         }
     }
-
-    public class PlayerStandings
-    {
-        public string Seed { get; private set; }
-        public string Name { get; private set; }
-        public string Points { get; private set; }
-        public string OpponentMatchWinPercentage { get; private set; }
-        public string GameWinPercentage { get; private set; }
-        public string OpponentGameWinPercentage { get; private set; }
-        public bool HasDropped { get; private set; }
-        public Player Player { get; private set; }
-        public PlayerStandings(Player player)
-        {
-            Seed = player.Seed.ToString();
-            Name = player.Name;
-            Points = player.Points.ToString();
-            OpponentMatchWinPercentage = string.Format("{0:P1}", player.OpponentMatchWinPercentage);
-            GameWinPercentage = string.Format("{0:P1}", player.GameWinPercentage);
-            OpponentGameWinPercentage = string.Format("{0:P1}", player.OpponentGameWinPercentage);
-            HasDropped = player.HasDropped;
-
-            Player = player;
-        }
-    }
 }

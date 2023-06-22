@@ -46,8 +46,14 @@ namespace MTGCupid.UI
                     score = string.Format("{0} - {1}", twoPlayerMatch.WinsOf(player), twoPlayerMatch.WinsOf(twoPlayerMatch.OpponentOf(player)));
                     opponentName = twoPlayerMatch.OpponentOf(player).Name;
                 }
+                else if (match is MultiplayerGame multiplayerMatch)
+                {
+                    var otherPlayers = multiplayerMatch.Players.Where(p => p != player);
+                    score = string.Format("{0} ({1})", multiplayerMatch.MatchPointsOf(player), string.Join(", ", otherPlayers.Select(p => match.MatchPointsOf(p))));
+                    opponentName = string.Join(", ", otherPlayers.Select(p => p.Name));
+                }
                 else 
-                    throw new InvalidOperationException("Unknown match type");
+                    throw new InvalidOperationException("Unknown match type: " + match.GetType().ToString());
 
                 dataGridView.Rows.Add(player.Name, score, opponentName);
             }

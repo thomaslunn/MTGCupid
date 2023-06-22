@@ -34,11 +34,11 @@
             // 
             // submitButton
             // 
-            submitButton.Dock = DockStyle.Right;
-            submitButton.Location = new Point(398, 0);
+            submitButton.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            submitButton.Location = new Point(483, 0);
             submitButton.Margin = new Padding(3, 4, 3, 4);
             submitButton.Name = "submitButton";
-            submitButton.Size = new Size(171, 117);
+            submitButton.Size = new Size(86, 158);
             submitButton.TabIndex = 7;
             submitButton.Text = "Submit";
             submitButton.UseVisualStyleBackColor = true;
@@ -46,14 +46,15 @@
             // 
             // tableLayoutPanel
             // 
+            tableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel.AutoSize = true;
             tableLayoutPanel.ColumnCount = 1;
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel.Dock = DockStyle.Fill;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel.Location = new Point(0, 0);
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 1;
-            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel.Size = new Size(569, 117);
+            tableLayoutPanel.RowStyles.Add(new RowStyle());
+            tableLayoutPanel.Size = new Size(477, 158);
             tableLayoutPanel.TabIndex = 8;
             // 
             // MultiplayerGamePairingControl
@@ -64,11 +65,12 @@
             Controls.Add(submitButton);
             Controls.Add(tableLayoutPanel);
             Margin = new Padding(3, 4, 3, 4);
-            MaximumSize = new Size(2285, 119);
-            MinimumSize = new Size(571, 119);
+            MaximumSize = new Size(2285, 160);
+            MinimumSize = new Size(571, 160);
             Name = "MultiplayerGamePairingControl";
-            Size = new Size(569, 117);
+            Size = new Size(569, 158);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

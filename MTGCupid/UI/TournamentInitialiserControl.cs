@@ -21,12 +21,14 @@ namespace MTGCupid.UI
         {
             // Ensure these values increment by 1 so that they match up with the index of the combo box
             SwissTournament = 0,
-            SwissDraft = 1
+            SwissDraft = 1,
+            SwissMultiplayerTournament = 2
         }
 
         private readonly Dictionary<TournamentType, string> TournamentTypeReadableName = new Dictionary<TournamentType, string>() {
-            { TournamentType.SwissTournament, "Swiss Tournament"},
-            { TournamentType.SwissDraft, "Swiss Draft"}
+            { TournamentType.SwissTournament, "Swiss Tournament" },
+            { TournamentType.SwissDraft, "Swiss Draft" },
+            { TournamentType.SwissMultiplayerTournament, "Multiplayer Tournament" }
         };
 
         public TournamentInitialiserControl()

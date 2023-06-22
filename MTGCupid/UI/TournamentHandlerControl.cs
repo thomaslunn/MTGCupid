@@ -37,8 +37,11 @@ namespace MTGCupid.UI
                     case TournamentInitialiserControl.TournamentType.SwissDraft:
                         tournament = new SwissDraftTournament(e.PlayerNames);
                         break;
+                    case TournamentInitialiserControl.TournamentType.SwissMultiplayerTournament:
+                        tournament = new SwissMultiplayerTournament(e.PlayerNames);
+                        break;
                     default:
-                        throw new InvalidOperationException("Unknown tournament type");
+                        throw new InvalidOperationException("Unknown tournament type: " + tourneyType.ToString());
                 }
 
                 if (tournament is IPoddedTournament poddedTournament)
@@ -56,13 +59,21 @@ namespace MTGCupid.UI
                 var (pairings, byePlayers) = tournament.SuggestNextRoundPairings();
                 if (!Properties.Settings.Default.AutoConfirmPairings)
                 {
-                    // Update pairings according to user input
-                    var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayers);
-                    if (pairingsPreviewForm.ShowDialog() != DialogResult.OK)
-                        return;
+                    if (tournament is AMultiplayerTournament)
+                    {
+                        // TODO: Implement manual pairing adjustment for multiplayer tournaments
+                        MessageBox.Show("Manual pairing adjustment for multiplayer tournaments is not yet supported. Coming soon!", "Manual pairing adjustment not supported", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        // Update pairings according to user input
+                        var pairingsPreviewForm = new PairingsPreviewForm(pairings, byePlayers);
+                        if (pairingsPreviewForm.ShowDialog() != DialogResult.OK)
+                            return;
 
-                    pairings = pairingsPreviewForm.Pairings;
-                    byePlayers = pairingsPreviewForm.ByePlayers;
+                        pairings = pairingsPreviewForm.Pairings;
+                        byePlayers = pairingsPreviewForm.ByePlayers;
+                    }
                 }
                 tournamentInitialiserControl.DisableNextRoundButton();
 
@@ -72,7 +83,7 @@ namespace MTGCupid.UI
             }
             catch (InvalidOperationException)
             {
-                MessageBox.Show("A new round could not be created. There are no possible new pairings for the remaining players. Please refer to the standings tab for the final standings.", "Failed to create round", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("A new round could not be created. There are no possible new pairings for the remaining players. Please refer to the standings tab for the final standings.", "Failed to create round", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 tabControl.SelectedTab = standingsPage;
             }
         }

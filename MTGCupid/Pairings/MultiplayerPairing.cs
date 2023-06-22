@@ -21,7 +21,7 @@ namespace MTGCupid.Pairings
 
         public IMatch CreateMatch()
         {
-            throw new NotImplementedException();
+            return new MultiplayerGame(this);
         }
 
         public PairingsPreviewPairingControl GetPairingControl()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MTGCupid.Matches;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -36,9 +37,30 @@ namespace MTGCupid.Tournaments
         {
         }
 
-        protected override void UpdateStandings()
+        protected override void UpdateWinPercentages()
         {
-            throw new NotImplementedException();
+            // Update match win percentage + game win percentage (as they are equal)
+            // Match win percentage is interpreted as the average number of points per game
+            foreach (var player in Players)
+            {
+                player.MatchWinPercentage = player.Matches.Average(m => m.MatchPointsOf(player));
+                player.GameWinPercentage = player.MatchWinPercentage;
+            }
+
+            // Update opponent match win percentage + opponent game win percentage
+            foreach (var player in Players)
+            {
+                var matches = player.Matches.Where(m => m is not Bye).Cast<MultiplayerGame>(); // Byes are discounted in OMW%
+                if (matches.Count() == 0)
+                    player.OpponentMatchWinPercentage = 100; // Max value
+                else
+                {
+                    var opponents = matches.SelectMany(m => m.Players).Where(p => p != player); // Allow duplicates so that facing
+                    // the same player multiple times influences the OMW% more
+                    player.OpponentMatchWinPercentage = opponents.Sum(p => p.MatchWinPercentage) / opponents.Count();
+                }
+                player.OpponentGameWinPercentage = player.OpponentMatchWinPercentage;
+            }
         }
 
         protected bool CreatePairings(List<int> unpairedPlayers, [MaybeNullWhen(false)] out List<List<int>> matches)
@@ -117,6 +139,10 @@ namespace MTGCupid.Tournaments
         {
             // Can pair if no trio of players have already played together
             return players.Count() < 3 || allMatches.All(m => players.Count(p => m.HasParticipant(playerSource[p])) < 3);
+        }
+        public override List<PlayerStandings> GetStandings()
+        {
+            return Players.Select(p => new PlayerStandings(p, false)).ToList();
         }
     }
 }

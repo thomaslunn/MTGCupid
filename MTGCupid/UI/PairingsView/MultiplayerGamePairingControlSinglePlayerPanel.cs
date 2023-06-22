@@ -25,6 +25,18 @@ namespace MTGCupid.UI.PairingsView
 
             playerLabel.Text = playerName;
             this.BackColor = CONTROL_BACKGROUND;
+
+            numericUpDown.MouseWheel += new MouseEventHandler(numericUpDown_MouseWheel);
+        }
+
+        private void numericUpDown_MouseWheel(object? sender, MouseEventArgs e)
+        {
+            if (sender == null)
+                return;
+            NumericUpDown control = (NumericUpDown)sender;
+            ((HandledMouseEventArgs)e).Handled = true;
+            decimal value = control.Value + ((e.Delta > 0) ? control.Increment : -control.Increment);
+            control.Value = Math.Max(control.Minimum, Math.Min(value, control.Maximum));
         }
 
         public int Score => (int)numericUpDown.Value;

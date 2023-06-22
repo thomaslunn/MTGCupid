@@ -30,6 +30,16 @@ namespace MTGCupid.UI
             this.BackColor = CONTROL_BACKGROUND;
 
             int tableColumn = 0;
+            for (int i = 1; i < match.Players.Count(); i++) // Start at 1 since the table initially contains 1 column
+            {
+                tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 0));
+            }
+            tableLayoutPanel.ColumnCount = match.Players.Count();
+            foreach (ColumnStyle column in tableLayoutPanel.ColumnStyles)
+            {
+                column.SizeType = SizeType.Percent;
+                column.Width = 100 / tableLayoutPanel.ColumnCount;
+            }
             foreach (var player in match.Players)
             {
                 var playerPanel = new MultiplayerGamePairingControlSinglePlayerPanel(player.Name);
