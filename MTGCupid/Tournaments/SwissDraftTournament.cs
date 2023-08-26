@@ -140,7 +140,8 @@ namespace MTGCupid.Tournaments
                 // Filter out players that have dropped
                 List<int> unpairedPlayers = pod
                     .Select((p, index) => (p, index))
-                    .Where(p => !p.p.HasDropped)
+                    .Where(pair => !pair.p.HasDropped)
+                    .OrderBy(pair => Players.IndexOf(pair.p)) // Ensure players are in seed order
                     .Select(p => p.index).ToList();
 
                 if (unpairedPlayers.Count % 2 != 0)
