@@ -42,7 +42,10 @@ namespace MTGCupid.Tournaments
             // Match win percentage is interpreted as the average number of points per game
             foreach (var player in Players)
             {
-                player.MatchWinPercentage = player.CompletedMatches.Average(m => m.MatchPointsOf(player));
+                if (player.CompletedMatches.Count() == 0)
+                    player.MatchWinPercentage = 0;
+                else
+                    player.MatchWinPercentage = player.CompletedMatches.Average(m => m.MatchPointsOf(player));
                 player.GameWinPercentage = player.MatchWinPercentage;
             }
 
