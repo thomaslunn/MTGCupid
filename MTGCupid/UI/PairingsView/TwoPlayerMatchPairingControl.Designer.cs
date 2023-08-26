@@ -36,17 +36,25 @@
             dropPlayer1Box = new CheckBox();
             dropPlayer2Box = new CheckBox();
             submitButton = new Button();
+            tableLayoutPanel = new TableLayoutPanel();
+            leftPanel = new Panel();
+            centerPanel = new Panel();
+            rightPanel = new Panel();
+            tableLayoutPanel.SuspendLayout();
+            leftPanel.SuspendLayout();
+            centerPanel.SuspendLayout();
+            rightPanel.SuspendLayout();
             SuspendLayout();
             // 
             // player1Label
             // 
+            player1Label.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             player1Label.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            player1Label.Location = new Point(20, 5);
+            player1Label.Location = new Point(0, 14);
             player1Label.Name = "player1Label";
-            player1Label.Size = new Size(149, 50);
+            player1Label.Size = new Size(175, 39);
             player1Label.TabIndex = 0;
             player1Label.Text = "Player1";
-            player1Label.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // player1ScoreButton
             // 
@@ -54,7 +62,7 @@
             player1ScoreButton.BackColor = Color.FromArgb(255, 255, 128);
             player1ScoreButton.FlatStyle = FlatStyle.Flat;
             player1ScoreButton.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            player1ScoreButton.Location = new Point(174, 5);
+            player1ScoreButton.Location = new Point(0, 4);
             player1ScoreButton.Name = "player1ScoreButton";
             player1ScoreButton.Size = new Size(50, 50);
             player1ScoreButton.TabIndex = 1;
@@ -67,7 +75,7 @@
             scoreDividerLabel.Anchor = AnchorStyles.Top;
             scoreDividerLabel.AutoSize = true;
             scoreDividerLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            scoreDividerLabel.Location = new Point(232, 15);
+            scoreDividerLabel.Location = new Point(60, 14);
             scoreDividerLabel.Name = "scoreDividerLabel";
             scoreDividerLabel.Size = new Size(34, 30);
             scoreDividerLabel.TabIndex = 2;
@@ -80,7 +88,7 @@
             player2ScoreButton.BackColor = Color.FromArgb(255, 255, 128);
             player2ScoreButton.FlatStyle = FlatStyle.Flat;
             player2ScoreButton.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            player2ScoreButton.Location = new Point(274, 5);
+            player2ScoreButton.Location = new Point(100, 4);
             player2ScoreButton.Name = "player2ScoreButton";
             player2ScoreButton.Size = new Size(50, 50);
             player2ScoreButton.TabIndex = 3;
@@ -90,19 +98,19 @@
             // 
             // player2Label
             // 
-            player2Label.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            player2Label.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             player2Label.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            player2Label.Location = new Point(329, 5);
+            player2Label.Location = new Point(0, 14);
             player2Label.Name = "player2Label";
-            player2Label.Size = new Size(149, 50);
+            player2Label.Size = new Size(175, 39);
             player2Label.TabIndex = 4;
             player2Label.Text = "Player2";
-            player2Label.TextAlign = ContentAlignment.MiddleRight;
+            player2Label.TextAlign = ContentAlignment.TopRight;
             // 
             // dropPlayer1Box
             // 
             dropPlayer1Box.AutoSize = true;
-            dropPlayer1Box.Location = new Point(20, 58);
+            dropPlayer1Box.Location = new Point(4, 57);
             dropPlayer1Box.Name = "dropPlayer1Box";
             dropPlayer1Box.Size = new Size(57, 19);
             dropPlayer1Box.TabIndex = 5;
@@ -113,7 +121,7 @@
             // 
             dropPlayer2Box.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             dropPlayer2Box.AutoSize = true;
-            dropPlayer2Box.Location = new Point(421, 58);
+            dropPlayer2Box.Location = new Point(114, 57);
             dropPlayer2Box.Name = "dropPlayer2Box";
             dropPlayer2Box.Size = new Size(57, 19);
             dropPlayer2Box.TabIndex = 6;
@@ -123,7 +131,7 @@
             // submitButton
             // 
             submitButton.Anchor = AnchorStyles.Top;
-            submitButton.Location = new Point(174, 58);
+            submitButton.Location = new Point(0, 57);
             submitButton.Name = "submitButton";
             submitButton.Size = new Size(150, 29);
             submitButton.TabIndex = 7;
@@ -131,25 +139,75 @@
             submitButton.UseVisualStyleBackColor = true;
             submitButton.Click += submitButton_Click;
             // 
-            // PairingControl
+            // tableLayoutPanel
+            // 
+            tableLayoutPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel.ColumnCount = 3;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.Controls.Add(leftPanel, 0, 0);
+            tableLayoutPanel.Controls.Add(centerPanel, 1, 0);
+            tableLayoutPanel.Controls.Add(rightPanel, 2, 0);
+            tableLayoutPanel.Location = new Point(-1, -1);
+            tableLayoutPanel.Margin = new Padding(0);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 1;
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel.Size = new Size(500, 90);
+            tableLayoutPanel.TabIndex = 8;
+            // 
+            // leftPanel
+            // 
+            leftPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            leftPanel.Controls.Add(player1Label);
+            leftPanel.Controls.Add(dropPlayer1Box);
+            leftPanel.Location = new Point(0, 0);
+            leftPanel.Margin = new Padding(0);
+            leftPanel.Name = "leftPanel";
+            leftPanel.Size = new Size(175, 90);
+            leftPanel.TabIndex = 0;
+            // 
+            // centerPanel
+            // 
+            centerPanel.Controls.Add(player2ScoreButton);
+            centerPanel.Controls.Add(submitButton);
+            centerPanel.Controls.Add(player1ScoreButton);
+            centerPanel.Controls.Add(scoreDividerLabel);
+            centerPanel.Location = new Point(175, 0);
+            centerPanel.Margin = new Padding(0);
+            centerPanel.Name = "centerPanel";
+            centerPanel.Size = new Size(150, 90);
+            centerPanel.TabIndex = 1;
+            // 
+            // rightPanel
+            // 
+            rightPanel.Controls.Add(player2Label);
+            rightPanel.Controls.Add(dropPlayer2Box);
+            rightPanel.Location = new Point(325, 0);
+            rightPanel.Margin = new Padding(0);
+            rightPanel.Name = "rightPanel";
+            rightPanel.Size = new Size(175, 90);
+            rightPanel.TabIndex = 2;
+            // 
+            // TwoPlayerMatchPairingControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BorderStyle = BorderStyle.FixedSingle;
-            Controls.Add(submitButton);
-            Controls.Add(dropPlayer2Box);
-            Controls.Add(dropPlayer1Box);
-            Controls.Add(player2Label);
-            Controls.Add(player2ScoreButton);
-            Controls.Add(scoreDividerLabel);
-            Controls.Add(player1ScoreButton);
-            Controls.Add(player1Label);
+            Controls.Add(tableLayoutPanel);
             MaximumSize = new Size(2000, 90);
             MinimumSize = new Size(500, 90);
-            Name = "PairingControl";
+            Name = "TwoPlayerMatchPairingControl";
             Size = new Size(498, 88);
+            tableLayoutPanel.ResumeLayout(false);
+            leftPanel.ResumeLayout(false);
+            leftPanel.PerformLayout();
+            centerPanel.ResumeLayout(false);
+            centerPanel.PerformLayout();
+            rightPanel.ResumeLayout(false);
+            rightPanel.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -162,5 +220,9 @@
         private CheckBox dropPlayer1Box;
         private CheckBox dropPlayer2Box;
         private Button submitButton;
+        private TableLayoutPanel tableLayoutPanel;
+        private Panel leftPanel;
+        private Panel centerPanel;
+        private Panel rightPanel;
     }
 }

@@ -45,6 +45,7 @@ namespace MTGCupid.UI
                 var playerPanel = new MultiplayerGamePairingControlSinglePlayerPanel(player.Name);
                 playerPanel.SetScoreBackgroundColour(YELLOW);
                 playerPanel.ScoreUpdated += OnScoreUpdate;
+                playerPanel.Dock = DockStyle.Fill;
 
                 tableLayoutPanel.Controls.Add(playerPanel, tableColumn++, 0);
                 players.Add(playerPanel, player);

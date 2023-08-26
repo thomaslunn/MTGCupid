@@ -38,34 +38,33 @@
             // 
             playerLabel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             playerLabel.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
-            playerLabel.Location = new Point(3, 9);
+            playerLabel.Location = new Point(3, 7);
             playerLabel.Name = "playerLabel";
-            playerLabel.Size = new Size(144, 42);
+            playerLabel.Size = new Size(126, 32);
             playerLabel.TabIndex = 1;
             playerLabel.Text = "Player";
             playerLabel.TextAlign = ContentAlignment.TopCenter;
             // 
             // numericUpDown
             // 
-            numericUpDown.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            numericUpDown.Anchor = AnchorStyles.Top;
             numericUpDown.BackColor = Color.FromArgb(255, 255, 128);
             numericUpDown.BorderStyle = BorderStyle.FixedSingle;
             numericUpDown.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            numericUpDown.Location = new Point(3, 54);
+            numericUpDown.Location = new Point(3, 40);
+            numericUpDown.Margin = new Padding(3, 2, 3, 2);
             numericUpDown.Name = "numericUpDown";
-            numericUpDown.Size = new Size(144, 61);
+            numericUpDown.Size = new Size(126, 50);
             numericUpDown.TabIndex = 2;
             numericUpDown.TextAlign = HorizontalAlignment.Center;
             numericUpDown.ValueChanged += numericUpDown_ValueChanged;
             // 
             // dropPlayerBox
             // 
-            dropPlayerBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            dropPlayerBox.AutoSize = true;
-            dropPlayerBox.Location = new Point(38, 122);
-            dropPlayerBox.Margin = new Padding(3, 4, 3, 4);
+            dropPlayerBox.Anchor = AnchorStyles.Bottom;
+            dropPlayerBox.Location = new Point(33, 92);
             dropPlayerBox.Name = "dropPlayerBox";
-            dropPlayerBox.Size = new Size(72, 24);
+            dropPlayerBox.Size = new Size(57, 19);
             dropPlayerBox.TabIndex = 7;
             dropPlayerBox.Text = "Drop?";
             dropPlayerBox.TextAlign = ContentAlignment.BottomCenter;
@@ -73,15 +72,17 @@
             // 
             // MultiplayerGamePairingControlSinglePlayerPanel
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             Controls.Add(dropPlayerBox);
             Controls.Add(numericUpDown);
             Controls.Add(playerLabel);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "MultiplayerGamePairingControlSinglePlayerPanel";
+            Size = new Size(131, 112);
             ((System.ComponentModel.ISupportInitialize)numericUpDown).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
