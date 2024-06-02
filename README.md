@@ -11,6 +11,7 @@ Custom matchmaker for TCG tournament play. Written as a WinForms app for .NET 6.
 - Saving & loading in-progress and completed tournaments
 - "Best possible" pairing algorithm (discussed below)
 - Manual pairings override
+- Multiple matchmaking settings
 
 ## Notes on pairings
 
@@ -24,4 +25,3 @@ For multiplayer tournaments, games range in size from 3 to 5 players, with 4 pla
 - Adding players to the tournament after it has begin
 - Ability to modify round pairings after the round is created
 - Ability to drop players between rounds
-- "WoTC-approved" pairings option
