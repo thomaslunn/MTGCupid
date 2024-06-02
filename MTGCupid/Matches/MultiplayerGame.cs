@@ -15,9 +15,9 @@ namespace MTGCupid.Matches
         private readonly int _numPlayers;
         public const string MatchType = "Multiplayer";
 
-        private readonly IRuleset ruleset;
+        private readonly ARuleset ruleset;
 
-        public MultiplayerGame(MultiplayerPairing pairing, IRuleset ruleset)
+        public MultiplayerGame(MultiplayerPairing pairing, ARuleset ruleset)
         {
             this.ruleset = ruleset;
             Players = pairing.Players;

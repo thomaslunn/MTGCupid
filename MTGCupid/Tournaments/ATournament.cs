@@ -21,9 +21,9 @@ namespace MTGCupid.Tournaments
         public int CurrentRound { get; protected set; } = 1;
         public abstract string TournamentType { get; }
 
-        public IRuleset Ruleset { get; }
+        public ARuleset Ruleset { get; }
 
-        internal ATournament(List<string> players, IRuleset ruleset)
+        internal ATournament(List<string> players, ARuleset ruleset)
         {
             Ruleset = ruleset;
 
@@ -34,7 +34,7 @@ namespace MTGCupid.Tournaments
                 .Select(name => new Player(name, ruleset) { Seed = "=1" })
                 .ToList();
         }
-        internal ATournament(List<Player> players, IRuleset ruleset)
+        internal ATournament(List<Player> players, ARuleset ruleset)
         {
             Ruleset = ruleset;
 
@@ -87,20 +87,20 @@ namespace MTGCupid.Tournaments
         private void UpdatePlayerSeeds()
         {
             // Sort players by tiebreakers
-            Players.Sort();
+            var sortedPlayers = Players.OrderBy(p => p, Ruleset).ToList();
 
             // Update player positions, tracking players on equal seed
             string lastEqualSeed = "=1";
-            for (int i = 0; i < Players.Count; i++)
+            for (int i = 0; i < sortedPlayers.Count; i++)
             {
-                if (i != 0 && Players[i].HasEquivalentScoreTo(Players[i - 1]))
+                if (i != 0 && sortedPlayers[i].HasEquivalentScoreTo(sortedPlayers[i - 1]))
                 {
-                    Players[i].Seed = lastEqualSeed;
-                    Players[i - 1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
+                    sortedPlayers[i].Seed = lastEqualSeed;
+                    sortedPlayers[i - 1].Seed = lastEqualSeed; // Ensure previous player has the "=" marker if it's a draw
                 }
                 else
                 {
-                    Players[i].Seed = (i + 1).ToString();
+                    sortedPlayers[i].Seed = (i + 1).ToString();
                     lastEqualSeed = string.Format("={0}", i + 1);
                 }
             }
@@ -108,7 +108,7 @@ namespace MTGCupid.Tournaments
 
         public virtual List<PlayerStandings> GetStandings()
         {
-            return Players.Select(p => new PlayerStandings(p)).ToList();
+            return Players.OrderBy(p => p, Ruleset).Select(p => new PlayerStandings(p)).ToList();
         }
 
         public static ATournament LoadTournament(string path)
@@ -118,11 +118,15 @@ namespace MTGCupid.Tournaments
             if (export == null)
                 throw new FileFormatException("Provided file is not a valid tournament export.");
 
-            IRuleset ruleset = export.TournamentRuleset switch
+            MatchmakingSettings settings = new MatchmakingSettings();
+            settings.MultiplayerMatchmakingPriority = GetEnumValueFromString<MatchmakingSettings.EMultiplayerMatchmakingPriority>(export.RulesetSettings.MultiplayerMatchmakingPriority);
+            settings.TiebreakerHandling = GetEnumValueFromString<MatchmakingSettings.ETiebreakerHandling>(export.RulesetSettings.TiebreakerHandling);
+
+            ARuleset ruleset = export.TournamentRuleset switch
             {
-                MTGRuleset.RulesetString => new MTGRuleset(),
-                SWURuleset.RulesetString => new SWURuleset(),
-                _ => new MTGRuleset(), // Default to MTG for legacy compatability
+                MTGRuleset.RulesetString => new MTGRuleset(settings),
+                SWURuleset.RulesetString => new SWURuleset(settings),
+                _ => new MTGRuleset(settings), // Default to MTG for legacy compatability
             };
 
             List<Player> players = new List<Player>();
@@ -181,6 +185,15 @@ namespace MTGCupid.Tournaments
             return tournament;
         }
 
+        private static T GetEnumValueFromString<T>(string value) where T : Enum
+        {
+            foreach (T item in Enum.GetValues(typeof(T)))
+            {
+                if (item.ToString().Equals(value)) return item;
+            }
+            throw new ArgumentException(value + " is not a valid value for " + typeof(T).Name, nameof(value));
+        }
+
         public void SaveTournamentProgress(string path = "")
         {
             TournamentExport export = GetTournamentExport();
@@ -211,6 +224,11 @@ namespace MTGCupid.Tournaments
                 CurrentRound = CurrentRound,
                 TournamentType = TournamentType,
                 TournamentRuleset = Ruleset.Ruleset,
+                RulesetSettings = new RulesetSettingsExport() 
+                { 
+                    MultiplayerMatchmakingPriority = Ruleset.MatchmakingSettings.MultiplayerMatchmakingPriority.ToString(), 
+                    TiebreakerHandling = Ruleset.MatchmakingSettings.TiebreakerHandling.ToString()
+                }
             };
             if (this is IPoddedTournament poddedTournament)
             {

@@ -20,7 +20,7 @@ namespace MTGCupid.Pairings
 
         public IEnumerable<Player> Players => players;
 
-        public IMatch CreateMatch(IRuleset ruleset)
+        public IMatch CreateMatch(ARuleset ruleset)
         {
             return new MultiplayerGame(this, ruleset);
         }

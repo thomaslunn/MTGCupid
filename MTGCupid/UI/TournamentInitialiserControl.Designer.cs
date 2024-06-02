@@ -36,6 +36,7 @@
             tournamentTypeComboBox = new ComboBox();
             tournamentRulesetLabel = new Label();
             tournamentRulesetComboBox = new ComboBox();
+            configureMatchmakingButton = new Button();
             SuspendLayout();
             // 
             // nameList
@@ -82,9 +83,17 @@
             resources.ApplyResources(tournamentRulesetComboBox, "tournamentRulesetComboBox");
             tournamentRulesetComboBox.Name = "tournamentRulesetComboBox";
             // 
+            // configureMatchmakingButton
+            // 
+            resources.ApplyResources(configureMatchmakingButton, "configureMatchmakingButton");
+            configureMatchmakingButton.Name = "configureMatchmakingButton";
+            configureMatchmakingButton.UseVisualStyleBackColor = true;
+            configureMatchmakingButton.Click += configureMatchmakingButton_Click;
+            // 
             // TournamentInitialiserControl
             // 
             AutoScaleMode = AutoScaleMode.None;
+            Controls.Add(configureMatchmakingButton);
             Controls.Add(tournamentRulesetComboBox);
             Controls.Add(tournamentRulesetLabel);
             Controls.Add(tournamentTypeComboBox);
@@ -107,5 +116,6 @@
         private ComboBox tournamentTypeComboBox;
         private Label tournamentRulesetLabel;
         private ComboBox tournamentRulesetComboBox;
+        private Button configureMatchmakingButton;
     }
 }

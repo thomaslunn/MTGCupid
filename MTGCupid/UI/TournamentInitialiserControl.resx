@@ -146,7 +146,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameList.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="playerCountLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -176,7 +176,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;playerCountLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="beginNextRoundButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
@@ -203,7 +203,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;beginNextRoundButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="tournamentTypeLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -230,7 +230,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tournamentTypeLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="tournamentTypeComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>526, 41</value>
@@ -251,7 +251,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tournamentTypeComboBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="tournamentRulesetLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -281,7 +281,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tournamentRulesetLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="tournamentRulesetComboBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>543, 84</value>
@@ -302,6 +302,30 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tournamentRulesetComboBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="configureMatchmakingButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>394, 125</value>
+  </data>
+  <data name="configureMatchmakingButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>332, 46</value>
+  </data>
+  <data name="configureMatchmakingButton.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="configureMatchmakingButton.Text" xml:space="preserve">
+    <value>Configure matchmaking...</value>
+  </data>
+  <data name="&gt;&gt;configureMatchmakingButton.Name" xml:space="preserve">
+    <value>configureMatchmakingButton</value>
+  </data>
+  <data name="&gt;&gt;configureMatchmakingButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;configureMatchmakingButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;configureMatchmakingButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

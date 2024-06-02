@@ -13,6 +13,7 @@ namespace MTGCupid
     {
         public string TournamentType { get; set; } = "";
         public string? TournamentRuleset { get; set; } = "";
+        public RulesetSettingsExport RulesetSettings { get; set; } = new RulesetSettingsExport();
         public int CurrentRound { get; set; }
         public bool RoundCompleted { get; set; }
         public List<PlayerExport> Players { get; set; } = new List<PlayerExport>();
@@ -27,7 +28,7 @@ namespace MTGCupid
         public List<string> Players { get; set; } = new List<string>();
         public List<int>? Scores { get; set; }
 
-        public IMatch GetMatch(Dictionary<string, Player> playerMap, IRuleset ruleset)
+        public IMatch GetMatch(Dictionary<string, Player> playerMap, ARuleset ruleset)
         {
             switch (MatchType)
             {
@@ -65,5 +66,11 @@ namespace MTGCupid
     {
         public string Name { get; set; } = "";
         public bool HasDropped { get; set; }
+    }
+
+    public class RulesetSettingsExport
+    {
+        public string MultiplayerMatchmakingPriority { get; set; } = "";
+        public string TiebreakerHandling { get; set; } = "";
     }
 }

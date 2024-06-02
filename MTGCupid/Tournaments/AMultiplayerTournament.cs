@@ -34,8 +34,8 @@ namespace MTGCupid.Tournaments
         /// 
         /// Each game cannot contain three players who have all played together already
         /// </summary>
-        protected AMultiplayerTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
-        protected AMultiplayerTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
+        protected AMultiplayerTournament(List<string> players, ARuleset ruleset) : base(players, ruleset) { }
+        protected AMultiplayerTournament(List<Player> players, ARuleset ruleset) : base(players, ruleset) { }
 
         protected override void UpdateWinPercentages()
         {
@@ -103,49 +103,71 @@ namespace MTGCupid.Tournaments
     
         private bool CreateMatch(IList<Player> playerSource, List<int> unpairedPlayers, int gameSizeToCreate, List<int> match, [MaybeNullWhen(false)] out List<List<int>> matches)
         {
-            // Try adding each player in turn to the match
-            for (int i = 0; i < unpairedPlayers.Count; i++)
+            bool CanCreateMatchesWithRestriction(Func<IList<Player>, IEnumerable<int>, bool> playersSatisfyMatchRestriction, [MaybeNullWhen(false)] out List<List<int>> matches)
             {
-                int player = unpairedPlayers[i];
-                unpairedPlayers.RemoveAt(i);
-                match.Add(player);
-
-                if (CanPair(playerSource, match))
+                // Try adding each player in turn to the match
+                for (int i = 0; i < unpairedPlayers.Count; i++)
                 {
-                    if (match.Count == gameSizeToCreate)
+                    int player = unpairedPlayers[i];
+                    unpairedPlayers.RemoveAt(i);
+                    match.Add(player);
+
+                    if (playersSatisfyMatchRestriction(playerSource, match))
                     {
-                        // Full game created - try and create further matches
-                        if (CreatePairings(playerSource, unpairedPlayers, out matches))
+                        if (match.Count == gameSizeToCreate)
                         {
-                            matches.Insert(0, match);
+                            // Full game created - try and create further matches
+                            if (CreatePairings(playerSource, unpairedPlayers, out matches))
+                            {
+                                matches.Insert(0, match);
+                                return true;
+                            }
+                        }
+                        // Need to add another player to the match
+                        else if (CreateMatch(playerSource, unpairedPlayers, gameSizeToCreate, match, out matches))
+                        {
+                            // Match added to matches set deeper in the recursion, so no need to add it here
                             return true;
                         }
                     }
-                    // Need to add another player to the match
-                    else if (CreateMatch(playerSource, unpairedPlayers, gameSizeToCreate, match, out matches))
-                    {
-                        // Match added to matches set deeper in the recursion, so no need to add it here
-                        return true;
-                    }
+                    // Matchmaking failed, remove player from match
+                    match.RemoveAt(match.Count - 1);
+                    unpairedPlayers.Insert(i, player);
                 }
-                // Matchmaking failed, remove player from match
-                match.RemoveAt(match.Count - 1);
-                unpairedPlayers.Insert(i, player);
+                matches = null;
+                return false;
             }
 
+            // If variety multiplayer pairing is preferred, first try to pair prioritising variety
+            // If this fails, we will fall back to pairing evenly (with better performing players getting better variety where possible)
+            if (Ruleset.MatchmakingSettings.MultiplayerMatchmakingPriority == MatchmakingSettings.EMultiplayerMatchmakingPriority.PrioritiseVariedMatchups)
+            {
+                if (CanCreateMatchesWithRestriction(CanPairVariety, out matches))
+                    return true;
+            }
+
+            if (CanCreateMatchesWithRestriction(CanPairEvenly, out matches))
+                return true;
+
             // Matchmaking failed
-            matches = null;
             return false;
         }
 
-        private bool CanPair(IList<Player> playerSource, IEnumerable<int> players)
+        private bool CanPairEvenly(IList<Player> playerSource, IEnumerable<int> players)
         {
             // Can pair if no trio of players have already played together
             return players.Count() < 3 || allMatches.All(m => players.Count(p => m.HasParticipant(playerSource[p])) < 3);
         }
+
+        private bool CanPairVariety(IList<Player> playerSource, IEnumerable<int> players)
+        {
+            // Can pair if no pair of players have already played together
+            return players.Count() < 2 || allMatches.All(m => players.Count(p => m.HasParticipant(playerSource[p])) < 2);
+        }
+
         public override List<PlayerStandings> GetStandings()
         {
-            return Players.Select(p => new PlayerStandings(p, false)).ToList();
+            return Players.OrderBy(p => p, Ruleset).Select(p => new PlayerStandings(p, false)).ToList();
         }
     }
 }

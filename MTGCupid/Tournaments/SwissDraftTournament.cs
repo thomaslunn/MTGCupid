@@ -51,7 +51,7 @@ namespace MTGCupid.Tournaments
         private List<Player[]> Pods { get; } = new List<Player[]>();
         public override string TournamentType => TournamentTypeString;
         public const string TournamentTypeString = "Swiss Draft";
-        public SwissDraftTournament(List<string> players, IRuleset ruleset) : base(players, ruleset)
+        public SwissDraftTournament(List<string> players, ARuleset ruleset) : base(players, ruleset)
         {
             // Initialise pods
             int poddedPlayers = 0;
@@ -97,7 +97,7 @@ namespace MTGCupid.Tournaments
                 }
             }
         }
-        public SwissDraftTournament(List<Player> players, IRuleset ruleset, List<Player[]> pods) : base(players, ruleset)
+        public SwissDraftTournament(List<Player> players, ARuleset ruleset, List<Player[]> pods) : base(players, ruleset)
         {
             Pods = pods;
         }
@@ -136,13 +136,15 @@ namespace MTGCupid.Tournaments
             List<Player> byePlayers = new List<Player>();
             List<IPairing> pairings = new List<IPairing>();
 
+            var sortedPlayers = Players.OrderBy(p => p, Ruleset.PairingsComparer).ToList();
+
             foreach (var pod in Pods)
             {
                 // Filter out players that have dropped
                 List<int> unpairedPlayers = pod
                     .Select((p, index) => (p, index))
                     .Where(pair => !pair.p.HasDropped)
-                    .OrderBy(pair => Players.IndexOf(pair.p)) // Ensure players are in seed order
+                    .OrderBy(pair => sortedPlayers.IndexOf(pair.p)) // Ensure players are in seed order
                     .Select(p => p.index).ToList();
 
                 if (unpairedPlayers.Count % 2 != 0)

@@ -15,19 +15,20 @@ namespace MTGCupid.Tournaments
     {
         public override string TournamentType => TournamentTypeString;
         public const string TournamentTypeString = "Swiss Tournament";
-        public SwissTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
-        public SwissTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
+        public SwissTournament(List<string> players, ARuleset ruleset) : base(players, ruleset) { }
+        public SwissTournament(List<Player> players, ARuleset ruleset) : base(players, ruleset) { }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {
             if (AwaitingMatchResults)
                 throw new InvalidOperationException("Cannot create next round pairings while matches are in progress.");
 
-            // Recieved all match results, so all tiebreakers in players are already updated and sorted correctly
+            // Recieved all match results, so all tiebreakers in players are already updated
             // Filter out players that have dropped
             List<int> unpairedPlayers = Players
                 .Select((p, index) => (p, index))
                 .Where(p => !p.p.HasDropped)
+                .OrderBy(tup => tup.p, Ruleset.PairingsComparer)
                 .Select(p => p.index).ToList();
 
             MatchesInProgress.Clear();

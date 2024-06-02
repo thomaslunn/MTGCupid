@@ -18,9 +18,9 @@ namespace MTGCupid.Matches
         public bool Completed { get; protected set; } = false;
         public const string MatchType = "1v1";
 
-        private readonly IRuleset ruleset;
+        private readonly ARuleset ruleset;
 
-        public Match(Pairing pairing, IRuleset ruleset)
+        public Match(Pairing pairing, ARuleset ruleset)
         {
             this.ruleset = ruleset;
 

@@ -34,7 +34,7 @@ namespace MTGCupid.Pairings
             }
         }
 
-        public IMatch CreateMatch(IRuleset ruleset)
+        public IMatch CreateMatch(ARuleset ruleset)
         {
             return new Match(this, ruleset);
         }

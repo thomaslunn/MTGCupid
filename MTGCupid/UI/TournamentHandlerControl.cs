@@ -37,11 +37,15 @@ namespace MTGCupid.UI
             if (tournament == null)
             {
                 // Create a new tournament
-                tournament = new TournamentFactory()
+                TournamentFactory tf = new TournamentFactory()
                     .WithTournamentType(tournamentInitialiserControl.GetSelectedTournamentType())
                     .WithRuleset(tournamentInitialiserControl.GetSelectedTournamentRuleset())
-                    .WithPlayers(e.PlayerNames)
-                    .Create();
+                    .WithPlayers(e.PlayerNames);
+
+                if (e.MatchmakingSettings != null)
+                    tf = tf.WithMatchmakingSettings(e.MatchmakingSettings);
+
+                tournament = tf.Create();
 
                 if (tournament is IPoddedTournament poddedTournament)
                 {

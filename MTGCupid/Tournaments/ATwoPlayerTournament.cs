@@ -11,8 +11,8 @@ namespace MTGCupid.Tournaments
 {
     internal abstract class ATwoPlayerTournament : ATournament
     {
-        protected ATwoPlayerTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
-        protected ATwoPlayerTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
+        protected ATwoPlayerTournament(List<string> players, ARuleset ruleset) : base(players, ruleset) { }
+        protected ATwoPlayerTournament(List<Player> players, ARuleset ruleset) : base(players, ruleset) { }
 
         protected override void UpdateWinPercentages()
         {

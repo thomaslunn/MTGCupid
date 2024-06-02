@@ -24,20 +24,20 @@ namespace MTGCupid.UI
 
         public bool HasTournamentBegun { get; set; } = false;
 
-        private readonly OrderedDictionary TournamentTypeReadableName = new OrderedDictionary() 
+        private readonly OrderedDictionary TournamentTypeReadableName = new OrderedDictionary()
         {
             { TournamentType.SwissTournament, SwissTournament.TournamentTypeString },
             { TournamentType.SwissDraft, SwissDraftTournament.TournamentTypeString },
             { TournamentType.SwissMultiplayerTournament, SwissMultiplayerTournament.TournamentTypeString }
         };
 
-
-
         private readonly OrderedDictionary TournamentRulesetReadableName = new OrderedDictionary()
         {
             { TournamentRuleset.MagicTheGathering, MTGRuleset.RulesetString },
             { TournamentRuleset.StarWarsUnlimited, SWURuleset.RulesetString }
         };
+
+        private MatchmakingSettings? matchmakingSettings;
 
         public TournamentInitialiserControl()
         {
@@ -91,7 +91,7 @@ namespace MTGCupid.UI
 
             HasTournamentBegun = true;
             // Invoke the BeginNextRoundButtonClicked event
-            BeginNextRoundButtonClicked?.Invoke(this, new BeginNextRoundButtonClickedEventArgs() { PlayerNames = playerNames });
+            BeginNextRoundButtonClicked?.Invoke(this, new BeginNextRoundButtonClickedEventArgs() { PlayerNames = playerNames, MatchmakingSettings = matchmakingSettings });
         }
 
         public void EnableNextRoundButton(int roundNumber)
@@ -115,10 +115,30 @@ namespace MTGCupid.UI
         {
             return (TournamentRuleset)TournamentRulesetReadableName.Cast<DictionaryEntry>().ElementAt(tournamentRulesetComboBox.SelectedIndex).Key;
         }
+
+        private void configureMatchmakingButton_Click(object sender, EventArgs e)
+        {
+            ConfigureMatchmakingForm matchmakingForm = new ConfigureMatchmakingForm();
+            if (matchmakingSettings != null)
+                matchmakingForm.Setup(matchmakingSettings);
+
+            if (matchmakingForm.ShowDialog() != DialogResult.OK)
+            {
+                matchmakingForm.Dispose();
+                return;
+            }
+
+            if (matchmakingSettings == null)
+                matchmakingSettings = new MatchmakingSettings();
+            matchmakingForm.UpdateSettings(matchmakingSettings);
+
+            matchmakingForm.Dispose();
+        }
     }
 
     internal class BeginNextRoundButtonClickedEventArgs : EventArgs
     {
         public List<string> PlayerNames { get; set; } = new List<string>();
+        public MatchmakingSettings? MatchmakingSettings { get; set; } = new MatchmakingSettings();
     }
 }

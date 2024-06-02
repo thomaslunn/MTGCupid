@@ -15,6 +15,6 @@ namespace MTGCupid.Pairings
 
         public IEnumerable<Player> Players { get; }
 
-        public IMatch CreateMatch(IRuleset ruleset);
+        public IMatch CreateMatch(ARuleset ruleset);
     }
 }

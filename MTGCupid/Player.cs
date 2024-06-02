@@ -26,9 +26,9 @@ namespace MTGCupid
         public string Seed { get; internal set; } = "0"; // Dummy value
         ///////////////////
 
-        private readonly IRuleset ruleset;
+        private readonly ARuleset ruleset;
 
-        public Player(string name, IRuleset ruleset)
+        public Player(string name, ARuleset ruleset)
         {
             Name = name;
             this.ruleset = ruleset;

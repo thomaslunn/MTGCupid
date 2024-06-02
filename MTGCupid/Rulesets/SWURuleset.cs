@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace MTGCupid.Rulesets
 {
-    public class SWURuleset : IRuleset
+    public class SWURuleset : ARuleset
     {
-        public string Ruleset => RulesetString;
+        public SWURuleset(MatchmakingSettings? matchmakingSettings) : base(matchmakingSettings) { }
+
+        public override string Ruleset => RulesetString;
         public const string RulesetString = "Star Wars: Unlimited";
 
-        public int Compare(Player? x, Player? y)
+        public override int Compare(Player? x, Player? y)
         {
             if (x == null || y == null)
                 return 0; // Degenerate case
@@ -20,16 +22,16 @@ namespace MTGCupid.Rulesets
             if (x.Points.CompareTo(y.Points) != 0)
                 return -x.Points.CompareTo(y.Points); // Negative so that higher points appear first
 
-            if (Math.Abs(x.OpponentMatchWinPercentage - y.OpponentMatchWinPercentage) > IRuleset.COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
+            if (Math.Abs(x.OpponentMatchWinPercentage - y.OpponentMatchWinPercentage) > ARuleset.COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
                 return -x.OpponentMatchWinPercentage.CompareTo(y.OpponentMatchWinPercentage);
 
-            if (Math.Abs(x.OpponentOpponentMatchWinPercentage - y.OpponentOpponentMatchWinPercentage) > IRuleset.COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
+            if (Math.Abs(x.OpponentOpponentMatchWinPercentage - y.OpponentOpponentMatchWinPercentage) > ARuleset.COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
                 return -x.OpponentOpponentMatchWinPercentage.CompareTo(y.OpponentOpponentMatchWinPercentage);
 
             return 0;
         }
 
-        public virtual int MatchPointsOf(Player player, Match match)
+        public override int MatchPointsOf(Player player, Match match)
         {
             if (player == match.Player1)
             {
@@ -48,7 +50,7 @@ namespace MTGCupid.Rulesets
             throw new ArgumentException("Player is not in this match.");
         }
 
-        public virtual int MatchPointsOf(Player player, MultiplayerGame match)
+        public override int MatchPointsOf(Player player, MultiplayerGame match)
         {
             return match.GamePointsOf(player);
         }

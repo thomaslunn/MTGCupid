@@ -25,6 +25,7 @@ namespace MTGCupid.Tournaments
         private TournamentRuleset ruleset = TournamentRuleset.MagicTheGathering;
         private TournamentType type = TournamentType.SwissTournament;
         private readonly List<string> players = new List<string>();
+        private MatchmakingSettings? settings;
 
 
         public TournamentFactory() { }
@@ -64,12 +65,18 @@ namespace MTGCupid.Tournaments
             return this;
         }
 
+        public TournamentFactory WithMatchmakingSettings(MatchmakingSettings settings)
+        {
+            this.settings = settings;
+            return this;
+        }
+
         public ATournament Create()
         {
-            IRuleset ruleset = this.ruleset switch
+            ARuleset ruleset = this.ruleset switch
             {
-                TournamentRuleset.MagicTheGathering => new MTGRuleset(),
-                TournamentRuleset.StarWarsUnlimited => new SWURuleset(),
+                TournamentRuleset.MagicTheGathering => new MTGRuleset(settings),
+                TournamentRuleset.StarWarsUnlimited => new SWURuleset(settings),
                 _ => throw new InvalidOperationException("Unknown ruleset: " + this.ruleset.ToString())
             };
 
