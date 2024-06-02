@@ -12,6 +12,7 @@ namespace MTGCupid
         public string Name { get; private set; }
         public string Points { get; private set; }
         public string OpponentMatchWinPercentage { get; private set; }
+        public string OpponentOpponentMatchWinPercentage { get; private set; }
         public string GameWinPercentage { get; private set; }
         public string OpponentGameWinPercentage { get; private set; }
         public bool HasDropped { get; private set; }
@@ -26,12 +27,14 @@ namespace MTGCupid
             if (percentageFormat)
             {
                 OpponentMatchWinPercentage = player.OpponentMatchWinPercentage.ToString("P1");
+                OpponentOpponentMatchWinPercentage = player.OpponentOpponentMatchWinPercentage.ToString("P1");
                 GameWinPercentage = player.GameWinPercentage.ToString("P1");
                 OpponentGameWinPercentage = player.OpponentGameWinPercentage.ToString("P1");
             }
             else
             {
                 OpponentMatchWinPercentage = player.OpponentMatchWinPercentage.ToString("0.##");
+                OpponentOpponentMatchWinPercentage = player.OpponentOpponentMatchWinPercentage.ToString("0.##");
                 GameWinPercentage = player.GameWinPercentage.ToString("0.##");
                 OpponentGameWinPercentage = player.OpponentGameWinPercentage.ToString("0.##");
             }

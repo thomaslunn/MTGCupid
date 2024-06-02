@@ -1,4 +1,5 @@
 ﻿using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace MTGCupid.Tournaments
         public override string TournamentType => TournamentTypeString;
         public const string TournamentTypeString = "Multiplayer Tournament";
 
-        public SwissMultiplayerTournament(List<string> players) : base(players) { }
-        internal SwissMultiplayerTournament(List<Player> players) : base(players) { }
+        public SwissMultiplayerTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
+        internal SwissMultiplayerTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {

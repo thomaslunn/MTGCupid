@@ -1,4 +1,5 @@
 ﻿using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,18 @@ using System.Threading.Tasks;
 
 namespace MTGCupid.Matches
 {
-    internal class MultiplayerGame : IMatch
+    public class MultiplayerGame : IMatch
     {
         public IEnumerable<Player> Players { get; private set; }
-        private Dictionary<Player, int> matchPoints = new Dictionary<Player, int>();
-        private int _numPlayers;
+        private Dictionary<Player, int> gamePoints = new Dictionary<Player, int>();
+        private readonly int _numPlayers;
         public const string MatchType = "Multiplayer";
 
-        public MultiplayerGame(MultiplayerPairing pairing)
+        private readonly IRuleset ruleset;
+
+        public MultiplayerGame(MultiplayerPairing pairing, IRuleset ruleset)
         {
+            this.ruleset = ruleset;
             Players = pairing.Players;
 
             foreach (Player player in Players)
@@ -33,15 +37,16 @@ namespace MTGCupid.Matches
         {
             if (!HasParticipant(player))
                 throw new ArgumentException("Player is not in this match.");
-            matchPoints[player] = points;
-            if (matchPoints.Count == _numPlayers)
+            gamePoints[player] = points;
+            if (gamePoints.Count == _numPlayers)
                 Completed = true;
         }
 
         public int GamePointsOf(Player player)
         {
-            // Synonymous with match points in multiplayer
-            return MatchPointsOf(player);
+            if (!HasParticipant(player))
+                throw new ArgumentException("Player is not in this match.");
+            return gamePoints.GetValueOrDefault(player, 0);
         }
         public bool HasParticipant(Player player)
         {
@@ -49,13 +54,11 @@ namespace MTGCupid.Matches
         }
         public int MatchPointsOf(Player player)
         {
-            if (!HasParticipant(player))
-                throw new ArgumentException("Player is not in this match.");
-            return matchPoints.GetValueOrDefault(player, 0);
+            return ruleset.MatchPointsOf(player, this);
         }
         public void UndoResult()
         {
-            matchPoints.Clear();
+            gamePoints.Clear();
             Completed = false;
         }
         public bool WasWonBy(Player player)
@@ -71,7 +74,7 @@ namespace MTGCupid.Matches
                 Players = Players.Select(p => p.Name).ToList()
             };
             if (includeScores)
-                me.Scores = matchPoints.Values.ToList();
+                me.Scores = gamePoints.Values.ToList();
             return me;
         }
     }

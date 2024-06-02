@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 
 namespace MTGCupid.Tournaments
 {
@@ -14,8 +15,8 @@ namespace MTGCupid.Tournaments
     {
         public override string TournamentType => TournamentTypeString;
         public const string TournamentTypeString = "Swiss Tournament";
-        public SwissTournament(List<string> players) : base(players) { }
-        public SwissTournament(List<Player> players) : base(players) { }
+        public SwissTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
+        public SwissTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
 
         public override (List<IPairing> pairings, List<Player> byePlayer) SuggestNextRoundPairings()
         {

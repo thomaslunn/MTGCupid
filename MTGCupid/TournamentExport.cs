@@ -1,5 +1,6 @@
 ﻿using MTGCupid.Matches;
 using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace MTGCupid
     public class TournamentExport
     {
         public string TournamentType { get; set; } = "";
+        public string? TournamentRuleset { get; set; } = "";
         public int CurrentRound { get; set; }
         public bool RoundCompleted { get; set; }
         public List<PlayerExport> Players { get; set; } = new List<PlayerExport>();
@@ -25,7 +27,7 @@ namespace MTGCupid
         public List<string> Players { get; set; } = new List<string>();
         public List<int>? Scores { get; set; }
 
-        public IMatch GetMatch(Dictionary<string, Player> playerMap)
+        public IMatch GetMatch(Dictionary<string, Player> playerMap, IRuleset ruleset)
         {
             switch (MatchType)
             {
@@ -37,7 +39,7 @@ namespace MTGCupid
                     var p1 = playerMap[Players.First()];
                     var p2 = playerMap[Players.Last()];
                     var pairing = new Pairing(p1, p2);
-                    var match = new Match(pairing);
+                    var match = new Match(pairing, ruleset);
                     if (Scores != null)
                         match.RecordResult(Scores.First(), Scores.Last());
                     return match;
@@ -45,7 +47,7 @@ namespace MTGCupid
                 case MultiplayerGame.MatchType:
                     var playersInMatch = Players.Select(p => playerMap[p]).ToList();
                     var multiplayerPairing = new MultiplayerPairing(playersInMatch);
-                    var multiplayerGame = new MultiplayerGame(multiplayerPairing);
+                    var multiplayerGame = new MultiplayerGame(multiplayerPairing, ruleset);
                     if (Scores != null)
                         for (int i = 0; i < Scores.Count; i++)
                         {

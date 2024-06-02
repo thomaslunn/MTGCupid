@@ -38,6 +38,7 @@
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             pointsDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentMatchWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             gameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentGameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             HasDropped = new DataGridViewCheckBoxColumn();
@@ -57,13 +58,14 @@
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoGenerateColumns = false;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Position, nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn, HasDropped });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Position, nameDataGridViewTextBoxColumn, pointsDataGridViewTextBoxColumn, opponentMatchWinPercentageDataGridViewTextBoxColumn, opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn, gameWinPercentageDataGridViewTextBoxColumn, opponentGameWinPercentageDataGridViewTextBoxColumn, HasDropped });
             dataGridView.DataSource = playerStandingsBindingSource;
             dataGridView.Location = new Point(0, 0);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersVisible = false;
+            dataGridView.RowHeadersWidth = 51;
             dataGridView.RowTemplate.Height = 25;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(810, 265);
@@ -108,6 +110,7 @@
             // 
             playerHistoryViewerControl.Dock = DockStyle.Fill;
             playerHistoryViewerControl.Location = new Point(2, 2);
+            playerHistoryViewerControl.Margin = new Padding(3, 4, 3, 4);
             playerHistoryViewerControl.Name = "playerHistoryViewerControl";
             playerHistoryViewerControl.Size = new Size(266, 170);
             playerHistoryViewerControl.TabIndex = 0;
@@ -116,50 +119,73 @@
             // 
             Position.DataPropertyName = "Seed";
             Position.HeaderText = "Position";
+            Position.MinimumWidth = 6;
             Position.Name = "Position";
             Position.ReadOnly = true;
+            Position.Width = 125;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            nameDataGridViewTextBoxColumn.MinimumWidth = 6;
             nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             nameDataGridViewTextBoxColumn.ReadOnly = true;
+            nameDataGridViewTextBoxColumn.Width = 125;
             // 
             // pointsDataGridViewTextBoxColumn
             // 
             pointsDataGridViewTextBoxColumn.DataPropertyName = "Points";
             pointsDataGridViewTextBoxColumn.HeaderText = "Points";
+            pointsDataGridViewTextBoxColumn.MinimumWidth = 6;
             pointsDataGridViewTextBoxColumn.Name = "pointsDataGridViewTextBoxColumn";
             pointsDataGridViewTextBoxColumn.ReadOnly = true;
+            pointsDataGridViewTextBoxColumn.Width = 125;
             // 
             // opponentMatchWinPercentageDataGridViewTextBoxColumn
             // 
             opponentMatchWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentMatchWinPercentage";
             opponentMatchWinPercentageDataGridViewTextBoxColumn.HeaderText = "OMW%";
+            opponentMatchWinPercentageDataGridViewTextBoxColumn.MinimumWidth = 6;
             opponentMatchWinPercentageDataGridViewTextBoxColumn.Name = "opponentMatchWinPercentageDataGridViewTextBoxColumn";
             opponentMatchWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
+            opponentMatchWinPercentageDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn
+            // 
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentOpponentMatchWinPercentage";
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.HeaderText = "OOMW%";
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.MinimumWidth = 6;
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.Name = "opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn";
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
+            opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn.Width = 125;
             // 
             // gameWinPercentageDataGridViewTextBoxColumn
             // 
             gameWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "GameWinPercentage";
             gameWinPercentageDataGridViewTextBoxColumn.HeaderText = "GW%";
+            gameWinPercentageDataGridViewTextBoxColumn.MinimumWidth = 6;
             gameWinPercentageDataGridViewTextBoxColumn.Name = "gameWinPercentageDataGridViewTextBoxColumn";
             gameWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
+            gameWinPercentageDataGridViewTextBoxColumn.Width = 125;
             // 
             // opponentGameWinPercentageDataGridViewTextBoxColumn
             // 
-            opponentGameWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentGameWinPercentage";
-            opponentGameWinPercentageDataGridViewTextBoxColumn.HeaderText = "OGW%";
+            opponentGameWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentOpponentMatchWinPercentage";
+            opponentGameWinPercentageDataGridViewTextBoxColumn.HeaderText = "OOMW%";
+            opponentGameWinPercentageDataGridViewTextBoxColumn.MinimumWidth = 6;
             opponentGameWinPercentageDataGridViewTextBoxColumn.Name = "opponentGameWinPercentageDataGridViewTextBoxColumn";
             opponentGameWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
+            opponentGameWinPercentageDataGridViewTextBoxColumn.Width = 125;
             // 
             // HasDropped
             // 
             HasDropped.DataPropertyName = "HasDropped";
             HasDropped.HeaderText = "Dropped?";
+            HasDropped.MinimumWidth = 6;
             HasDropped.Name = "HasDropped";
             HasDropped.ReadOnly = true;
+            HasDropped.Width = 125;
             // 
             // StandingsViewControl
             // 
@@ -188,6 +214,7 @@
         private DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn pointsDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentMatchWinPercentageDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn opponentOpponentMatchWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn gameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentGameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn HasDropped;

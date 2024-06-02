@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 
 namespace MTGCupid.Tournaments
 {
@@ -50,7 +51,7 @@ namespace MTGCupid.Tournaments
         private List<Player[]> Pods { get; } = new List<Player[]>();
         public override string TournamentType => TournamentTypeString;
         public const string TournamentTypeString = "Swiss Draft";
-        public SwissDraftTournament(List<string> players) : base(players)
+        public SwissDraftTournament(List<string> players, IRuleset ruleset) : base(players, ruleset)
         {
             // Initialise pods
             int poddedPlayers = 0;
@@ -96,7 +97,7 @@ namespace MTGCupid.Tournaments
                 }
             }
         }
-        public SwissDraftTournament(List<Player> players, List<Player[]> pods) : base(players)
+        public SwissDraftTournament(List<Player> players, IRuleset ruleset, List<Player[]> pods) : base(players, ruleset)
         {
             Pods = pods;
         }

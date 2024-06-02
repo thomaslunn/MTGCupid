@@ -1,5 +1,9 @@
-﻿using System;
+﻿using MTGCupid.Rulesets;
+using MTGCupid.Tournaments;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -7,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MTGCupid.Tournaments.TournamentFactory;
 
 namespace MTGCupid.UI
 {
@@ -19,30 +24,37 @@ namespace MTGCupid.UI
 
         public bool HasTournamentBegun { get; set; } = false;
 
-        public enum TournamentType
+        private readonly OrderedDictionary TournamentTypeReadableName = new OrderedDictionary() 
         {
-            // Ensure these values increment by 1 so that they match up with the index of the combo box
-            SwissTournament = 0,
-            SwissDraft = 1,
-            SwissMultiplayerTournament = 2
-        }
+            { TournamentType.SwissTournament, SwissTournament.TournamentTypeString },
+            { TournamentType.SwissDraft, SwissDraftTournament.TournamentTypeString },
+            { TournamentType.SwissMultiplayerTournament, SwissMultiplayerTournament.TournamentTypeString }
+        };
 
-        private readonly Dictionary<TournamentType, string> TournamentTypeReadableName = new Dictionary<TournamentType, string>() {
-            { TournamentType.SwissTournament, "Swiss Tournament" },
-            { TournamentType.SwissDraft, "Swiss Draft" },
-            { TournamentType.SwissMultiplayerTournament, "Multiplayer Tournament" }
+
+
+        private readonly OrderedDictionary TournamentRulesetReadableName = new OrderedDictionary()
+        {
+            { TournamentRuleset.MagicTheGathering, MTGRuleset.RulesetString },
+            { TournamentRuleset.StarWarsUnlimited, SWURuleset.RulesetString }
         };
 
         public TournamentInitialiserControl()
         {
             InitializeComponent();
 
-            // Setup tournament type combo box
+            // Setup tournament combo boxes
             foreach (TournamentType type in Enum.GetValues(typeof(TournamentType)))
             {
                 tournamentTypeComboBox.Items.Add(TournamentTypeReadableName[type]);
             }
             tournamentTypeComboBox.SelectedIndex = 0;
+
+            foreach (TournamentRuleset ruleset in Enum.GetValues(typeof(TournamentRuleset)))
+            {
+                tournamentRulesetComboBox.Items.Add(TournamentRulesetReadableName[ruleset]);
+            }
+            tournamentRulesetComboBox.SelectedIndex = 0;
         }
 
         private void nameList_RegisteredPlayersCountChanged(object sender, RegisteredPlayersCountChangedEventArgs e)
@@ -96,7 +108,12 @@ namespace MTGCupid.UI
 
         public TournamentType GetSelectedTournamentType()
         {
-            return (TournamentType)tournamentTypeComboBox.SelectedIndex;
+            return (TournamentType)TournamentTypeReadableName.Cast<DictionaryEntry>().ElementAt(tournamentTypeComboBox.SelectedIndex).Key;
+        }
+
+        public TournamentRuleset GetSelectedTournamentRuleset()
+        {
+            return (TournamentRuleset)TournamentRulesetReadableName.Cast<DictionaryEntry>().ElementAt(tournamentRulesetComboBox.SelectedIndex).Key;
         }
     }
 

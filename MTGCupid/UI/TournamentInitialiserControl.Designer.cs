@@ -34,6 +34,8 @@
             beginNextRoundButton = new Button();
             tournamentTypeLabel = new Label();
             tournamentTypeComboBox = new ComboBox();
+            tournamentRulesetLabel = new Label();
+            tournamentRulesetComboBox = new ComboBox();
             SuspendLayout();
             // 
             // nameList
@@ -68,9 +70,23 @@
             resources.ApplyResources(tournamentTypeComboBox, "tournamentTypeComboBox");
             tournamentTypeComboBox.Name = "tournamentTypeComboBox";
             // 
+            // tournamentRulesetLabel
+            // 
+            resources.ApplyResources(tournamentRulesetLabel, "tournamentRulesetLabel");
+            tournamentRulesetLabel.Name = "tournamentRulesetLabel";
+            // 
+            // tournamentRulesetComboBox
+            // 
+            tournamentRulesetComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            tournamentRulesetComboBox.FormattingEnabled = true;
+            resources.ApplyResources(tournamentRulesetComboBox, "tournamentRulesetComboBox");
+            tournamentRulesetComboBox.Name = "tournamentRulesetComboBox";
+            // 
             // TournamentInitialiserControl
             // 
             AutoScaleMode = AutoScaleMode.None;
+            Controls.Add(tournamentRulesetComboBox);
+            Controls.Add(tournamentRulesetLabel);
             Controls.Add(tournamentTypeComboBox);
             Controls.Add(tournamentTypeLabel);
             Controls.Add(beginNextRoundButton);
@@ -89,5 +105,7 @@
         private Button beginNextRoundButton;
         private Label tournamentTypeLabel;
         private ComboBox tournamentTypeComboBox;
+        private Label tournamentRulesetLabel;
+        private ComboBox tournamentRulesetComboBox;
     }
 }

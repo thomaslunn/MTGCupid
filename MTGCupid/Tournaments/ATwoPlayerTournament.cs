@@ -1,4 +1,5 @@
 ﻿using MTGCupid.Matches;
+using MTGCupid.Rulesets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -10,8 +11,8 @@ namespace MTGCupid.Tournaments
 {
     internal abstract class ATwoPlayerTournament : ATournament
     {
-        protected ATwoPlayerTournament(List<string> players) : base(players) { }
-        protected ATwoPlayerTournament(List<Player> players) : base(players) { }
+        protected ATwoPlayerTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
+        protected ATwoPlayerTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
 
         protected override void UpdateWinPercentages()
         {
@@ -31,6 +32,16 @@ namespace MTGCupid.Tournaments
                     player.OpponentMatchWinPercentage = 1;
                 else
                     player.OpponentMatchWinPercentage = matches.Sum(m => m.OpponentOf(player).MatchWinPercentage) / matches.Count();
+            }
+
+            // Update opponent opponent match win percentage
+            foreach (var player in Players)
+            {
+                var matches = player.CompletedMatches.Where(m => m is not Bye).Cast<Match>(); // Byes are discounted in OOMW%
+                if (matches.Count() == 0)
+                    player.OpponentOpponentMatchWinPercentage = 1;
+                else
+                    player.OpponentOpponentMatchWinPercentage = matches.Sum(m => m.OpponentOf(player).OpponentMatchWinPercentage) / matches.Count();
             }
 
             // Update game win percentage

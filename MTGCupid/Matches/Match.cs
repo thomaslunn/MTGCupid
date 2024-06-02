@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 
 namespace MTGCupid.Matches
 {
@@ -17,8 +18,12 @@ namespace MTGCupid.Matches
         public bool Completed { get; protected set; } = false;
         public const string MatchType = "1v1";
 
-        public Match(Pairing pairing)
+        private readonly IRuleset ruleset;
+
+        public Match(Pairing pairing, IRuleset ruleset)
         {
+            this.ruleset = ruleset;
+
             Player1 = pairing.player1;
             Player2 = pairing.player2;
 
@@ -46,25 +51,7 @@ namespace MTGCupid.Matches
 
         public virtual int MatchPointsOf(Player player)
         {
-            if (player == Player1)
-            {
-                if (Player1GameWins > Player2GameWins)
-                    return 3;
-                if (Player1GameWins == Player2GameWins)
-                    return 1;
-                // Player 1 lost
-                return 0;
-            }
-            if (player == Player2)
-            {
-                if (Player2GameWins > Player1GameWins)
-                    return 3;
-                if (Player2GameWins == Player1GameWins)
-                    return 1;
-                // Player 2 lost
-                return 0;
-            }
-            throw new ArgumentException("Player is not in this match.");
+            return ruleset.MatchPointsOf(player, this);
         }
 
         public virtual int GamePointsOf(Player player)

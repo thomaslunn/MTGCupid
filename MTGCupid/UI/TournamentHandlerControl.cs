@@ -37,21 +37,11 @@ namespace MTGCupid.UI
             if (tournament == null)
             {
                 // Create a new tournament
-                var tourneyType = tournamentInitialiserControl.GetSelectedTournamentType();
-                switch (tourneyType)
-                {
-                    case TournamentInitialiserControl.TournamentType.SwissTournament:
-                        tournament = new SwissTournament(e.PlayerNames);
-                        break;
-                    case TournamentInitialiserControl.TournamentType.SwissDraft:
-                        tournament = new SwissDraftTournament(e.PlayerNames);
-                        break;
-                    case TournamentInitialiserControl.TournamentType.SwissMultiplayerTournament:
-                        tournament = new SwissMultiplayerTournament(e.PlayerNames);
-                        break;
-                    default:
-                        throw new InvalidOperationException("Unknown tournament type: " + tourneyType.ToString());
-                }
+                tournament = new TournamentFactory()
+                    .WithTournamentType(tournamentInitialiserControl.GetSelectedTournamentType())
+                    .WithRuleset(tournamentInitialiserControl.GetSelectedTournamentRuleset())
+                    .WithPlayers(e.PlayerNames)
+                    .Create();
 
                 if (tournament is IPoddedTournament poddedTournament)
                 {

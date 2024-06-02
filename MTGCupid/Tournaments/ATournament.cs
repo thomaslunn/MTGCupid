@@ -7,10 +7,11 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using MTGCupid.Matches;
 using MTGCupid.Pairings;
+using MTGCupid.Rulesets;
 
 namespace MTGCupid.Tournaments
 {
-    internal abstract class ATournament
+    public abstract class ATournament
     {
         private readonly Random rand = new Random();
         protected List<Player> Players { get; }
@@ -20,17 +21,23 @@ namespace MTGCupid.Tournaments
         public int CurrentRound { get; protected set; } = 1;
         public abstract string TournamentType { get; }
 
-        public ATournament(List<string> players)
+        public IRuleset Ruleset { get; }
+
+        internal ATournament(List<string> players, IRuleset ruleset)
         {
+            Ruleset = ruleset;
+
             // Initially shuffle the players list to ensure first round pairings are random
             // Also set an initial seed for each player
             Players = players
                 .OrderBy(_ => rand.Next())
-                .Select(name => new Player(name) { Seed = "=1" })
+                .Select(name => new Player(name, ruleset) { Seed = "=1" })
                 .ToList();
         }
-        internal ATournament(List<Player> players)
+        internal ATournament(List<Player> players, IRuleset ruleset)
         {
+            Ruleset = ruleset;
+
             Players = players;
         }
 
@@ -41,7 +48,7 @@ namespace MTGCupid.Tournaments
             MatchesInProgress.Clear();
             foreach (var pairing in pairings)
             {
-                MatchesInProgress.Add(pairing.CreateMatch());
+                MatchesInProgress.Add(pairing.CreateMatch(Ruleset));
             }
             foreach (var byePlayer in byePlayers)
             {
@@ -111,11 +118,18 @@ namespace MTGCupid.Tournaments
             if (export == null)
                 throw new FileFormatException("Provided file is not a valid tournament export.");
 
+            IRuleset ruleset = export.TournamentRuleset switch
+            {
+                MTGRuleset.RulesetString => new MTGRuleset(),
+                SWURuleset.RulesetString => new SWURuleset(),
+                _ => new MTGRuleset(), // Default to MTG for legacy compatability
+            };
+
             List<Player> players = new List<Player>();
             Dictionary<string, Player> playerMap = new Dictionary<string, Player>();
             foreach (var playerExport in export.Players)
             {
-                var player = new Player(playerExport.Name);
+                var player = new Player(playerExport.Name, ruleset);
                 players.Add(player);
                 if (playerExport.HasDropped)
                     player.Drop();
@@ -125,13 +139,13 @@ namespace MTGCupid.Tournaments
             List<IMatch> matches = new List<IMatch>();
             foreach (var matchExport in export.CompletedMatches)
             {
-                matches.Add(matchExport.GetMatch(playerMap));
+                matches.Add(matchExport.GetMatch(playerMap, ruleset));
             }
 
             List<IMatch> matchesInProgress = new List<IMatch>();
             foreach (var matchExport in export.InProgressMatches)
             {
-                var match = matchExport.GetMatch(playerMap);
+                var match = matchExport.GetMatch(playerMap, ruleset);
                 matchesInProgress.Add(match);
                 matches.Add(match);
             }
@@ -147,9 +161,9 @@ namespace MTGCupid.Tournaments
 
             ATournament tournament = export.TournamentType switch
             {
-                SwissTournament.TournamentTypeString => new SwissTournament(players),
-                SwissDraftTournament.TournamentTypeString => new SwissDraftTournament(players, pods),
-                SwissMultiplayerTournament.TournamentTypeString => new SwissMultiplayerTournament(players),
+                SwissTournament.TournamentTypeString => new SwissTournament(players, ruleset),
+                SwissDraftTournament.TournamentTypeString => new SwissDraftTournament(players, ruleset, pods),
+                SwissMultiplayerTournament.TournamentTypeString => new SwissMultiplayerTournament(players, ruleset),
                 _ => throw new FileFormatException("Unexpected tournament type encountered: " + export.TournamentType)
             };
 
@@ -195,7 +209,8 @@ namespace MTGCupid.Tournaments
                 InProgressMatches = MatchesInProgress.Select(m => m.GetMatchExport(false)).ToList(),
                 CompletedMatches = allMatches.Where(m => !MatchesInProgress.Contains(m)).Select(m => m.GetMatchExport()).ToList(),
                 CurrentRound = CurrentRound,
-                TournamentType = TournamentType
+                TournamentType = TournamentType,
+                TournamentRuleset = Ruleset.Ruleset,
             };
             if (this is IPoddedTournament poddedTournament)
             {

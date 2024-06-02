@@ -1,4 +1,5 @@
 ﻿using MTGCupid.Matches;
+using MTGCupid.Rulesets;
 using MTGCupid.UI;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MTGCupid.Pairings
 {
-    internal class MultiplayerPairing : IPairing
+    public class MultiplayerPairing : IPairing
     {
         private readonly List<Player> players = new List<Player>();
 
@@ -19,9 +20,9 @@ namespace MTGCupid.Pairings
 
         public IEnumerable<Player> Players => players;
 
-        public IMatch CreateMatch()
+        public IMatch CreateMatch(IRuleset ruleset)
         {
-            return new MultiplayerGame(this);
+            return new MultiplayerGame(this, ruleset);
         }
 
         public PairingsPreviewPairingControl GetPairingControl()

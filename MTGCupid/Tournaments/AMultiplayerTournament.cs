@@ -1,4 +1,5 @@
 ﻿using MTGCupid.Matches;
+using MTGCupid.Rulesets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -33,8 +34,8 @@ namespace MTGCupid.Tournaments
         /// 
         /// Each game cannot contain three players who have all played together already
         /// </summary>
-        protected AMultiplayerTournament(List<string> players) : base(players) { }
-        protected AMultiplayerTournament(List<Player> players) : base(players) { }
+        protected AMultiplayerTournament(List<string> players, IRuleset ruleset) : base(players, ruleset) { }
+        protected AMultiplayerTournament(List<Player> players, IRuleset ruleset) : base(players, ruleset) { }
 
         protected override void UpdateWinPercentages()
         {

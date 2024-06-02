@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MTGCupid.Matches;
+using MTGCupid.Rulesets;
 
 namespace MTGCupid
 {
     public class Player : IComparable<Player>
     {
-        public const double COMPARISON_DOUBLE_EQUALITY_THRESHOLD = 0.0001;
         public string Name { get; private set; }
         public int Points => CompletedMatches.Sum(m => m.MatchPointsOf(this));
         public HashSet<IMatch> Matches { get; } = new HashSet<IMatch>();
@@ -20,14 +20,18 @@ namespace MTGCupid
         // The following properties are updated by the tournament manager when calculating standings //
         public double MatchWinPercentage { get; internal set; } = 1;
         public double OpponentMatchWinPercentage { get; internal set; } = 0;
+        public double OpponentOpponentMatchWinPercentage { get; internal set; } = 1;
         public double GameWinPercentage { get; internal set; } = 1;
-        public double OpponentGameWinPercentage { get; internal set; } = 0;
+        public double OpponentGameWinPercentage { get; internal set; } = 1;
         public string Seed { get; internal set; } = "0"; // Dummy value
         ///////////////////
 
-        public Player(string name)
+        private readonly IRuleset ruleset;
+
+        public Player(string name, IRuleset ruleset)
         {
             Name = name;
+            this.ruleset = ruleset;
         }
 
         public void Drop()
@@ -41,22 +45,7 @@ namespace MTGCupid
 
         public int CompareTo(Player? other)
         {
-            if (other == null)
-                return 0; // Degenerate case
-
-            if (Points.CompareTo(other.Points) != 0)
-                return -Points.CompareTo(other.Points); // Negative so that higher points appear first
-
-            if (Math.Abs(OpponentMatchWinPercentage - other.OpponentMatchWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
-                return -OpponentMatchWinPercentage.CompareTo(other.OpponentMatchWinPercentage);
-
-            if (Math.Abs(GameWinPercentage - other.GameWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
-                return -GameWinPercentage.CompareTo(other.GameWinPercentage);
-
-            if (Math.Abs(OpponentGameWinPercentage - other.OpponentGameWinPercentage) > COMPARISON_DOUBLE_EQUALITY_THRESHOLD)
-                return -OpponentGameWinPercentage.CompareTo(other.OpponentGameWinPercentage);
-
-            return 0;
+            return ruleset.Compare(this, other);
         }
 
         public bool HasEquivalentScoreTo(Player other)
