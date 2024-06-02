@@ -1,11 +1,12 @@
 # MTGCupid
 
-Custom matchmaker for Magic: the Gathering (or similar) tournament play. Written as a WinForms app for .NET 6.0.
+Custom matchmaker for TCG tournament play. Written as a WinForms app for .NET 6.0.
 
 ## Features
 
 - Unlimited tournament participants
 - Supports Swiss, Swiss draft, and Multiplayer variants
+- Supports Magic: The Gathering and Star Wars: Unlimited tournament rulesets
 - Dropping players mid-tournament
 - Saving & loading in-progress and completed tournaments
 - "Best possible" pairing algorithm (discussed below)
