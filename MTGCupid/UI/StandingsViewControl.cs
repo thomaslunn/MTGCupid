@@ -20,7 +20,7 @@ namespace MTGCupid.UI
             InitializeComponent();
         }
 
-        public void UpdateStandings(List<PlayerStandings> standings)
+        public void UpdateStandings(List<PlayerStandings> standings, int roundNumber, bool roundComplete)
         {
             updatingTableContents = true; // Ignore selection changes while we update the table
             dataGridView.SuspendLayout();
@@ -31,6 +31,17 @@ namespace MTGCupid.UI
 
             dataGridView.ResumeLayout();
             updatingTableContents = false;
+
+            UpdateCurrentRoundLabel(roundNumber, roundComplete);
+        }
+
+        public void UpdateCurrentRoundLabel(int roundNumber, bool roundComplete)
+        {
+            currentRoundLabel.Text = $"Round {roundNumber} {(roundComplete ? "Complete" : "In Progress")}";
+            if (!roundComplete)
+                currentRoundLabel.ForeColor = Color.Red;
+            else
+                currentRoundLabel.ForeColor = Color.Black;
         }
 
         private void dataGridView_SelectionChanged(object sender, EventArgs e)

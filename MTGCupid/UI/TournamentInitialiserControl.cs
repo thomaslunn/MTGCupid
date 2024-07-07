@@ -94,10 +94,10 @@ namespace MTGCupid.UI
             BeginNextRoundButtonClicked?.Invoke(this, new BeginNextRoundButtonClickedEventArgs() { PlayerNames = playerNames, MatchmakingSettings = matchmakingSettings });
         }
 
-        public void EnableNextRoundButton(int roundNumber)
+        public void EnableNextRoundButton(int nextRoundNumber)
         {
             beginNextRoundButton.Enabled = true;
-            beginNextRoundButton.Text = string.Format("Create Pairings for Round {0}", roundNumber);
+            beginNextRoundButton.Text = string.Format("Create Pairings for Round {0}", nextRoundNumber);
         }
 
         public void DisableNextRoundButton()

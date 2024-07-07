@@ -86,6 +86,8 @@ namespace MTGCupid.UI
                 var round = tournament.CreateRoundWithPairings(pairings, byePlayers);
                 pairingsListControl.InitialiseWithMatches(round);
                 tabControl.SelectedTab = pairingsPage;
+
+                standingsViewControl.UpdateCurrentRoundLabel(tournament.CurrentRound, false);
             }
             catch (InvalidOperationException)
             {
@@ -102,10 +104,10 @@ namespace MTGCupid.UI
             if (!tournament.SubmitMatchResults())
                 throw new InvalidOperationException("Not all matches have been submitted.");
 
-            tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound);
+            tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound + 1);
 
             // Update standings
-            standingsViewControl.UpdateStandings(tournament.GetStandings());
+            standingsViewControl.UpdateStandings(tournament.GetStandings(), tournament.CurrentRound, true);
         }
 
         private void autoConfirmPairingsToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -147,7 +149,7 @@ namespace MTGCupid.UI
             }
 
             tournamentInitialiserControl.HasTournamentBegun = true;
-            standingsViewControl.UpdateStandings(tournament.GetStandings());
+            standingsViewControl.UpdateStandings(tournament.GetStandings(), tournament.CurrentRound, !tournament.AwaitingMatchResults);
             pairingsListControl.InitialiseWithMatches(tournament.MatchesInProgress);
             if (tournament.AwaitingMatchResults)
             {
@@ -155,7 +157,7 @@ namespace MTGCupid.UI
             }
             else
             {
-                tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound);
+                tournamentInitialiserControl.EnableNextRoundButton(tournament.CurrentRound + 1);
             }
 
             MessageBox.Show("Tournament load successful.", "Tournament loaded", MessageBoxButtons.OK, MessageBoxIcon.Information);

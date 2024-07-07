@@ -18,7 +18,7 @@ namespace MTGCupid.Tournaments
         public List<IMatch> MatchesInProgress { get; } = new List<IMatch>();
         protected List<IMatch> allMatches { get; } = new List<IMatch>();
         public bool AwaitingMatchResults { get; protected set; } = false;
-        public int CurrentRound { get; protected set; } = 1;
+        public int CurrentRound { get; protected set; } = 0;
         public abstract string TournamentType { get; }
 
         public ARuleset Ruleset { get; }
@@ -45,6 +45,8 @@ namespace MTGCupid.Tournaments
 
         public List<IMatch> CreateRoundWithPairings(List<IPairing> pairings, List<Player> byePlayers)
         {
+            CurrentRound++;
+
             MatchesInProgress.Clear();
             foreach (var pairing in pairings)
             {
@@ -79,7 +81,6 @@ namespace MTGCupid.Tournaments
             AwaitingMatchResults = false;
             UpdateWinPercentages();
             UpdatePlayerSeeds();
-            CurrentRound++;
             SaveTournamentProgress();
             return true;
         }

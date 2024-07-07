@@ -30,10 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             dataGridView = new DataGridView();
-            playerStandingsBindingSource = new BindingSource(components);
-            bottomPanel = new Panel();
-            bottomSplitContainer = new SplitContainer();
-            playerHistoryViewerControl = new PlayerHistoryViewerControl();
             Position = new DataGridViewTextBoxColumn();
             nameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             pointsDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -42,11 +38,17 @@
             gameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             opponentGameWinPercentageDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             HasDropped = new DataGridViewCheckBoxColumn();
+            playerStandingsBindingSource = new BindingSource(components);
+            bottomPanel = new Panel();
+            bottomSplitContainer = new SplitContainer();
+            playerHistoryViewerControl = new PlayerHistoryViewerControl();
+            currentRoundLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)playerStandingsBindingSource).BeginInit();
             bottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bottomSplitContainer).BeginInit();
             bottomSplitContainer.Panel1.SuspendLayout();
+            bottomSplitContainer.Panel2.SuspendLayout();
             bottomSplitContainer.SuspendLayout();
             SuspendLayout();
             // 
@@ -71,48 +73,6 @@
             dataGridView.Size = new Size(810, 265);
             dataGridView.TabIndex = 0;
             dataGridView.SelectionChanged += dataGridView_SelectionChanged;
-            // 
-            // playerStandingsBindingSource
-            // 
-            playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
-            // 
-            // bottomPanel
-            // 
-            bottomPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            bottomPanel.Controls.Add(bottomSplitContainer);
-            bottomPanel.Location = new Point(3, 274);
-            bottomPanel.Name = "bottomPanel";
-            bottomPanel.Size = new Size(810, 174);
-            bottomPanel.TabIndex = 1;
-            // 
-            // bottomSplitContainer
-            // 
-            bottomSplitContainer.Dock = DockStyle.Fill;
-            bottomSplitContainer.Location = new Point(0, 0);
-            bottomSplitContainer.Name = "bottomSplitContainer";
-            // 
-            // bottomSplitContainer.Panel1
-            // 
-            bottomSplitContainer.Panel1.Controls.Add(playerHistoryViewerControl);
-            bottomSplitContainer.Panel1.Padding = new Padding(2);
-            bottomSplitContainer.Panel1MinSize = 200;
-            // 
-            // bottomSplitContainer.Panel2
-            // 
-            bottomSplitContainer.Panel2.Padding = new Padding(2);
-            bottomSplitContainer.Size = new Size(810, 174);
-            bottomSplitContainer.SplitterDistance = 270;
-            bottomSplitContainer.SplitterWidth = 10;
-            bottomSplitContainer.TabIndex = 0;
-            // 
-            // playerHistoryViewerControl
-            // 
-            playerHistoryViewerControl.Dock = DockStyle.Fill;
-            playerHistoryViewerControl.Location = new Point(2, 2);
-            playerHistoryViewerControl.Margin = new Padding(3, 4, 3, 4);
-            playerHistoryViewerControl.Name = "playerHistoryViewerControl";
-            playerHistoryViewerControl.Size = new Size(266, 170);
-            playerHistoryViewerControl.TabIndex = 0;
             // 
             // Position
             // 
@@ -186,6 +146,57 @@
             HasDropped.ReadOnly = true;
             HasDropped.Width = 125;
             // 
+            // playerStandingsBindingSource
+            // 
+            playerStandingsBindingSource.DataSource = typeof(PlayerStandings);
+            // 
+            // bottomPanel
+            // 
+            bottomPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            bottomPanel.Controls.Add(bottomSplitContainer);
+            bottomPanel.Location = new Point(3, 274);
+            bottomPanel.Name = "bottomPanel";
+            bottomPanel.Size = new Size(810, 174);
+            bottomPanel.TabIndex = 1;
+            // 
+            // bottomSplitContainer
+            // 
+            bottomSplitContainer.Dock = DockStyle.Fill;
+            bottomSplitContainer.Location = new Point(0, 0);
+            bottomSplitContainer.Name = "bottomSplitContainer";
+            // 
+            // bottomSplitContainer.Panel1
+            // 
+            bottomSplitContainer.Panel1.Controls.Add(playerHistoryViewerControl);
+            bottomSplitContainer.Panel1.Padding = new Padding(2);
+            bottomSplitContainer.Panel1MinSize = 200;
+            // 
+            // bottomSplitContainer.Panel2
+            // 
+            bottomSplitContainer.Panel2.Controls.Add(currentRoundLabel);
+            bottomSplitContainer.Panel2.Padding = new Padding(2);
+            bottomSplitContainer.Size = new Size(810, 174);
+            bottomSplitContainer.SplitterDistance = 270;
+            bottomSplitContainer.SplitterWidth = 10;
+            bottomSplitContainer.TabIndex = 0;
+            // 
+            // playerHistoryViewerControl
+            // 
+            playerHistoryViewerControl.Dock = DockStyle.Fill;
+            playerHistoryViewerControl.Location = new Point(2, 2);
+            playerHistoryViewerControl.Margin = new Padding(3, 4, 3, 4);
+            playerHistoryViewerControl.Name = "playerHistoryViewerControl";
+            playerHistoryViewerControl.Size = new Size(266, 170);
+            playerHistoryViewerControl.TabIndex = 0;
+            // 
+            // currentRoundLabel
+            // 
+            currentRoundLabel.AutoSize = true;
+            currentRoundLabel.Location = new Point(5, 2);
+            currentRoundLabel.Name = "currentRoundLabel";
+            currentRoundLabel.Size = new Size(0, 20);
+            currentRoundLabel.TabIndex = 0;
+            // 
             // StandingsViewControl
             // 
             AutoScaleMode = AutoScaleMode.None;
@@ -197,6 +208,8 @@
             ((System.ComponentModel.ISupportInitialize)playerStandingsBindingSource).EndInit();
             bottomPanel.ResumeLayout(false);
             bottomSplitContainer.Panel1.ResumeLayout(false);
+            bottomSplitContainer.Panel2.ResumeLayout(false);
+            bottomSplitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)bottomSplitContainer).EndInit();
             bottomSplitContainer.ResumeLayout(false);
             ResumeLayout(false);
@@ -217,5 +230,6 @@
         private DataGridViewTextBoxColumn gameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn opponentGameWinPercentageDataGridViewTextBoxColumn;
         private DataGridViewCheckBoxColumn HasDropped;
+        private Label currentRoundLabel;
     }
 }
