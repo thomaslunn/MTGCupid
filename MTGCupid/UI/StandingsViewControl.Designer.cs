@@ -70,7 +70,6 @@
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(810, 265);
             dataGridView.TabIndex = 0;
-            dataGridView.CellClick += dataGridView_CellClick;
             dataGridView.SelectionChanged += dataGridView_SelectionChanged;
             // 
             // playerStandingsBindingSource

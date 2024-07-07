@@ -33,15 +33,6 @@ namespace MTGCupid.UI
             updatingTableContents = false;
         }
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //if (e.RowIndex == -1) // header row
-            //    return;
-
-            //Player selectedPlayer = standings[e.RowIndex].Player;
-            //playerHistoryViewerControl.ViewPlayerHistory(selectedPlayer);
-        }
-
         private void dataGridView_SelectionChanged(object sender, EventArgs e)
         {
             if (updatingTableContents || dataGridView.SelectedRows.Count == 0)
