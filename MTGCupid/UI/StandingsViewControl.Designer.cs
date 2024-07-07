@@ -171,8 +171,8 @@
             // 
             // opponentGameWinPercentageDataGridViewTextBoxColumn
             // 
-            opponentGameWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentOpponentMatchWinPercentage";
-            opponentGameWinPercentageDataGridViewTextBoxColumn.HeaderText = "OOMW%";
+            opponentGameWinPercentageDataGridViewTextBoxColumn.DataPropertyName = "OpponentGameWinPercentage";
+            opponentGameWinPercentageDataGridViewTextBoxColumn.HeaderText = "OGW%";
             opponentGameWinPercentageDataGridViewTextBoxColumn.MinimumWidth = 6;
             opponentGameWinPercentageDataGridViewTextBoxColumn.Name = "opponentGameWinPercentageDataGridViewTextBoxColumn";
             opponentGameWinPercentageDataGridViewTextBoxColumn.ReadOnly = true;
